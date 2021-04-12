@@ -3,5 +3,40 @@
 .landingWrap {
   height: 100vh;
   min-height: 400px;
-  background-color: red;
+}
+
+.landingInner {
+  margin: 0 auto;
+  width: 75%;
+  min-width: 775px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.landingLogoWrap {
+  width: 35%;
+  margin: 0 auto;
+}
+
+.landingBgWrap {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.orderingSection {
+  border-top: 2px solid $dark;
+  padding: 5rem 2rem;
+  width: 75%;
+  min-width: 775px;
+  margin: 0 auto;
+}
+
+.orderingInner {
+  display: grid;
+  column-gap: 4em;
+  row-gap: 4em;
+  grid-template-columns: repeat(2, minmax(175px, 1fr));
+  grid-auto-rows: minmax(175px, auto);
 }
