@@ -21,8 +21,11 @@ export const HomePage = (props: RouteComponentProps) => {
       <section className={styles.orderingSection}>
         <div className={styles.orderingInner}>
           {donuts.map((d) => (
-            <div className={styles.donutBox}>
-              <img src={d.image} alt={`Order ${d.name}`} />
+            <div className={styles.donutBoxWrap}>
+              <div className={styles.donutBox}>
+                <img src={d.image} alt={`Order ${d.name}`} />
+              </div>
+              <p>{d.name}</p>
             </div>
           ))}
         </div>
