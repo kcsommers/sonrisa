@@ -7,12 +7,20 @@
 
 .landingInner {
   margin: 0 auto;
-  width: 75%;
-  min-width: 775px;
+  width: 775px;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+}
+
+.orderNowBtnWrap {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  text-align: center;
+  transform: translateY(-50%);
 }
 
 .landingLogoWrap {
@@ -28,8 +36,7 @@
 .orderingSection {
   border-top: 2px solid $dark;
   padding: 5rem 2rem;
-  width: 75%;
-  min-width: 775px;
+  width: 775px;
   margin: 0 auto;
 }
 

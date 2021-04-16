@@ -1,4 +1,5 @@
 import donut from '@assets/images/donut_1.jpg';
+import matchaDonut from '@assets/images/matcha_donut.jpg';
 
 export enum Donuts {
   VANILLA = 'Vanilla',
@@ -23,7 +24,7 @@ export const donuts: IDonut[] = [
   },
   {
     name: Donuts.MATCHA,
-    image: donut,
+    image: matchaDonut,
   },
   {
     name: Donuts.THAI_TEA,

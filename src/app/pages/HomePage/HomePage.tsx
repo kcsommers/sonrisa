@@ -3,6 +3,7 @@ import introBg from '@assets/images/sonrisa_1.png';
 import logo from '@assets/images/sonrisa_logo.jpg';
 import styles from './HomePage.module.scss';
 import { donuts } from '../../core/ordering/donuts';
+import { Button } from '../../components/Button/Button';
 
 export const HomePage = (props: RouteComponentProps) => {
   return (
@@ -14,6 +15,9 @@ export const HomePage = (props: RouteComponentProps) => {
           </div>
           <div className={styles.landingBgWrap}>
             <img src={introBg} alt="Intro Doughnut" />
+          </div>
+          <div className={styles.orderNowBtnWrap}>
+            <Button text="Order Now" />
           </div>
         </div>
       </section>
