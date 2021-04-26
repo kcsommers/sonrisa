@@ -1,0 +1,22 @@
+header.header {
+  height: 200px;
+  padding: 0 2rem;
+  position: relative;
+  text-align: center;
+}
+
+img.logo {
+  height: 100%;
+  width: initial;
+}
+
+div.headerLinksWrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

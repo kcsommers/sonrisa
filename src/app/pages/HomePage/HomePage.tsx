@@ -4,20 +4,16 @@ import logo from '@assets/images/sonrisa_logo.jpg';
 import styles from './HomePage.module.scss';
 import { donuts } from '../../core/ordering/donuts';
 import { Button } from '../../components/Button/Button';
+import { Header } from '../../components/Header/Header';
 
 export const HomePage = (props: RouteComponentProps) => {
   return (
     <div className={styles.homePageWrap}>
+      <Header />
       <section className={styles.landingWrap}>
         <div className={styles.landingInner}>
-          <div className={styles.landingLogoWrap}>
-            <img src={logo} alt="Sonrisa Logo" />
-          </div>
-          <div className={styles.landingBgWrap}>
-            <img src={introBg} alt="Intro Doughnut" />
-          </div>
           <div className={styles.orderNowBtnWrap}>
-            <Button text="Order Now" />
+            <Button text="Order Online" />
           </div>
         </div>
       </section>
