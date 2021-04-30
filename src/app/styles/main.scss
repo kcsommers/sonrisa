@@ -3,7 +3,7 @@
 
 body {
   margin: 0;
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: 'Aleo', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $dark;
@@ -24,4 +24,8 @@ p {
   color: $dark;
   font-size: 1.2rem;
   text-align: center;
+}
+
+dev.app-container {
+  max-width: 1200px;
 }
