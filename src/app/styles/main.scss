@@ -3,10 +3,13 @@
 
 body {
   margin: 0;
-  font-family: 'Aleo', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: $dark;
+}
+
+* {
+  font-family: 'Aleo', sans-serif;
 }
 
 code {
