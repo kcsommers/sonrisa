@@ -1,12 +1,11 @@
 header.header {
-  height: 200px;
-  padding: 0 2rem;
+  height: 100px;
   position: relative;
   text-align: center;
 }
 
 img.logo {
-  height: 100%;
+  height: 200%;
   width: initial;
 }
 
@@ -19,4 +18,24 @@ div.headerLinksWrap {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+div.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  padding: 0 2rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+div.headerInnerRight {
+  font-size: 2rem;
+
+  > svg {
+    margin-right: 1rem;
+  }
 }

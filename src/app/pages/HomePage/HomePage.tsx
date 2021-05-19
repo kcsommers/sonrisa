@@ -11,20 +11,13 @@ import { OrderBox } from '../../components/OrderBox/OrderBox';
 export const HomePage = (props: RouteComponentProps) => {
   return (
     <div className={styles.homePageWrap}>
-      <section className={styles.landingWrap}>
-        <div className={styles.landingInner}>
-          <img className={styles.landingLogo} src={logo} alt="Sonrisa Logo" />
-          <img className={styles.basketImg} src={basket} alt="Sonrisa Logo" />
-          <div className={styles.landingBtnWrap}>
-            {/* <Button text="Order Online" /> */}
-          </div>
-        </div>
-      </section>
+      <Header />
+      <section className={styles.landingWrap}></section>
 
       <section className={styles.orderNowWrap}>
         <div className={styles.orderBoxesWrap}>
           {doughnuts.map((d) => (
-            <div className={styles.orderBoxWrap}>
+            <div key={d.name} className={styles.orderBoxWrap}>
               <OrderBox item={d} />
             </div>
           ))}

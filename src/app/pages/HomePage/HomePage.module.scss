@@ -1,19 +1,5 @@
 @import '../../styles/variables.scss';
 
-section.landingWrap {
-  height: 100vh;
-  min-height: 650px;
-  text-align: center;
-}
-
-img.landingLogo {
-  width: 300px;
-}
-
-img.basektImg {
-  width: 300px;
-}
-
 div.orderBoxesWrap {
   display: flex;
   flex-wrap: wrap;
