@@ -1,4 +1,5 @@
 const CracoAlias = require('craco-alias');
+const path = require('path');
 
 module.exports = {
   plugins: [
@@ -15,4 +16,13 @@ module.exports = {
       },
     },
   ],
+  webpack: {
+    alias: {
+      '@components': path.resolve(__dirname, 'src/app/components/public.ts'),
+      '@scss': path.resolve(__dirname, 'src/app/styles'),
+      '@images': path.resolve(__dirname, 'src/assets/images'),
+      '@redux': path.resolve(__dirname, 'src/app/redux'),
+      '@core': path.resolve(__dirname, 'src/app/core/public.ts'),
+    },
+  },
 };

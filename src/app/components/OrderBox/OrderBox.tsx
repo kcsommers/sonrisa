@@ -15,14 +15,6 @@ export const OrderBox = (props: OrderBoxProps) => {
       <div className={styles.nameWrap}>
         <p>{props.item.name}</p>
       </div>
-      <div className={styles.quantityWrap}>
-        <span className={styles.quantity}>{props.item.quantity}</span>
-        <div className={styles.quantityInner}>
-          <FontAwesomeIcon icon={faMinus} />
-          <FontAwesomeIcon icon={faPlus} />
-        </div>
-      </div>
-      <Button text="Add to Order" size="sm"></Button>
     </div>
   );
 };

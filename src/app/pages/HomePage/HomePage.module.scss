@@ -1,18 +1,55 @@
 @import '../../styles/variables.scss';
 
+section.landingSection {
+  padding: 0 4rem;
+
+  > div {
+    background-color: $offwhite;
+  }
+}
+
+div.landingBtnWrap {
+  padding: 0 10rem;
+}
+
+div.landingInner {
+  position: relative;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+span.orderBtnWrap {
+  margin-top: -10rem;
+  display: inline-block;
+}
+
+section.orderSection {
+  margin-top: 2rem;
+  padding: 0 4rem;
+}
+
+p.orderSectionText {
+  background-color: $offwhite;
+  padding: 1rem;
+}
+
 div.orderBoxesWrap {
   display: flex;
   flex-wrap: wrap;
-  padding: 0 2rem;
 }
 
 div.orderBoxWrap {
   flex: 1 1 33.333%;
   max-width: 33.333%;
   box-sizing: border-box;
-  padding: 1rem;
-}
-
-div.landingBtnWrap {
-  padding: 0 10rem;
+  padding: 0 2rem;
 }

@@ -1,11 +1,25 @@
 header.header {
+  text-align: center;
+  position: relative;
+  z-index: 100;
+  padding: 0 4rem;
+}
+
+div.headerInner {
   height: 100px;
   position: relative;
-  text-align: center;
+}
+
+div.headerLogoWrap {
+  height: 200%;
+  background-color: red;
+  display: inline-block;
+  border-radius: 100%;
+  overflow: hidden;
 }
 
 img.logo {
-  height: 200%;
+  height: 100%;
   width: initial;
 }
 
@@ -20,22 +34,23 @@ div.headerLinksWrap {
   justify-content: flex-end;
 }
 
-div.headerInner {
+div.headerSidesWrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: absolute;
-  padding: 0 2rem;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 }
 
-div.headerInnerRight {
-  font-size: 2rem;
-
+div.headerLeft,
+div.headerRight {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
   > svg {
-    margin-right: 1rem;
+    margin-left: 1rem;
   }
 }

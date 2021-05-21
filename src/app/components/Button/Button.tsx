@@ -7,5 +7,9 @@ export interface ButtonProps {
 }
 
 export const Button = (props: ButtonProps) => {
-  return <button className={`${styles.btn}`}>{props.text}</button>;
+  return (
+    <button className={`${styles.btn} ${styles[`btn-${props.size}`]}`}>
+      {props.text}
+    </button>
+  );
 };

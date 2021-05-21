@@ -9,9 +9,14 @@ div.orderBox {
   }
 }
 
+div.nameWrap {
+  text-align: center;
+}
+
 div.quantityWrap {
   position: relative;
   text-align: center;
+  margin: 1rem 0 0.5rem 0;
 }
 
 span.quantity {

@@ -9,7 +9,8 @@ body {
 }
 
 * {
-  font-family: 'Aleo', sans-serif !important;
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
 }
 
 code {
@@ -22,12 +23,23 @@ img {
   width: 100%;
 }
 
+a,
+div,
+span,
 p {
   color: $dark;
   font-size: 1.2rem;
-  text-align: center;
+  font-family: 'Roboto', sans-serif;
 }
 
-dev.app-container {
-  max-width: 1200px;
+*.max-width-container {
+  max-width: 1980px;
+  min-width: 1280px;
+  margin: 0 auto;
+}
+
+*.section-container {
+  width: 1280px;
+  margin: 0 auto;
+  display: block;
 }
