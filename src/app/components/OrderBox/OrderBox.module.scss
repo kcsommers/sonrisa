@@ -9,16 +9,22 @@ div.orderBox {
   }
 }
 
-div.nameWrap {
+div.quantityWrap {
   position: relative;
+  text-align: center;
 }
 
-div.nameWrapInner {
+span.quantity {
+  font-size: 1.25rem;
+}
+
+div.quantityInner {
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: space-between;
   top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
 }

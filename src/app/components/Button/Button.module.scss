@@ -5,11 +5,15 @@
   outline: none;
   cursor: pointer;
   border-radius: 3px;
-  border: none;
+  border: 2px solid $dark;
   font-size: 1rem;
   text-transform: uppercase;
-  background-color: #e8f2ff;
+  background-color: none;
   width: 100%;
   display: inline-block;
   padding: 1rem;
+}
+
+.btn-small {
+  font-size: 0.85rem;
 }
