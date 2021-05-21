@@ -45,6 +45,7 @@ p.orderSectionText {
 div.orderBoxesWrap {
   display: flex;
   flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
 div.orderBoxWrap {
@@ -52,4 +53,5 @@ div.orderBoxWrap {
   max-width: 33.333%;
   box-sizing: border-box;
   padding: 0 2rem;
+  margin-bottom: 1rem;
 }

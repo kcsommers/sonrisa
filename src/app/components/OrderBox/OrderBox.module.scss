@@ -1,35 +1,75 @@
+@import '../../styles/variables.scss';
+
 div.orderBox {
-  cursor: pointer;
   background-color: #fff;
-  padding: 1rem 1rem 0 1rem;
-  // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 3px;
-  > p {
-    padding: 1rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+span.quantityWrap {
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  z-index: 100;
+  background-color: #fff;
+
+  > span {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    font-weight: bold;
   }
+}
+
+div.imgWrap {
+  cursor: pointer;
+  box-shadow: none;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  > img {
+    transition: all 1s ease;
+  }
+  &:hover {
+    > div.imgHoverBg {
+      transform: translate(0%, 0%);
+    }
+    > img {
+      transform: scale(1.2);
+    }
+  }
+}
+
+div.imgHoverBg {
+  transition: all 0.75s ease;
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -20%;
+  right: -20%;
+  border-radius: 100%;
+  background: linear-gradient(to top left, #fff, $offwhite);
+  transform: translate(-100%, -100%);
+}
+
+div.orderBoxBottom {
+  padding: 0 1rem 1rem 1rem;
 }
 
 div.nameWrap {
   text-align: center;
-}
-
-div.quantityWrap {
+  margin: 0.5rem 0 1rem 0;
   position: relative;
-  text-align: center;
-  margin: 1rem 0 0.5rem 0;
-}
-
-span.quantity {
-  font-size: 1.25rem;
-}
-
-div.quantityInner {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  > span {
+    display: inline-block;
+    margin: 0 1rem;
+  }
 }

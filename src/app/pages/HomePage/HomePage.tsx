@@ -4,7 +4,7 @@ import { OrderBox } from '../../components/OrderBox/OrderBox';
 import { doughnuts } from '../../core/ordering/doughnuts';
 import doughnutHalves from '@images/doughnut-halves.png';
 import styles from './HomePage.module.scss';
-import { Button } from '@components';
+import { Button, Footer } from '@components';
 
 export const HomePage = (props: RouteComponentProps) => {
   return (
@@ -36,6 +36,7 @@ export const HomePage = (props: RouteComponentProps) => {
           ))}
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
