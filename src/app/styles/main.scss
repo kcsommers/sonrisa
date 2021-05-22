@@ -32,18 +32,6 @@ p {
   font-family: 'Roboto', sans-serif;
 }
 
-*.max-width-container {
-  max-width: 1980px;
-  min-width: 1280px;
-  margin: 0 auto;
-}
-
-*.section-container {
-  width: 1280px;
-  margin: 0 auto;
-  display: block;
-}
-
 button {
   background: none;
   border: none;
@@ -53,4 +41,30 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+h3 {
+  font-family: 'Playfair Display';
+  font-size: 2rem;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border: none;
+  outline: none;
+  background-color: #fff;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+
+*.responsive-container {
+  padding: 0 4rem;
+}
+
+*.max-1280 {
+  max-width: 1280px;
+  margin: 0 auto;
 }

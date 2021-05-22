@@ -1,9 +1,13 @@
 import { AppRouter } from './AppRouter';
+import { Footer } from '@components';
 
 export const App = () => {
   return (
     <div className="app-container">
-      <AppRouter></AppRouter>
+      <div style={{ maxWidth: '1980px', margin: '0 auto' }}>
+        <AppRouter></AppRouter>
+      </div>
+      <Footer />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { OrderableItem } from 'app/core/ordering/OrderableItem';
 import { useState } from 'react';
 import { Button } from '../Button/Button';
+import { AnimatePresence, motion } from 'framer-motion';
 import styles from './OrderBox.module.scss';
 
 export interface OrderBoxProps {
@@ -14,9 +15,31 @@ export const OrderBox = (props: OrderBoxProps) => {
 
   return (
     <div className={styles.orderBox}>
-      <span className={`${styles.quantityWrap}`}>
-        <span>{quantity}</span>
-      </span>
+      <AnimatePresence>
+        {quantity && (
+          <motion.span
+            className={`${styles.quantityWrap}`}
+            initial={{
+              transform: 'translate(-100%, -100%)',
+              opacity: 0,
+            }}
+            animate={{
+              transform: 'translate(0%, 0%)',
+              opacity: 1,
+            }}
+            exit={{
+              transform: 'translate(-100%, -100%)',
+              opacity: 0,
+            }}
+            transition={{
+              type: 'spring',
+              bounce: 0.25,
+            }}
+          >
+            <span>{quantity}</span>
+          </motion.span>
+        )}
+      </AnimatePresence>
       <div className={styles.imgWrap}>
         <div className={styles.imgHoverBg}></div>
         <img src={props.item.images[0]} alt={props.item.name} />
@@ -31,7 +54,7 @@ export const OrderBox = (props: OrderBoxProps) => {
             <FontAwesomeIcon icon={faPlus} />
           </button>
         </div>
-        <Button text={`Add to Order ${'$0.00'}`} size="sm" />
+        <Button text={`Add to Order ${'$0.00'}`} size="sm" isFullWidth={true} />
       </div>
     </div>
   );

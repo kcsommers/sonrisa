@@ -44,12 +44,27 @@ div.headerSidesWrap {
   bottom: 0;
 }
 
-div.headerLeft,
+div.headerLeft > div.headerLg,
 div.headerRight {
   display: flex;
   align-items: center;
   font-size: 1.5rem;
   > svg {
     margin-left: 1rem;
+  }
+}
+
+div.headerSm {
+  display: none;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+@media only screen and (max-width: 780px) {
+  div.headerLg {
+    display: none !important;
+  }
+  div.headerSm {
+    display: flex !important;
   }
 }

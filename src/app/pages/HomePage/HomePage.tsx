@@ -1,42 +1,97 @@
+import { Button } from '@components';
+import doughnutHalves from '@images/doughnut-halves.png';
+import jing from '@images/jing.jpg';
 import { RouteComponentProps } from 'react-router-dom';
 import { Header } from '../../components/Header/Header';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import { doughnuts } from '../../core/ordering/doughnuts';
-import doughnutHalves from '@images/doughnut-halves.png';
 import styles from './HomePage.module.scss';
-import { Button, Footer } from '@components';
 
 export const HomePage = (props: RouteComponentProps) => {
   return (
     <div className={styles.homePageWrap}>
       <Header />
-      <section className={`${styles.landingSection}`}>
-        <div className="max-width-container">
-          <div className={`${styles.landingInner} section-container`}>
-            <span className={styles.orderBtnWrap}>
-              <Button text="Place an Order Online" size="md" />
-            </span>
-            <img src={doughnutHalves} alt="Doughnut Half" />
+      <section className={`${styles.landingSection} responsive-container`}>
+        <div className={`${styles.landingInner}`}>
+          <div className={styles.landingCta}>
+            <h3>
+              Handmade Brioche Donuts. Fresh and Local Ingredients. Made in
+              Seattle, WA.
+            </h3>
+            <Button
+              text="Place an Order Online"
+              size="md"
+              isFullWidth={false}
+            />
+          </div>
+          <img src={doughnutHalves} alt="Doughnut Half" />
+        </div>
+      </section>
+
+      <section className={`${styles.menuSection} responsive-container`}>
+        <p className={`${styles.menuSectionText}`}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
+          architecto ipsam placeat fuga animi aperiam.
+        </p>
+        <div className={`${styles.orderBoxesWrap}`}>
+          <h3>Menu</h3>
+          <div className={styles.orderBoxesInner}>
+            {doughnuts.map((d) => (
+              <div key={d.name} className={styles.orderBoxWrap}>
+                <OrderBox item={d} />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className={styles.orderSection}>
-        <p className={`${styles.orderSectionText} max-width-container`}>
-          <span className="section-container">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
-            architecto ipsam placeat fuga animi aperiam.
-          </span>
-        </p>
-        <div className={`${styles.orderBoxesWrap} section-container`}>
-          {doughnuts.map((d) => (
-            <div key={d.name} className={styles.orderBoxWrap}>
-              <OrderBox item={d} />
-            </div>
-          ))}
+      <section className={`${styles.specialsSection} responsive-container`}>
+        <h3>Specials</h3>
+        <span>*Rotating specials coming soon!</span>
+      </section>
+
+      <section className={`${styles.aboutSection} responsive-container`}>
+        <span className={styles.aboutImgWrap}>
+          <img src={jing} alt="Jing" />
+        </span>
+
+        <div className={`${styles.bioWrap}`}>
+          <div className="max-1280">
+            <h3>Hello!</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+              molestiae voluptatem est corrupti cumque minima nostrum cupiditate
+              tempore fuga eveniet aut ipsum, ex nulla aperiam facere blanditiis
+              adipisci, at et! Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Officia molestiae voluptatem est corrupti cumque
+              minima nostrum cupiditate tempore fuga eveniet aut ipsum, ex nulla
+              aperiam facere blanditiis adipisci, at et!
+              <br />
+              <br />
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+              molestiae voluptatem est corrupti cumque minima nostrum cupiditate
+              tempore fuga eveniet aut ipsum, ex nulla aperiam facere blanditiis
+              adipisci, at et! Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Officia molestiae voluptatem est corrupti cumque
+              minima nostrum cupiditate tempore fuga eveniet aut ipsum, ex nulla
+              aperiam facere blanditiis adipisci, at et!
+            </p>
+          </div>
         </div>
       </section>
-      <Footer />
+
+      <section className={`${styles.contactSection} responsive-container`}>
+        <div className="max-1280">
+          <h3>Get in Touch</h3>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+          <div className={styles.contactFormWrap}>
+            <input type="text" placeholder="Full Name" />
+            <input type="text" placeholder="Email Address" />
+            <textarea placeholder="Message" />
+            <Button text="Submit" size="md" isFullWidth={false} />
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
