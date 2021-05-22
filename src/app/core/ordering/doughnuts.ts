@@ -23,9 +23,9 @@ export enum Doughnuts {
 }
 
 export const doughnuts: OrderableItem[] = [
-  new OrderableItem(Doughnuts.VANILLA, [vanillaTransparent], 200),
-  new OrderableItem(Doughnuts.MATCHA, [matchaTransparent], 200),
-  new OrderableItem(Doughnuts.NUTELLA, [nutellaTransparent], 200),
-  new OrderableItem(Doughnuts.THAI_TEA, [thaiTransparent], 200),
-  new OrderableItem(Doughnuts.STRAWBERRY, [strawberryTransparent], 200),
+  new OrderableItem(Doughnuts.VANILLA, [vanillaTransparent], 425),
+  new OrderableItem(Doughnuts.MATCHA, [matchaTransparent], 425),
+  new OrderableItem(Doughnuts.NUTELLA, [nutellaTransparent], 425),
+  new OrderableItem(Doughnuts.THAI_TEA, [thaiTransparent], 425),
+  new OrderableItem(Doughnuts.STRAWBERRY, [strawberryTransparent], 425),
 ];

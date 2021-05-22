@@ -54,7 +54,13 @@ export const OrderBox = (props: OrderBoxProps) => {
             <FontAwesomeIcon icon={faPlus} />
           </button>
         </div>
-        <Button text={`Add to Order ${'$0.00'}`} size="sm" isFullWidth={true} />
+        <Button
+          text={`Add to Order $${((quantity * props.item.price) / 100).toFixed(
+            2
+          )}`}
+          size="sm"
+          isFullWidth={true}
+        />
       </div>
     </div>
   );
