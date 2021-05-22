@@ -5,7 +5,7 @@
       "@assets": ["assets"],
       "@components": ["app/components/public.ts"],
       "@core": ["app/core/public.ts"],
-      "@redux": ["app/redux"]
+      "@redux": ["app/redux/public.ts"]
     }
   }
 }

@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { Button } from '../Button/Button';
 import { AnimatePresence, motion } from 'framer-motion';
 import styles from './OrderBox.module.scss';
+import { toggleOverlay, useAppDispatch } from '@redux';
+import { OverlayTemplates } from '@core';
 
 export interface OrderBoxProps {
   item: OrderableItem;
@@ -12,6 +14,17 @@ export interface OrderBoxProps {
 
 export const OrderBox = (props: OrderBoxProps) => {
   const [quantity, setQuantity] = useState(0);
+
+  const dispatch = useAppDispatch();
+
+  const openOverlay = () => {
+    dispatch(
+      toggleOverlay({
+        isOpen: true,
+        template: OverlayTemplates.DOUGHNUT,
+      })
+    );
+  };
 
   return (
     <div className={styles.orderBox}>
@@ -40,7 +53,12 @@ export const OrderBox = (props: OrderBoxProps) => {
           </motion.span>
         )}
       </AnimatePresence>
-      <div className={styles.imgWrap}>
+      <div
+        className={styles.imgWrap}
+        onClick={() => {
+          openOverlay();
+        }}
+      >
         <div className={styles.imgHoverBg}></div>
         <img src={props.item.images[0]} alt={props.item.name} />
       </div>

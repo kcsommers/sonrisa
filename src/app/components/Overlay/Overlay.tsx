@@ -1,25 +1,15 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { motion, AnimatePresence } from 'framer-motion';
-import cancelBtn from '@images/icons/cancel-big.svg';
-import { toggleOverlay } from '@redux/actions';
-import '@css/components/Overlay.css';
-import { FunctionComponent } from 'react';
+import { OverlayTemplates } from '@core';
+import { toggleOverlay, useAppDispatch, useAppSelector } from '@redux';
+import { AnimatePresence, motion } from 'framer-motion';
+import { getTemplate } from './overlay-templates';
+import styles from './Overlay.module.scss';
 
-type Overlay = {};
+export const Overlay = () => {
+  const state = useAppSelector((state) => state.overlay);
 
-export const Overlay: FunctionComponent = () => {
-  const overlayConfig = useSelector((state) => state.overlay);
+  const dispatch = useAppDispatch();
 
-  const dispatch = useDispatch();
-
-  const closeOverlay = () => {
-    if (overlayConfig.onClose) {
-      overlayConfig.onClose();
-    }
-    dispatch(toggleOverlay({ isOpen: false, template: null, sign: null }));
-  };
-
-  const variants = {
+  const templateVariants = {
     enter: {
       y: '100%',
     },
@@ -31,27 +21,49 @@ export const Overlay: FunctionComponent = () => {
     },
   };
 
-  return (
+  const containerVariants = {
+    enter: {
+      opacity: 0,
+    },
+    center: {
+      opacity: 1,
+    },
+    exit: {
+      opacity: 0,
+    },
+  };
+
+  const close = () => {
+    dispatch(
+      toggleOverlay({
+        isOpen: false,
+        template: OverlayTemplates.NONE,
+      })
+    );
+  };
+
+  return state ? (
     <AnimatePresence>
-      {overlayConfig.isOpen && (
+      {state.isOpen && (
         <motion.div
+          className={styles.overlayContainer}
           initial="enter"
           animate="center"
           exit="exit"
-          variants={variants}
-          className="overlay-container"
+          variants={containerVariants}
+          onClick={close.bind(this)}
         >
-          {overlayConfig.template}
-          {overlayConfig.canClose && (
-            <img
-              className="close-btn"
-              src={cancelBtn}
-              alt="Close"
-              onClick={closeOverlay.bind(this)}
-            />
-          )}
+          <motion.div
+            className={`${styles.templateWrap} max-1280`}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            variants={templateVariants}
+          >
+            {getTemplate(state.template, null)}
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
-  );
+  ) : null;
 };
