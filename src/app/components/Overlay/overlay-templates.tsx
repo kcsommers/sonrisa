@@ -1,13 +1,13 @@
-import { OverlayTemplates, OrderableItem } from '@core';
+import { OverlayTemplates } from '@core';
+import { OrderOverlay } from '../OrderOverlay/OrderOverlay';
 
 export const getTemplate = (
   template: OverlayTemplates,
-  data: any
+  context: any
 ): JSX.Element | null => {
   switch (template) {
-    case OverlayTemplates.DOUGHNUT:
-      const doughnut = data as OrderableItem;
-      return <p>HIIIII</p>;
+    case OverlayTemplates.ORDER:
+      return <OrderOverlay item={context} />;
     default:
       return null;
   }

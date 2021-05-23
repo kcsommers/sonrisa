@@ -7,11 +7,13 @@ export const TOGGLE_OVERLAY = 'TOGGLE_OVERLAY';
 export interface OverlayState {
   isOpen: boolean;
   template: OverlayTemplates;
+  context: any;
 }
 
 export const initialState: OverlayState = {
   isOpen: false,
   template: OverlayTemplates.NONE,
+  context: null,
 };
 
 export const toggleOverlay = (state: OverlayState) =>
@@ -29,6 +31,7 @@ export const overlayReducer: Reducer<OverlayState | undefined, AnyAction> = (
       return {
         isOpen: action.state.isOpen,
         template: action.state.template,
+        context: action.state.context,
       };
     }
     default:

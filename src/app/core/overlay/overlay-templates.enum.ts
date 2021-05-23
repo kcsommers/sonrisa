@@ -1,5 +1,5 @@
 export enum OverlayTemplates {
-  DOUGHNUT = 'DOUGHNUT',
+  ORDER = 'ORDER',
 
   NONE = 'NONE',
 }

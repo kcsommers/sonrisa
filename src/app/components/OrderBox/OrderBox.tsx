@@ -21,7 +21,8 @@ export const OrderBox = (props: OrderBoxProps) => {
     dispatch(
       toggleOverlay({
         isOpen: true,
-        template: OverlayTemplates.DOUGHNUT,
+        template: OverlayTemplates.ORDER,
+        context: props.item,
       })
     );
   };

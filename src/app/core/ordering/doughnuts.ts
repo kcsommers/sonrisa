@@ -23,9 +23,34 @@ export enum Doughnuts {
 }
 
 export const doughnuts: OrderableItem[] = [
-  new OrderableItem(Doughnuts.VANILLA, [vanillaTransparent], 425),
-  new OrderableItem(Doughnuts.MATCHA, [matchaTransparent], 425),
-  new OrderableItem(Doughnuts.NUTELLA, [nutellaTransparent], 425),
-  new OrderableItem(Doughnuts.THAI_TEA, [thaiTransparent], 425),
-  new OrderableItem(Doughnuts.STRAWBERRY, [strawberryTransparent], 425),
+  new OrderableItem(
+    Doughnuts.VANILLA,
+    [vanillaTransparent, vanilla1, matcha1],
+    425,
+    'Vanilla beans with Local WA Dairy'
+  ),
+  new OrderableItem(
+    Doughnuts.MATCHA,
+    [matchaTransparent, matcha1],
+    425,
+    'Mulberry green tea latte'
+  ),
+  new OrderableItem(
+    Doughnuts.NUTELLA,
+    [nutellaTransparent],
+    425,
+    "Fran's Chocolate made in Seattle with Nutella"
+  ),
+  new OrderableItem(
+    Doughnuts.THAI_TEA,
+    [thaiTransparent],
+    425,
+    'Original Thai milk tea blended with Ceylon tea,'
+  ),
+  new OrderableItem(
+    Doughnuts.STRAWBERRY,
+    [strawberryTransparent],
+    425,
+    'Housemade strawberry jam'
+  ),
 ];

@@ -1,0 +1,87 @@
+@import '../../styles/variables.scss';
+
+div.templateWrap {
+  flex: 1;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  width: 600px;
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+}
+
+div.overlayBody {
+  flex: 1;
+  overflow: auto;
+}
+
+div.overlayFooter {
+  flex: 1;
+  padding: 2rem;
+  background-color: $offwhite;
+}
+
+div.imagesWrap {
+  position: relative;
+}
+
+div.imgArrowsWrap {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+
+  > button {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-color: $offwhite;
+    box-shadow: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    }
+  }
+}
+
+div.descriptionWrap {
+  padding: 2rem;
+  > p {
+    margin-top: 0.5rem;
+  }
+}
+
+div.quantityWrap {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 2rem;
+}
+
+span.quantity {
+  font-size: 2rem;
+  display: inline-block;
+  margin: 0 2rem;
+}
+
+button.quantityBtn {
+  box-shadow: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: 2px solid $dark;
+  color: $dark;
+  transition: all 0.2s ease;
+  background-color: none;
+  &:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    background-color: $dark;
+    color: #fff;
+  }
+}

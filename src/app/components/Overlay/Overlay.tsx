@@ -33,11 +33,16 @@ export const Overlay = () => {
     },
   };
 
-  const close = () => {
+  const close = (event: React.MouseEvent) => {
+    if (!(event.target as Element).classList.contains('overlay-container')) {
+      return;
+    }
+
     dispatch(
       toggleOverlay({
         isOpen: false,
         template: OverlayTemplates.NONE,
+        context: null,
       })
     );
   };
@@ -46,7 +51,7 @@ export const Overlay = () => {
     <AnimatePresence>
       {state.isOpen && (
         <motion.div
-          className={styles.overlayContainer}
+          className={`${styles.overlayContainer} overlay-container`}
           initial="enter"
           animate="center"
           exit="exit"
@@ -54,13 +59,12 @@ export const Overlay = () => {
           onClick={close.bind(this)}
         >
           <motion.div
-            className={`${styles.templateWrap} max-1280`}
             initial="enter"
             animate="center"
             exit="exit"
             variants={templateVariants}
           >
-            {getTemplate(state.template, null)}
+            {getTemplate(state.template, state.context)}
           </motion.div>
         </motion.div>
       )}
