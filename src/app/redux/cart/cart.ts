@@ -7,12 +7,18 @@ export const ADD_ITEM = 'ADD_ITEM';
 
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 
+export const TOGGLE_CART = 'TOGGLE_CART';
+
 export interface CartState {
   items: IOrderableItem[];
+
+  isOpen: boolean;
 }
 
 const initialState: CartState = {
   items: [],
+
+  isOpen: false,
 };
 
 export const addItem = (item: IOrderableItem, quantity: number) =>
@@ -26,6 +32,12 @@ export const removeItem = (item: IOrderableItem) =>
   <const>{
     type: REMOVE_ITEM,
     item,
+  };
+
+export const toggleCart = (isOpen: boolean) =>
+  <const>{
+    type: TOGGLE_CART,
+    isOpen,
   };
 
 export const cartReducer: Reducer<CartState | undefined, AnyAction> = (
@@ -55,14 +67,18 @@ export const cartReducer: Reducer<CartState | undefined, AnyAction> = (
       return clonedState;
     }
     case REMOVE_ITEM: {
-      console.log('REMOVE:::: ', action.item);
       const clonedState = cloneDeep(state);
-      console.log('INDEX:::: ', clonedState.items);
       clonedState.items = clonedState.items.filter(
         (i) => i.id !== action.item.id
       );
 
-      console.log('ITEMS @:::: ', clonedState.items);
+      return clonedState;
+    }
+
+    case TOGGLE_CART: {
+      const clonedState = cloneDeep(state);
+      clonedState.isOpen = action.isOpen;
+
       return clonedState;
     }
     default:

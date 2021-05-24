@@ -1,0 +1,27 @@
+@import '../../styles/variables.scss';
+
+div.cartWrap {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 500px;
+  background-color: #fff;
+  box-shadow: none;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  transform: translateX(100%);
+
+  &.cartOpen {
+    transform: none;
+    box-shadow: -5px 0px 50px 1px #aaaaaa;
+  }
+}
+
+button.closeBtn {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  color: $dark;
+  font-size: 1.5rem;
+}

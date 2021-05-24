@@ -7,12 +7,16 @@ import {
 import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Header.module.scss';
-import { useAppSelector } from '@redux';
+import { useAppSelector, useAppDispatch, toggleCart } from '@redux';
 
 export const Header = () => {
   const cart = useAppSelector((state) => state.cart);
 
-  console.log('ITEMS:::: ', cart?.items, cart?.items.length);
+  const dispatch = useAppDispatch();
+
+  const openCart = () => {
+    dispatch(toggleCart(true));
+  };
 
   return (
     <header className={styles.header}>
@@ -44,7 +48,7 @@ export const Header = () => {
             </div>
           </div>
           <div className={styles.headerRight}>
-            <button className={styles.cartBtn}>
+            <button className={styles.cartBtn} onClick={openCart}>
               <FontAwesomeIcon icon={faShoppingCart} />
               {cart && cart.items.length > 0 && (
                 <span>{cart?.items.length}</span>

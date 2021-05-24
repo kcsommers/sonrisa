@@ -1,6 +1,5 @@
 import { AppRouter } from './AppRouter';
-import { Footer } from '@components';
-import { Overlay } from './components/Overlay/Overlay';
+import { Footer, Overlay, Cart } from '@components';
 
 export const App = () => {
   return (
@@ -10,6 +9,7 @@ export const App = () => {
       </div>
       <Footer />
       <Overlay />
+      <Cart />
     </div>
   );
 };
