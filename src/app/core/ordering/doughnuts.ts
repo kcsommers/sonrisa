@@ -8,7 +8,7 @@ import nutella1 from '@assets/images/doughnuts/nutella-1.jpg';
 import nutellaTransparent from '@assets/images/doughnuts/nutella-transparent.png';
 import thai1 from '@assets/images/doughnuts/thai-1.jpg';
 import thaiTransparent from '@assets/images/doughnuts/thai-transparent.png';
-import { IOrderableItem, OrderableItem } from './OrderableItem';
+import { createOrderableItem, IOrderableItem } from './OrderableItem';
 
 export enum Doughnuts {
   VANILLA = 'Vanilla Custard',
@@ -22,32 +22,32 @@ export enum Doughnuts {
   STRAWBERRY = 'Strawberry Cream Cheese',
 }
 
-export const doughnuts: OrderableItem[] = [
-  new OrderableItem(
+export const doughnuts: IOrderableItem[] = [
+  createOrderableItem(
     Doughnuts.VANILLA,
     [vanillaTransparent, vanilla1, matcha1],
     425,
     'Vanilla beans with Local WA Dairy'
   ),
-  new OrderableItem(
+  createOrderableItem(
     Doughnuts.MATCHA,
     [matchaTransparent, matcha1],
     425,
     'Mulberry green tea latte'
   ),
-  new OrderableItem(
+  createOrderableItem(
     Doughnuts.NUTELLA,
     [nutellaTransparent],
     425,
     "Fran's Chocolate made in Seattle with Nutella"
   ),
-  new OrderableItem(
+  createOrderableItem(
     Doughnuts.THAI_TEA,
     [thaiTransparent],
     425,
     'Original Thai milk tea blended with Ceylon tea,'
   ),
-  new OrderableItem(
+  createOrderableItem(
     Doughnuts.STRAWBERRY,
     [strawberryTransparent],
     425,

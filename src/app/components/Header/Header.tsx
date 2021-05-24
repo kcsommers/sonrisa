@@ -7,8 +7,13 @@ import {
 import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Header.module.scss';
+import { useAppSelector } from '@redux';
 
 export const Header = () => {
+  const cart = useAppSelector((state) => state.cart);
+
+  console.log('ITEMS:::: ', cart?.items, cart?.items.length);
+
   return (
     <header className={styles.header}>
       <div className={`${styles.headerInner}`}>
@@ -22,16 +27,29 @@ export const Header = () => {
                 <p>Order by phone</p>
                 <p>(206) 459-5365</p>
               </span>
-              <FontAwesomeIcon icon={faFacebook} />
-              <FontAwesomeIcon icon={faTwitter} />
-              <FontAwesomeIcon icon={faInstagram} />
+              <button>
+                <FontAwesomeIcon icon={faFacebook} />
+              </button>
+              <button>
+                <FontAwesomeIcon icon={faTwitter} />
+              </button>
+              <button>
+                <FontAwesomeIcon icon={faInstagram} />
+              </button>
             </div>
             <div className={styles.headerSm}>
-              <FontAwesomeIcon icon={faBars} />
+              <button>
+                <FontAwesomeIcon icon={faBars} />
+              </button>
             </div>
           </div>
           <div className={styles.headerRight}>
-            <FontAwesomeIcon icon={faShoppingCart} />
+            <button className={styles.cartBtn}>
+              <FontAwesomeIcon icon={faShoppingCart} />
+              {cart && cart.items.length > 0 && (
+                <span>{cart?.items.length}</span>
+              )}
+            </button>
           </div>
         </div>
       </div>

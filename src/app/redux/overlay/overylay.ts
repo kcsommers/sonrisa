@@ -10,7 +10,7 @@ export interface OverlayState {
   context: any;
 }
 
-export const initialState: OverlayState = {
+const initialState: OverlayState = {
   isOpen: false,
   template: OverlayTemplates.NONE,
   context: null,

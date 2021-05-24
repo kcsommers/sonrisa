@@ -3,7 +3,7 @@
 div.templateWrap {
   flex: 1;
   background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: $box-shadow;
   width: 600px;
   max-height: 75vh;
   display: flex;
@@ -45,7 +45,7 @@ div.imgArrowsWrap {
     transition: all 0.2s ease;
 
     &:hover {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      box-shadow: $box-shadow;
     }
   }
 }
@@ -80,7 +80,7 @@ button.quantityBtn {
   transition: all 0.2s ease;
   background-color: none;
   &:hover {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    box-shadow: $box-shadow;
     background-color: $dark;
     color: #fff;
   }

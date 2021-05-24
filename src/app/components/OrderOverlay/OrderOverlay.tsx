@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import styles from './OrderOverlay.module.scss';
-import { OrderableItem } from '@core';
+import { IOrderableItem } from '@core';
 import { Button } from '@components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useAppDispatch, removeItem, addItem } from '@redux';
 import {
   faAngleLeft,
   faAngleRight,
@@ -11,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 export interface OrderOverlayProps {
-  item: OrderableItem;
+  item: IOrderableItem;
 }
 
 export const OrderOverlay = (props: OrderOverlayProps) => {
@@ -19,8 +20,12 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  const dispatch = useAppDispatch();
+
   const addToOrder = (): void => {
-    props.item.setQuantity(quantity);
+    dispatch(
+      quantity === 0 ? removeItem(props.item) : addItem(props.item, quantity)
+    );
   };
 
   return (

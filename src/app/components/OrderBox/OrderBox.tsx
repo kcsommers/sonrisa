@@ -1,15 +1,14 @@
+import { OverlayTemplates, IOrderableItem } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { OrderableItem } from 'app/core/ordering/OrderableItem';
+import { addItem, removeItem, toggleOverlay, useAppDispatch } from '@redux';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { Button } from '../Button/Button';
-import { AnimatePresence, motion } from 'framer-motion';
 import styles from './OrderBox.module.scss';
-import { toggleOverlay, useAppDispatch } from '@redux';
-import { OverlayTemplates } from '@core';
 
 export interface OrderBoxProps {
-  item: OrderableItem;
+  item: IOrderableItem;
 }
 
 export const OrderBox = (props: OrderBoxProps) => {
@@ -24,6 +23,12 @@ export const OrderBox = (props: OrderBoxProps) => {
         template: OverlayTemplates.ORDER,
         context: props.item,
       })
+    );
+  };
+
+  const addToOrder = (): void => {
+    dispatch(
+      quantity === 0 ? removeItem(props.item) : addItem(props.item, quantity)
     );
   };
 
@@ -78,7 +83,7 @@ export const OrderBox = (props: OrderBoxProps) => {
             2
           )}`}
           size="sm"
-          isFullWidth={true}
+          onClick={addToOrder}
         />
       </div>
     </div>
