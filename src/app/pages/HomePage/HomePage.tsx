@@ -13,6 +13,7 @@ export const HomePage = (props: RouteComponentProps) => {
       <Header />
       <section className={`${styles.landingSection} responsive-container`}>
         <div className={`${styles.landingInner}`}>
+          <div className={styles.landingInnerBorder}></div>
           <div className={styles.landingCta}>
             <h3>
               Handmade Brioche Donuts. Fresh and Local Ingredients. Made in
@@ -52,6 +53,7 @@ export const HomePage = (props: RouteComponentProps) => {
         </span>
 
         <div className={`${styles.bioWrap}`}>
+          <div className={styles.bioWrapBorder}></div>
           <div className="max-1280">
             <h3>Hello!</h3>
             <p>
