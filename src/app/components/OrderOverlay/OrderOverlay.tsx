@@ -19,6 +19,10 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  const addToOrder = (): void => {
+    props.item.setQuantity(quantity);
+  };
+
   return (
     <div className={`${styles.templateWrap}`}>
       <div className={styles.overlayBody}>
@@ -82,6 +86,7 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
           )}`}
           size="md"
           isFullWidth={true}
+          onClick={addToOrder}
         />
       </div>
     </div>

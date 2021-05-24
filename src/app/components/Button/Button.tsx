@@ -1,21 +1,29 @@
 import styles from './Button.module.scss';
 
-export interface ButtonProps {
+type ButtonProps = {
   text: string;
 
-  size: 'lg' | 'md' | 'sm';
+  size?: 'lg' | 'md' | 'sm';
 
-  isFullWidth: boolean;
-}
+  isFullWidth?: boolean;
 
-export const Button = (props: ButtonProps) => {
+  onClick?: () => void;
+};
+
+export const Button = ({
+  text,
+  isFullWidth = true,
+  size = 'md',
+  onClick,
+}: ButtonProps) => {
   return (
     <button
-      className={`${styles.btn} ${styles[`btn-${props.size}`]} ${
-        props.isFullWidth ? styles.btnFullWidth : ''
+      className={`${styles.btn} ${styles[`btn-${size}`]} ${
+        isFullWidth ? styles.btnFullWidth : ''
       }`}
+      onClick={onClick}
     >
-      {props.text}
+      {text}
     </button>
   );
 };

@@ -18,11 +18,7 @@ export const HomePage = (props: RouteComponentProps) => {
               Handmade Brioche Donuts. Fresh and Local Ingredients. Made in
               Seattle, WA.
             </h3>
-            <Button
-              text="Place an Order Online"
-              size="md"
-              isFullWidth={false}
-            />
+            <Button text="Place an Order Online" isFullWidth={false} />
           </div>
           <img src={doughnutHalves} alt="Doughnut Half" />
         </div>
