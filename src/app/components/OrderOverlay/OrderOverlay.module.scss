@@ -8,6 +8,7 @@ div.templateWrap {
   max-height: 75vh;
   display: flex;
   flex-direction: column;
+  border-radius: 3px;
 }
 
 div.overlayBody {
@@ -19,6 +20,8 @@ div.overlayFooter {
   flex: 1;
   padding: 2rem;
   background-color: $offwhite;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 div.imagesWrap {

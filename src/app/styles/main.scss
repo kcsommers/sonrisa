@@ -26,6 +26,7 @@ img {
 a,
 div,
 span,
+button,
 p {
   color: $dark;
   font-size: 1.2rem;
@@ -46,6 +47,12 @@ button {
 h3 {
   font-family: 'Playfair Display';
   font-size: 2rem;
+}
+
+h4 {
+  font-family: 'Playfair Display';
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 input,

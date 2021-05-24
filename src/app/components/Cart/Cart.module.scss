@@ -5,23 +5,105 @@ div.cartWrap {
   top: 0;
   bottom: 0;
   right: 0;
-  width: 500px;
-  background-color: #fff;
-  box-shadow: none;
-  z-index: 1000;
+  left: 0;
+  z-index: 0;
+  background-color: rgba(#000, 0.25);
+  display: flex;
+  justify-content: flex-end;
   transition: all 0.3s ease;
-  transform: translateX(100%);
+  opacity: 0;
 
   &.cartOpen {
-    transform: none;
-    box-shadow: -5px 0px 50px 1px #aaaaaa;
+    z-index: 1000;
+    opacity: 1;
+    > div.cartInner {
+      transform: none;
+      box-shadow: -5px 0px 50px 1px #aaaaaa;
+    }
   }
 }
 
-button.closeBtn {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
+div.cartHeader {
+  border-bottom: 1px solid $dark;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
   color: $dark;
-  font-size: 1.5rem;
+}
+
+div.cartInner {
+  width: 500px;
+  background-color: #fff;
+  box-shadow: none;
+  height: 100%;
+  transition: all 0.3s ease;
+  transform: translateX(100%);
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+div.cartBody {
+  padding: 2rem;
+  flex: 1;
+}
+
+p.noItemsText {
+  font-size: 1.25rem;
+}
+
+div.cartItemWrap {
+  display: flex;
+  border-bottom: 2px solid $offwhite;
+  align-items: center;
+  padding-right: 1rem;
+  position: relative;
+
+  > button {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    background-color: $offwhite;
+    box-shadow: $box-shadow;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0.5rem;
+    right: 1rem;
+    color: $red;
+    font-size: 0.8rem;
+  }
+}
+
+div.cartItemImgWrap {
+  flex: 0.5;
+}
+
+div.itemDetailsWrap {
+  flex: 1;
+}
+
+div.itemDetailWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+p.itemName {
+  font-weight: bold;
+}
+
+div.checkoutItemWrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 0;
+
+  > p:first-child {
+    font-weight: bold;
+  }
 }
