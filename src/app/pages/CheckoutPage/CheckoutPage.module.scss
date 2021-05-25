@@ -1,2 +1,23 @@
-div.checkoutPageWrap {
+@import '../../styles/variables.scss';
+
+div.checkoutPageInner {
+  display: flex;
+  padding: 2rem;
+}
+
+div.paymentSection {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+div.orderSection {
+  flex: 0.75;
+  margin-left: 1rem;
+}
+
+div.paymentSection,
+div.orderSection {
+  background-color: $offwhite;
+  padding: 2rem;
+  border-radius: 3px;
 }
