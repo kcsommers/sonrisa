@@ -17,6 +17,15 @@ div.headerLogoWrap {
   display: inline-block;
   border-radius: 100%;
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+div.headerLogoWrap.headerLogo-lg {
+  height: 200%;
+}
+
+div.headerLogoWrap.headerLogo-sm {
+  height: 100%;
 }
 
 img.logo {

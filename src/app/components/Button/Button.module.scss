@@ -16,7 +16,8 @@
   box-shadow: $box-shadow;
   color: $dark;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: $dark;
     color: #fff;
   }

@@ -2,7 +2,6 @@ import { Button } from '@components';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
 import { RouteComponentProps } from 'react-router-dom';
-import { Header } from '../../components/Header/Header';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import { doughnuts } from '../../core/ordering/doughnuts';
 import styles from './HomePage.module.scss';
@@ -10,7 +9,6 @@ import styles from './HomePage.module.scss';
 export const HomePage = (props: RouteComponentProps) => {
   return (
     <div className={styles.homePageWrap}>
-      <Header />
       <section className={`${styles.landingSection} responsive-container`}>
         <div className={`${styles.landingInner}`}>
           <div className={styles.landingInnerBorder}></div>

@@ -18,7 +18,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={`${styles.btn} ${styles[`btn-${size}`]} ${
+      className={`app-btn ${styles.btn} ${styles[`btn-${size}`]} ${
         isFullWidth ? styles.btnFullWidth : ''
       }`}
       onClick={onClick}

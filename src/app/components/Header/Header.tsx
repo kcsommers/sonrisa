@@ -9,7 +9,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Header.module.scss';
 import { useAppSelector, useAppDispatch, toggleCart } from '@redux';
 
-export const Header = () => {
+type HeaderProps = {
+  logoSize?: 'sm' | 'lg';
+
+  showCart?: boolean;
+};
+
+export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
   const cart = useAppSelector((state) => state.cart);
 
   const dispatch = useAppDispatch();
@@ -21,7 +27,11 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <div className={`${styles.headerInner}`}>
-        <div className={styles.headerLogoWrap}>
+        <div
+          className={`${styles.headerLogoWrap} ${
+            styles[`headerLogo-${logoSize}`]
+          }`}
+        >
           <img className={styles.logo} src={logo} alt="Sonrisa Logo" />
         </div>
         <div className={styles.headerSidesWrap}>
@@ -48,12 +58,14 @@ export const Header = () => {
             </div>
           </div>
           <div className={styles.headerRight}>
-            <button className={styles.cartBtn} onClick={openCart}>
-              <FontAwesomeIcon icon={faShoppingCart} />
-              {cart && cart.items.length > 0 && (
-                <span>{cart?.items.length}</span>
-              )}
-            </button>
+            {showCart && (
+              <button className={styles.cartBtn} onClick={openCart}>
+                <FontAwesomeIcon icon={faShoppingCart} />
+                {cart && cart.items.length > 0 && (
+                  <span>{cart?.items.length}</span>
+                )}
+              </button>
+            )}
           </div>
         </div>
       </div>

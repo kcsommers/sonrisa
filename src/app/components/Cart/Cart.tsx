@@ -1,14 +1,17 @@
-import { faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styles from './Cart.module.scss';
-import { useAppSelector, useAppDispatch, toggleCart, removeItem } from '@redux';
-import { Button } from '../Button/Button';
 import { IOrderableItem } from '@core';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { removeItem, toggleCart, useAppDispatch, useAppSelector } from '@redux';
+import { useHistory } from 'react-router-dom';
+import { Button } from '../Button/Button';
+import styles from './Cart.module.scss';
 
 export const Cart = () => {
   const cartState = useAppSelector((state) => state.cart);
 
   const dispatch = useAppDispatch();
+
+  const history = useHistory();
 
   const close = (): void => {
     dispatch(toggleCart(false));
@@ -16,6 +19,11 @@ export const Cart = () => {
 
   const removeFromCart = (item: IOrderableItem): void => {
     dispatch(removeItem(item));
+  };
+
+  const goToCheckout = (): void => {
+    close();
+    history.push('/checkout');
   };
 
   const getTotals = (): { tax: string; total: string; subtotal: string } => {
@@ -67,7 +75,7 @@ export const Cart = () => {
           ) : (
             <>
               {cartState.items.map((item) => (
-                <div className={styles.cartItemWrap}>
+                <div key={item.name} className={styles.cartItemWrap}>
                   <button onClick={() => removeFromCart(item)}>
                     <FontAwesomeIcon icon={faTimes} />
                   </button>
@@ -103,7 +111,7 @@ export const Cart = () => {
                   <p className={styles.checkoutItemLabel}>Total</p>
                   <p className={styles.checkoutItemTotal}>{total}</p>
                 </div>
-                <Button text="Checkout" />
+                <Button text="Checkout" onClick={goToCheckout} />
               </div>
             </>
           )}
