@@ -1,23 +1,27 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+sonrisa-client/node_modules
+sonrisa-client/.pnp
+sonrisa-client.pnp.js
 
 # testing
-/coverage
+sonrisa-client/coverage
 
 # production
-/build
+sonrisa-client/build
 
 # misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+sonrisa-client.DS_Store
+sonrisa-client.env.local
+sonrisa-client.env.development.local
+sonrisa-client.env.test.local
+sonrisa-client.env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+sonrisa-clientnpm-debug.log*
+sonrisa-clientyarn-debug.log*
+sonrisa-clientyarn-error.log*
+
+sonrisa-server/node_modules
+sonrisa-server/dist
+sonrisa-server/package-lock.json
