@@ -54,49 +54,6 @@ p.noItemsText {
   font-size: 1.25rem;
 }
 
-div.cartItemWrap {
-  display: flex;
-  border-bottom: 2px solid $offwhite;
-  align-items: center;
-  padding-right: 1rem;
-  position: relative;
-
-  > button {
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    border-radius: 100%;
-    background-color: $offwhite;
-    box-shadow: $box-shadow;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 0.5rem;
-    right: 1rem;
-    color: $red;
-    font-size: 0.8rem;
-  }
-}
-
-div.cartItemImgWrap {
-  flex: 0.5;
-}
-
-div.itemDetailsWrap {
-  flex: 1;
-}
-
-div.itemDetailWrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.5rem 0;
-}
-
-p.itemName {
-  font-weight: bold;
-}
-
 div.checkoutItemWrap {
   display: flex;
   align-items: center;
