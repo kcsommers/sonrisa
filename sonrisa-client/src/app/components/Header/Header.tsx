@@ -6,8 +6,8 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toggleCart, useAppDispatch, useAppSelector } from '@redux';
 import styles from './Header.module.scss';
-import { useAppSelector, useAppDispatch, toggleCart } from '@redux';
 
 type HeaderProps = {
   logoSize?: 'sm' | 'lg';
@@ -16,7 +16,7 @@ type HeaderProps = {
 };
 
 export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
-  const cart = useAppSelector((state) => state.cart);
+  const orderState = useAppSelector((state) => state.order);
 
   const dispatch = useAppDispatch();
 
@@ -61,8 +61,8 @@ export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
             {showCart && (
               <button className={styles.cartBtn} onClick={openCart}>
                 <FontAwesomeIcon icon={faShoppingCart} />
-                {cart && cart.items.length > 0 && (
-                  <span>{cart?.items.length}</span>
+                {orderState && orderState.items.length > 0 && (
+                  <span>{orderState?.items.length}</span>
                 )}
               </button>
             )}

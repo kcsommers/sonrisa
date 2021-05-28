@@ -2,6 +2,7 @@ import { Cart, Footer, Overlay, Header } from '@components';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { CheckoutPage } from './pages/CheckoutPage/CheckoutPage';
 import { HomePage } from './pages/HomePage/HomePage';
+import { OrderSuccessPage } from './pages/OrderSuccessPage/OrderSuccessPage';
 
 export const AppRouter = () => {
   return (
@@ -22,6 +23,11 @@ export const AppRouter = () => {
             exact
             path="/checkout"
             render={(props) => <CheckoutPage {...props} />}
+          />
+          <Route
+            exact
+            path="/checkout/success"
+            render={(props) => <OrderSuccessPage {...props} />}
           />
         </Switch>
       </div>

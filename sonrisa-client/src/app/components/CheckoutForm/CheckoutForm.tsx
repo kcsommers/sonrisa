@@ -1,7 +1,8 @@
 import styles from './CheckoutForm.module.scss';
 import { Button } from './../Button/Button';
+import { RouteComponentProps } from 'react-router';
 
-export const CheckoutForm = () => {
+export const CheckoutForm = (props: RouteComponentProps) => {
   return (
     <div className={styles.checkoutFormWrap}>
       <div className={styles.inputWrap}>
@@ -23,7 +24,10 @@ export const CheckoutForm = () => {
         <input type="number" placeholder="CVV" />
       </div>
       <div className={styles.inputWrap}>
-        <Button text="Submit Payment" />
+        <Button
+          text="Submit Payment"
+          onClick={() => props.history.push('/checkout/success')}
+        />
       </div>
     </div>
   );

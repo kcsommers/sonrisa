@@ -1,3 +1,4 @@
+export { Order } from './Order/Order';
 export { Button } from './Button/Button';
 export { CartItem } from './CartItem/CartItem';
 export { CheckoutForm } from './CheckoutForm/CheckoutForm';

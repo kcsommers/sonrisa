@@ -1,0 +1,14 @@
+p.noItemsText {
+  font-size: 1.25rem;
+}
+
+div.checkoutItemWrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 0;
+
+  > p:first-child {
+    font-weight: bold;
+  }
+}

@@ -3,11 +3,16 @@
 div.checkoutPageInner {
   display: flex;
   padding: 2rem;
+  align-items: flex-start;
 }
 
 div.paymentSection {
   flex: 1;
   margin-right: 1rem;
+}
+
+div.checkoutFormWrap {
+  padding: 2rem 0 1rem 0;
 }
 
 div.orderSection {
