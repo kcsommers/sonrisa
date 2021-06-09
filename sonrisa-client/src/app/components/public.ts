@@ -1,4 +1,5 @@
 export { Button } from './Button/Button';
+export { ImageSlider } from './ImageSlider/ImageSlider';
 export { CartItem } from './CartItem/CartItem';
 export { CheckoutForm } from './CheckoutForm/CheckoutForm';
 export { Overlay } from './Overlay/Overlay';
