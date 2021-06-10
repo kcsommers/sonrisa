@@ -79,7 +79,7 @@ export const OrderBox = (props: OrderBoxProps) => {
           </button>
         </div>
         <Button
-          text={`Add to Order $${((quantity * props.item.price) / 100).toFixed(
+          text={`Update Cart $${((quantity * props.item.price) / 100).toFixed(
             2
           )}`}
           size="sm"

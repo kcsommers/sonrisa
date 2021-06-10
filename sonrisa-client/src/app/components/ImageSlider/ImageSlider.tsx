@@ -81,7 +81,7 @@ export const ImageSlider = ({ images }: ImageSliderProps) => {
     setNextSlideStyle(getImgStyle(images[currentImageIndex], 1, nextX));
 
     setIsSliding(false);
-  }, [isSliding, slideDirection]);
+  }, [isSliding, slideDirection, currentImageIndex, images]);
 
   return (
     <div className={styles.imgSliderWrap}>
