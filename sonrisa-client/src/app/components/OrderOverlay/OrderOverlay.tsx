@@ -25,7 +25,7 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
   return (
     <div className={`${styles.templateWrap}`}>
       <div className={styles.overlayBody}>
-        <ImageSlider images={props.item.images} />
+        <ImageSlider images={props.item.images.slice(1)} />
 
         <div className={styles.descriptionWrap}>
           <h3>{props.item.name}</h3>

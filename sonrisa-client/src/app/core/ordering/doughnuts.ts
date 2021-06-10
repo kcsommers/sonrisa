@@ -31,25 +31,25 @@ export const doughnuts: IOrderableItem[] = [
   ),
   createOrderableItem(
     Doughnuts.MATCHA,
-    [vanilla1, matcha1],
+    [matchaTransparent, matcha1],
     425,
     'Mulberry green tea latte'
   ),
   createOrderableItem(
     Doughnuts.NUTELLA,
-    [nutellaTransparent],
+    [nutellaTransparent, nutella1],
     425,
     "Fran's Chocolate made in Seattle with Nutella"
   ),
   createOrderableItem(
     Doughnuts.THAI_TEA,
-    [thaiTransparent],
+    [thaiTransparent, thai1],
     425,
     'Original Thai milk tea blended with Ceylon tea,'
   ),
   createOrderableItem(
     Doughnuts.STRAWBERRY,
-    [strawberryTransparent],
+    [strawberryTransparent, strawberry1],
     425,
     'Housemade strawberry jam'
   ),
