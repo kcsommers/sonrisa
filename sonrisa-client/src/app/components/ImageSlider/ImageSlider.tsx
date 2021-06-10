@@ -1,8 +1,7 @@
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './ImageSlider.module.scss';
-import SimpleImageSlider from 'react-simple-image-slider';
 
 type ImageSliderProps = {
   images: string[];
@@ -20,7 +19,7 @@ const getImgStyle = (
 ): React.CSSProperties => ({
   backgroundImage: `url(${url})`,
   transition: `${duration}s`,
-  transform: `translateX(${x})`,
+  transform: `translateX(${x}%)`,
 });
 
 export const ImageSlider = ({ images }: ImageSliderProps) => {
@@ -36,13 +35,24 @@ export const ImageSlider = ({ images }: ImageSliderProps) => {
 
   const [isSliding, setIsSliding] = useState(false);
 
+  const [slideDirection, setSlideDirection] = useState(SlideDirections.LEFT);
+
   const next = (index: number) => {
+    const dir =
+      index > currentImageIndex ? SlideDirections.LEFT : SlideDirections.RIGHT;
     const currX = 0;
-    const nextX = index > currentImageIndex ? 100 : -100;
+    const nextX = -(100 * dir);
+
+    if (index >= images.length) {
+      index = 0;
+    } else if (index < 0) {
+      index = images.length - 1;
+    }
 
     setCurrentSlideStyle(getImgStyle(images[currentImageIndex], 0, currX));
     setNextSlideStyle(getImgStyle(images[index], 0, nextX));
     setCurrentImageIndex(index);
+    setSlideDirection(dir);
     setIsSliding(true);
   };
 
@@ -55,8 +65,23 @@ export const ImageSlider = ({ images }: ImageSliderProps) => {
       return;
     }
 
-    console.log('EFFECT:::: ');
-  }, [isSliding]);
+    const currIndex =
+      slideDirection === SlideDirections.LEFT
+        ? currentImageIndex - 1 < 0
+          ? images.length - 1
+          : currentImageIndex - 1
+        : currentImageIndex + 1 >= images.length
+        ? 0
+        : currentImageIndex + 1;
+
+    const currX = 100 * slideDirection;
+    const nextX = 0;
+
+    setCurrentSlideStyle(getImgStyle(images[currIndex], 1, currX));
+    setNextSlideStyle(getImgStyle(images[currentImageIndex], 1, nextX));
+
+    setIsSliding(false);
+  }, [isSliding, slideDirection]);
 
   return (
     <div className={styles.imgSliderWrap}>
@@ -75,22 +100,14 @@ export const ImageSlider = ({ images }: ImageSliderProps) => {
         <div className={styles.imgArrowsWrap}>
           <button
             onClick={() => {
-              next(
-                currentImageIndex === 0
-                  ? images.length - 1
-                  : currentImageIndex - 1
-              );
+              next(currentImageIndex - 1);
             }}
           >
             <FontAwesomeIcon icon={faAngleLeft} />
           </button>
           <button
             onClick={() => {
-              next(
-                currentImageIndex === images.length - 1
-                  ? 0
-                  : currentImageIndex + 1
-              );
+              next(currentImageIndex + 1);
             }}
           >
             <FontAwesomeIcon icon={faAngleRight} />

@@ -31,7 +31,7 @@ export const doughnuts: IOrderableItem[] = [
   ),
   createOrderableItem(
     Doughnuts.MATCHA,
-    [matchaTransparent, matcha1],
+    [vanilla1, matcha1],
     425,
     'Mulberry green tea latte'
   ),
