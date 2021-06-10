@@ -1,0 +1,43 @@
+@import '../../styles/variables.scss';
+
+div.imagesWrap {
+  position: relative;
+  overflow: hidden;
+  height: 400px;
+
+  > div:not(.imgArrowsWrap) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+div.imgArrowsWrap {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+
+  > button {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-color: $offwhite;
+    box-shadow: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: $box-shadow;
+    }
+  }
+}

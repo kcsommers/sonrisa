@@ -1,15 +1,11 @@
-import { useState } from 'react';
-import styles from './OrderOverlay.module.scss';
-import { IOrderableItem } from '@core';
 import { Button } from '@components';
+import { IOrderableItem } from '@core';
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useAppDispatch, removeItem, addItem } from '@redux';
-import {
-  faAngleLeft,
-  faAngleRight,
-  faMinus,
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { addItem, removeItem, useAppDispatch } from '@redux';
+import { useState } from 'react';
+import { ImageSlider } from './../ImageSlider/ImageSlider';
+import styles from './OrderOverlay.module.scss';
 
 export interface OrderOverlayProps {
   item: IOrderableItem;
@@ -17,8 +13,6 @@ export interface OrderOverlayProps {
 
 export const OrderOverlay = (props: OrderOverlayProps) => {
   const [quantity, setQuantity] = useState(0);
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const dispatch = useAppDispatch();
 
@@ -31,37 +25,8 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
   return (
     <div className={`${styles.templateWrap}`}>
       <div className={styles.overlayBody}>
-        <div className={styles.imagesWrap}>
-          <img
-            src={props.item.images[currentImageIndex]}
-            alt={props.item.name}
-          />
+        <ImageSlider images={props.item.images} />
 
-          <div className={styles.imgArrowsWrap}>
-            <button
-              onClick={() => {
-                setCurrentImageIndex(
-                  currentImageIndex === 0
-                    ? props.item.images.length - 1
-                    : currentImageIndex - 1
-                );
-              }}
-            >
-              <FontAwesomeIcon icon={faAngleLeft} />
-            </button>
-            <button
-              onClick={() => {
-                setCurrentImageIndex(
-                  currentImageIndex === props.item.images.length - 1
-                    ? 0
-                    : currentImageIndex + 1
-                );
-              }}
-            >
-              <FontAwesomeIcon icon={faAngleRight} />
-            </button>
-          </div>
-        </div>
         <div className={styles.descriptionWrap}>
           <h3>{props.item.name}</h3>
           <p>{props.item.description}</p>

@@ -24,35 +24,6 @@ div.overlayFooter {
   border-bottom-right-radius: 3px;
 }
 
-div.imagesWrap {
-  position: relative;
-}
-
-div.imgArrowsWrap {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1rem;
-
-  > button {
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    background-color: $offwhite;
-    box-shadow: none;
-    transition: all 0.2s ease;
-
-    &:hover {
-      box-shadow: $box-shadow;
-    }
-  }
-}
-
 div.descriptionWrap {
   padding: 2rem;
   > p {
