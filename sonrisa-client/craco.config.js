@@ -25,4 +25,12 @@ module.exports = {
       '@core': path.resolve(__dirname, 'src/app/core/public.ts'),
     },
   },
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        pathRewrite: { '^/api': '' },
+      },
+    },
+  },
 };
