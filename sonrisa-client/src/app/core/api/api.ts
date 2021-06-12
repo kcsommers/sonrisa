@@ -66,18 +66,20 @@ const getBaseUrl = () => {
   return environments[process.env.NODE_ENV].API_BASE_URL;
 };
 
-export const submitOrder = (paymentInfo: IPaymentInfo, orderNumber: number) => {
-  return axios.post(`${getBaseUrl()}/`);
-};
-
 export const Api = {
+  seed: () => axios.get(`${getBaseUrl()}/seed`),
+
   updateOrder: (
     id: string,
     items: IOrderableItem[]
   ): Promise<AxiosResponse> => {
-    return axios.post(`${getBaseUrl()}`, {
+    return axios.post(`${getBaseUrl()}/order/update`, {
       _id: id,
       items,
     });
+  },
+
+  submitOrder: (paymentInfo: IPaymentInfo, orderNumber: number) => {
+    return axios.post(`${getBaseUrl()}`);
   },
 };

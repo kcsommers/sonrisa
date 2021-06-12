@@ -1,13 +1,16 @@
 import { Document, model, Model, Schema } from 'mongoose';
-import { IOrderableItem } from '../interfaces/IOrderableItem';
 import { ICustomer } from './Customer';
+import { IOrderableItem } from './OrderableItem';
 
 export interface IOrder extends Document {
   customer: ICustomer['_id'];
 
-  items: IOrderableItem[];
-
-  orderNumber: string;
+  items: [
+    {
+      item: IOrderableItem['_id'];
+      quantity: Number;
+    }
+  ];
 }
 
 const orderSchema: Schema = new Schema({
@@ -16,13 +19,13 @@ const orderSchema: Schema = new Schema({
     ref: 'Customer',
   },
   items: {
-    type: [],
+    type: [
+      {
+        item: Schema.Types.ObjectId,
+        quantity: Number,
+      },
+    ],
     required: true,
-  },
-  orderNumber: {
-    type: String,
-    required: true,
-    unique: true,
   },
 });
 

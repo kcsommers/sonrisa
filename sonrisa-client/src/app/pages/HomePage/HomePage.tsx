@@ -1,4 +1,5 @@
 import { Button } from '@components';
+import { Api } from '@core';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
 import { RouteComponentProps } from 'react-router-dom';
@@ -9,6 +10,16 @@ import styles from './HomePage.module.scss';
 export const HomePage = (props: RouteComponentProps) => {
   return (
     <div className={styles.homePageWrap}>
+      <Button
+        text="Seed"
+        onClick={() => {
+          Api.seed()
+            .then((res) => {
+              console.log('SEED RES:::: ', res);
+            })
+            .catch((err) => console.error(err));
+        }}
+      />
       <section className={`${styles.landingSection} responsive-container`}>
         <div className={`${styles.landingInner}`}>
           <div className={styles.landingInnerBorder}></div>
