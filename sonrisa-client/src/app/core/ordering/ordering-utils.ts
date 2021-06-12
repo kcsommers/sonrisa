@@ -1,4 +1,4 @@
-import { IOrderableItem } from './IOrderableItem.interface';
+import { IOrderableItem } from './IOrderableItem';
 
 export const createOrderableItem = (
   name: string,

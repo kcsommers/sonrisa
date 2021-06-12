@@ -1,8 +1,14 @@
-import { OverlayTemplates, IOrderableItem } from '@core';
+import { OverlayTemplates, IOrderableItem, Api } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { addItem, removeItem, toggleOverlay, useAppDispatch } from '@redux';
+import {
+  setOrderItems,
+  toggleOverlay,
+  useAppDispatch,
+  useAppSelector,
+} from '@redux';
 import { AnimatePresence, motion } from 'framer-motion';
+import { cloneDeep } from 'lodash';
 import { useState } from 'react';
 import { Button } from '../Button/Button';
 import styles from './OrderBox.module.scss';
@@ -12,6 +18,8 @@ export interface OrderBoxProps {
 }
 
 export const OrderBox = (props: OrderBoxProps) => {
+  const orderState = useAppSelector((state) => state.order);
+
   const [quantity, setQuantity] = useState(0);
 
   const dispatch = useAppDispatch();
@@ -26,10 +34,30 @@ export const OrderBox = (props: OrderBoxProps) => {
     );
   };
 
-  const addToOrder = (): void => {
-    dispatch(
-      quantity === 0 ? removeItem(props.item) : addItem(props.item, quantity)
-    );
+  const updateCart = (): void => {
+    if (!orderState) {
+      return;
+    }
+
+    const clonedItems = cloneDeep(orderState.items);
+
+    // look for item in cart
+    const itemIndex = clonedItems.findIndex((i) => i.id === props.item.id);
+
+    // if it exists, replace it
+    if (itemIndex > -1) {
+      clonedItems.splice(itemIndex, 1, props.item);
+    } else {
+      // otherwise add it
+      clonedItems.push(props.item);
+    }
+
+    Api.updateOrder(orderState._id, clonedItems)
+      .then((res) => {
+        console.log('RESULT:::: ', res);
+        // dispatch(setOrderItems(clonedItems));
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -83,7 +111,7 @@ export const OrderBox = (props: OrderBoxProps) => {
             2
           )}`}
           size="sm"
-          onClick={addToOrder}
+          onClick={updateCart}
         />
       </div>
     </div>

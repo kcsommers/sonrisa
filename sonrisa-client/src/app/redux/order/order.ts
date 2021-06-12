@@ -2,30 +2,38 @@ import { Reducer } from 'react';
 import { AnyAction } from 'redux';
 import { IOrderableItem } from '@core';
 import { cloneDeep } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 
 export const ADD_ITEM = 'ADD_ITEM';
 
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 
+export const SET_ORDER_ID = 'SET_ORDER_ID';
+
+export const SET_ORDER_ITEMS = 'SET_ORDER_ITEMS';
+
 export interface OrderState {
   items: IOrderableItem[];
+
+  _id: string;
 }
 
 const initialState: OrderState = {
   items: [],
+
+  _id: '',
 };
 
-export const addItem = (item: IOrderableItem, quantity: number) =>
+export const setOrderId = (id: string) =>
   <const>{
-    type: ADD_ITEM,
-    item,
-    quantity,
+    type: SET_ORDER_ID,
+    id,
   };
 
-export const removeItem = (item: IOrderableItem) =>
+export const setOrderItems = (items: IOrderableItem[]) =>
   <const>{
-    type: REMOVE_ITEM,
-    item,
+    type: SET_ORDER_ID,
+    items,
   };
 
 export const orderReducer: Reducer<OrderState | undefined, AnyAction> = (
@@ -33,32 +41,15 @@ export const orderReducer: Reducer<OrderState | undefined, AnyAction> = (
   action
 ): OrderState => {
   switch (action.type) {
-    case ADD_ITEM: {
+    case SET_ORDER_ITEMS: {
       const clonedState = cloneDeep(state);
-      const clonedItem = cloneDeep(action.item);
-
-      clonedItem.quantity = action.quantity;
-
-      // look for item in cart
-      const itemIndex = clonedState.items.findIndex(
-        (i) => i.id === action.item.id
-      );
-
-      // if it exists, replace it
-      if (itemIndex > -1) {
-        clonedState.items.splice(itemIndex, 1, clonedItem);
-      } else {
-        // otherwise add it
-        clonedState.items.push(clonedItem);
-      }
+      clonedState.items = action.items;
 
       return clonedState;
     }
-    case REMOVE_ITEM: {
+    case SET_ORDER_ID: {
       const clonedState = cloneDeep(state);
-      clonedState.items = clonedState.items.filter(
-        (i) => i.id !== action.item.id
-      );
+      clonedState._id = action.id;
 
       return clonedState;
     }

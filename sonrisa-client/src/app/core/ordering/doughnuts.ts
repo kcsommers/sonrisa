@@ -8,7 +8,7 @@ import nutella1 from '@assets/images/doughnuts/nutella-1.jpg';
 import nutellaTransparent from '@assets/images/doughnuts/nutella-transparent.png';
 import thai1 from '@assets/images/doughnuts/thai-1.jpg';
 import thaiTransparent from '@assets/images/doughnuts/thai-transparent.png';
-import { IOrderableItem } from './IOrderableItem.interface';
+import { IOrderableItem } from './IOrderableItem';
 import { createOrderableItem } from './ordering-utils';
 
 export enum Doughnuts {

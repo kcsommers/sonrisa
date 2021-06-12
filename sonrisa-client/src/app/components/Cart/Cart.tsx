@@ -1,7 +1,7 @@
 import { IOrderableItem } from '@core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { removeItem, toggleCart, useAppDispatch, useAppSelector } from '@redux';
+import { toggleCart, useAppDispatch, useAppSelector } from '@redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../Button/Button';
 import { Order } from '../Order/Order';
@@ -16,10 +16,6 @@ export const Cart = () => {
 
   const close = (): void => {
     dispatch(toggleCart(false));
-  };
-
-  const removeFromCart = (item: IOrderableItem): void => {
-    dispatch(removeItem(item));
   };
 
   const goToCheckout = (): void => {
