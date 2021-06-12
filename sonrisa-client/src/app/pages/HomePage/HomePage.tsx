@@ -1,24 +1,12 @@
 import { Button } from '@components';
-import { sayHello } from '@core';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
-import { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import { doughnuts } from '../../core/ordering/doughnuts';
 import styles from './HomePage.module.scss';
 
 export const HomePage = (props: RouteComponentProps) => {
-  useEffect(() => {
-    sayHello()
-      .then((res) => {
-        console.log('SUCCESS:::: ', res);
-      })
-      .catch((err) => {
-        console.error('NOT SUCCESS:::: ', err);
-      });
-  }, []);
-
   return (
     <div className={styles.homePageWrap}>
       <section className={`${styles.landingSection} responsive-container`}>

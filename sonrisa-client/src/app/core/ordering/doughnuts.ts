@@ -8,7 +8,8 @@ import nutella1 from '@assets/images/doughnuts/nutella-1.jpg';
 import nutellaTransparent from '@assets/images/doughnuts/nutella-transparent.png';
 import thai1 from '@assets/images/doughnuts/thai-1.jpg';
 import thaiTransparent from '@assets/images/doughnuts/thai-transparent.png';
-import { createOrderableItem, IOrderableItem } from './OrderableItem';
+import { IOrderableItem } from './IOrderableItem.interface';
+import { createOrderableItem } from './ordering-utils';
 
 export enum Doughnuts {
   VANILLA = 'Vanilla Custard',
