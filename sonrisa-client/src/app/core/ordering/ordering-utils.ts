@@ -1,16 +1,4 @@
-export interface IOrderableItem {
-  name: string;
-
-  images: string[];
-
-  price: number;
-
-  description: string;
-
-  quantity: number;
-
-  id: number;
-}
+import { IOrderableItem } from './IOrderableItem.interface';
 
 export const createOrderableItem = (
   name: string,

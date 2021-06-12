@@ -25,3 +25,5 @@ sonrisa-clientyarn-error.log*
 sonrisa-server/node_modules
 sonrisa-server/dist
 sonrisa-server/package-lock.json
+node_modules
+package-lock.json
