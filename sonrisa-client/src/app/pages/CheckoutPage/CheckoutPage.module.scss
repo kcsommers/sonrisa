@@ -2,17 +2,26 @@
 
 div.checkoutPageInner {
   display: flex;
-  padding: 2rem;
+  padding: 2rem 2rem 2rem 0;
+  flex-wrap: wrap;
+  justify-content: stretch;
 }
 
 div.paymentSection {
-  flex: 1;
-  margin-right: 1rem;
+  flex: 1.75;
 }
 
 div.orderSection {
-  flex: 0.75;
-  margin-left: 1rem;
+  flex: 1;
+}
+
+div.checkoutSection {
+  min-width: 400px;
+  margin-left: 2rem;
+  margin-bottom: 2rem;
+  > h4 {
+    margin-bottom: 2rem;
+  }
 }
 
 div.paymentSection,
