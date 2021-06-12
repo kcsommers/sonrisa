@@ -1,8 +1,9 @@
 import { Button } from './../Button/Button';
 import { useState } from 'react';
 import styles from './CheckoutForm.module.scss';
+import { RouteComponentProps } from 'react-router';
 
-export const CheckoutForm = () => {
+export const CheckoutForm = (props: RouteComponentProps) => {
   const [name, setName] = useState('');
 
   const [email, setEmail] = useState('');

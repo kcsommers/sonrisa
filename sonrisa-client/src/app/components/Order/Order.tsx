@@ -1,5 +1,5 @@
 import { IOrderableItem } from '@core';
-import { removeItem, toggleCart, useAppDispatch, useAppSelector } from '@redux';
+import { toggleCart, useAppDispatch, useAppSelector } from '@redux';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../Button/Button';
 import { CartItem } from './../CartItem/CartItem';
@@ -14,10 +14,6 @@ export const Order = () => {
 
   const close = (): void => {
     dispatch(toggleCart(false));
-  };
-
-  const removeFromCart = (item: IOrderableItem): void => {
-    dispatch(removeItem(item));
   };
 
   const goToCheckout = (): void => {

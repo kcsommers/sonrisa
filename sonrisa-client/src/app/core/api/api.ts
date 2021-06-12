@@ -1,6 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { environments } from '../../../environments';
-import { IPaymentInfo } from '../ordering/IPaymentInfo.interface';
+import { IOrderableItem } from '../ordering/IOrderableItem';
+import { IPaymentInfo } from '../ordering/IPaymentInfo';
 const https = require('https');
 
 let myInterceptor;
@@ -67,4 +68,16 @@ const getBaseUrl = () => {
 
 export const submitOrder = (paymentInfo: IPaymentInfo, orderNumber: number) => {
   return axios.post(`${getBaseUrl()}/`);
+};
+
+export const Api = {
+  updateOrder: (
+    id: string,
+    items: IOrderableItem[]
+  ): Promise<AxiosResponse> => {
+    return axios.post(`${getBaseUrl()}`, {
+      _id: id,
+      items,
+    });
+  },
 };

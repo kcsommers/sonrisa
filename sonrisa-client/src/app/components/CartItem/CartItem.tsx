@@ -1,7 +1,7 @@
 import { IOrderableItem } from '@core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { removeItem, useAppDispatch } from '@redux';
+import { useAppDispatch } from '@redux';
 import styles from './CartItem.module.scss';
 
 type CartItemProps = {
@@ -12,7 +12,7 @@ export const CartItem = ({ item }: CartItemProps) => {
   const dispatch = useAppDispatch();
 
   const removeFromCart = (item: IOrderableItem): void => {
-    dispatch(removeItem(item));
+    // dispatch(removeItem(item));
   };
 
   return (
