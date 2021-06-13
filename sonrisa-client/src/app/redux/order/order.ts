@@ -1,8 +1,8 @@
+import { IOrderableItem } from '@core';
+import { IOrder } from 'app/core/ordering/IOrder';
+import { cloneDeep } from 'lodash';
 import { Reducer } from 'react';
 import { AnyAction } from 'redux';
-import { IOrderableItem } from '@core';
-import { cloneDeep } from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
 
 export const ADD_ITEM = 'ADD_ITEM';
 
@@ -12,13 +12,9 @@ export const SET_ORDER_ID = 'SET_ORDER_ID';
 
 export const SET_ORDER_ITEMS = 'SET_ORDER_ITEMS';
 
-export interface OrderState {
-  items: IOrderableItem[];
+const initialState: IOrder = {
+  customer: '',
 
-  _id: string;
-}
-
-const initialState: OrderState = {
   items: [],
 
   _id: '',
@@ -36,10 +32,10 @@ export const setOrderItems = (items: IOrderableItem[]) =>
     items,
   };
 
-export const orderReducer: Reducer<OrderState | undefined, AnyAction> = (
+export const orderReducer: Reducer<IOrder | undefined, AnyAction> = (
   state = initialState,
   action
-): OrderState => {
+): IOrder => {
   switch (action.type) {
     case SET_ORDER_ITEMS: {
       const clonedState = cloneDeep(state);

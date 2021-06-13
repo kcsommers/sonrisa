@@ -1,7 +1,5 @@
-import { IOrderableItem } from '@core';
 import { toggleCart, useAppDispatch, useAppSelector } from '@redux';
 import { useHistory } from 'react-router-dom';
-import { Button } from '../Button/Button';
 import { CartItem } from './../CartItem/CartItem';
 import styles from './Order.module.scss';
 
@@ -30,8 +28,8 @@ export const Order = () => {
       };
     }
 
-    const subtotal = orderState.items.reduce((t, item) => {
-      t += item.price * item.quantity;
+    const subtotal = orderState.items.reduce((t, orderItem) => {
+      t += orderItem.item.price * orderItem.quantity;
       return t;
     }, 0);
 
@@ -53,7 +51,7 @@ export const Order = () => {
       ) : (
         <>
           {orderState.items.map((item) => (
-            <CartItem item={item} />
+            <CartItem orderItem={item} />
           ))}
           <div className={styles.checkoutWrap}>
             <div className={styles.checkoutItemWrap}>

@@ -1,8 +1,8 @@
 import { Button } from '@components';
-import { IOrderableItem } from '@core';
+import { Api, IOrderableItem } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { setOrderItems, useAppDispatch, useAppSelector } from '@redux';
+import { useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
 import { useState } from 'react';
 import { ImageSlider } from './../ImageSlider/ImageSlider';
@@ -24,20 +24,30 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
       return;
     }
 
-    const clonedItems = cloneDeep(orderState.items);
+    const _clonedItems = cloneDeep(orderState.items);
 
     // look for item in cart
-    const itemIndex = clonedItems.findIndex((i) => i.id === props.item.id);
+    const _orderItemIndex = _clonedItems.findIndex(
+      (i) => i.item._id === props.item._id
+    );
 
-    // if it exists, replace it
-    if (itemIndex > -1) {
-      clonedItems.splice(itemIndex, 1, props.item);
+    // if it exists, set the quantity
+    if (_orderItemIndex > -1) {
+      _clonedItems[_orderItemIndex].quantity = quantity;
     } else {
-      // otherwise add it
-      clonedItems.push(props.item);
+      // otherwise create new item
+      _clonedItems.push({
+        item: props.item,
+        quantity: quantity,
+      });
     }
 
-    dispatch(setOrderItems(clonedItems));
+    Api.updateOrder(orderState._id, _clonedItems)
+      .then((res) => {
+        console.log('RESULT:::: ', res);
+        // dispatch(setOrderItems(clonedItems));
+      })
+      .catch((err) => console.error(err));
   };
 
   return (

@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { environments } from '../../../environments';
 import { IOrderableItem } from '../ordering/IOrderableItem';
+import { IOrderItem } from '../ordering/IOrderItem';
 import { IPaymentInfo } from '../ordering/IPaymentInfo';
 const https = require('https');
 
@@ -70,16 +71,23 @@ export const Api = {
   seed: () => axios.get(`${getBaseUrl()}/seed`),
 
   updateOrder: (
-    id: string,
-    items: IOrderableItem[]
+    orderId: string,
+    items: IOrderItem[]
   ): Promise<AxiosResponse> => {
     return axios.post(`${getBaseUrl()}/order/update`, {
-      _id: id,
+      orderId,
       items,
     });
   },
 
-  submitOrder: (paymentInfo: IPaymentInfo, orderNumber: number) => {
+  submitOrder: (
+    paymentInfo: IPaymentInfo,
+    orderNumber: number
+  ): Promise<AxiosResponse> => {
     return axios.post(`${getBaseUrl()}`);
+  },
+
+  getMenu: (): Promise<AxiosResponse> => {
+    return axios.get(`${getBaseUrl()}/menu`);
   },
 };

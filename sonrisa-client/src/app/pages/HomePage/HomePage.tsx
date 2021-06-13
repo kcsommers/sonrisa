@@ -1,25 +1,27 @@
 import { Button } from '@components';
-import { Api } from '@core';
+import { Api, IOrderableItem } from '@core';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
+import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
-import { doughnuts } from '../../core/ordering/doughnuts';
 import styles from './HomePage.module.scss';
 
 export const HomePage = (props: RouteComponentProps) => {
+  const [doughnuts, setDoughnuts] = useState<IOrderableItem[]>([]);
+
+  useEffect(() => {
+    if (doughnuts && doughnuts.length) {
+      return;
+    }
+
+    Api.getMenu()
+      .then((res) => setDoughnuts(res.data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <div className={styles.homePageWrap}>
-      <Button
-        text="Seed"
-        onClick={() => {
-          Api.seed()
-            .then((res) => {
-              console.log('SEED RES:::: ', res);
-            })
-            .catch((err) => console.error(err));
-        }}
-      />
       <section className={`${styles.landingSection} responsive-container`}>
         <div className={`${styles.landingInner}`}>
           <div className={styles.landingInnerBorder}></div>
