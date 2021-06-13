@@ -7,7 +7,5 @@ export interface IOrderableItem {
 
   description: string;
 
-  quantity: number;
-
-  id: number;
+  _id: string;
 }
