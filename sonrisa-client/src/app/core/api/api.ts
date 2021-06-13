@@ -1,9 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { environments } from '../../../environments';
-import { IOrderableItem } from '../ordering/IOrderableItem';
 import { IOrderItem } from '../ordering/IOrderItem';
 import { IPaymentInfo } from '../ordering/IPaymentInfo';
-const https = require('https');
 
 let myInterceptor;
 if (!myInterceptor) {

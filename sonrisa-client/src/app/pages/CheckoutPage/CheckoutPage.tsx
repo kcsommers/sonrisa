@@ -1,11 +1,8 @@
-import { Button, CheckoutForm, Order } from '@components';
-import { useAppSelector } from '@redux';
+import { CheckoutForm, Order } from '@components';
 import { RouteComponentProps } from 'react-router-dom';
 import styles from './CheckoutPage.module.scss';
 
 export const CheckoutPage = (props: RouteComponentProps) => {
-  const orderState = useAppSelector((state) => state.order);
-
   return (
     <div className={styles.checkoutPageWrap}>
       <div className={styles.checkoutPageInner}>

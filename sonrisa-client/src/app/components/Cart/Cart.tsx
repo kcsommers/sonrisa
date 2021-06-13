@@ -1,4 +1,3 @@
-import { IOrderableItem } from '@core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toggleCart, useAppDispatch, useAppSelector } from '@redux';

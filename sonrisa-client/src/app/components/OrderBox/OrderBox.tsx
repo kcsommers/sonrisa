@@ -1,23 +1,18 @@
-import { OverlayTemplates, Api, IOrderItem, IOrderableItem } from '@core';
+import { IOrderableItem, OverlayTemplates } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  setOrderItems,
-  toggleOverlay,
-  useAppDispatch,
-  useAppSelector,
-} from '@redux';
+import { toggleOverlay, useAppDispatch, useAppSelector } from '@redux';
 import { AnimatePresence, motion } from 'framer-motion';
-import { cloneDeep } from 'lodash';
 import { useState } from 'react';
 import { Button } from '../Button/Button';
+import { IWithOrdering, withOrdering } from '../hoc/withOrdering';
 import styles from './OrderBox.module.scss';
 
-export interface OrderBoxProps {
+export interface OrderBoxProps extends IWithOrdering {
   item: IOrderableItem;
 }
 
-export const OrderBox = (props: OrderBoxProps) => {
+const OrderBoxComponent = (props: OrderBoxProps) => {
   const orderState = useAppSelector((state) => state.order);
 
   const [quantity, setQuantity] = useState(0);
@@ -32,37 +27,6 @@ export const OrderBox = (props: OrderBoxProps) => {
         context: props.item,
       })
     );
-  };
-
-  const updateCart = (): void => {
-    if (!orderState) {
-      return;
-    }
-
-    const _clonedItems = cloneDeep(orderState.items);
-
-    // look for item in cart
-    let _orderItemIndex = _clonedItems.findIndex(
-      (i) => i.item._id === props.item._id
-    );
-
-    // if it exists, set the quantity
-    if (_orderItemIndex > -1) {
-      _clonedItems[_orderItemIndex].quantity = quantity;
-    } else {
-      // otherwise create new item
-      _clonedItems.push({
-        item: props.item,
-        quantity: quantity,
-      });
-    }
-
-    Api.updateOrder(orderState._id, _clonedItems)
-      .then((res) => {
-        console.log('RESULT:::: ', res);
-        // dispatch(setOrderItems(clonedItems));
-      })
-      .catch((err) => console.error(err));
   };
 
   return (
@@ -116,9 +80,14 @@ export const OrderBox = (props: OrderBoxProps) => {
             2
           )}`}
           size="sm"
-          onClick={updateCart}
+          onClick={() =>
+            props.updateOrder &&
+            props.updateOrder(orderState, props.item, quantity)
+          }
         />
       </div>
     </div>
   );
 };
+
+export const OrderBox = withOrdering(OrderBoxComponent);

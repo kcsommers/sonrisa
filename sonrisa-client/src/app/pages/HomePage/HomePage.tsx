@@ -18,7 +18,7 @@ export const HomePage = (props: RouteComponentProps) => {
     Api.getMenu()
       .then((res) => setDoughnuts(res.data))
       .catch((err) => console.error(err));
-  }, []);
+  }, [doughnuts]);
 
   return (
     <div className={styles.homePageWrap}>
