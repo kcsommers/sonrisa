@@ -1,54 +1,21 @@
 import { Button } from '@components';
-import { Api, IOrderableItem } from '@core';
+import { IOrderableItem } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useAppDispatch, useAppSelector } from '@redux';
-import { cloneDeep } from 'lodash';
+import { useAppSelector } from '@redux';
 import { useState } from 'react';
+import { IWithOrdering, withOrdering } from '../hoc/withOrdering';
 import { ImageSlider } from './../ImageSlider/ImageSlider';
 import styles from './OrderOverlay.module.scss';
 
-export interface OrderOverlayProps {
+export interface OrderOverlayProps extends IWithOrdering {
   item: IOrderableItem;
 }
 
-export const OrderOverlay = (props: OrderOverlayProps) => {
+const OrderOverlayComponent = (props: OrderOverlayProps) => {
   const orderState = useAppSelector((state) => state.order);
 
   const [quantity, setQuantity] = useState(0);
-
-  const dispatch = useAppDispatch();
-
-  const addToOrder = (): void => {
-    if (!orderState) {
-      return;
-    }
-
-    const _clonedItems = cloneDeep(orderState.items);
-
-    // look for item in cart
-    const _orderItemIndex = _clonedItems.findIndex(
-      (i) => i.item._id === props.item._id
-    );
-
-    // if it exists, set the quantity
-    if (_orderItemIndex > -1) {
-      _clonedItems[_orderItemIndex].quantity = quantity;
-    } else {
-      // otherwise create new item
-      _clonedItems.push({
-        item: props.item,
-        quantity: quantity,
-      });
-    }
-
-    Api.updateOrder(orderState._id, _clonedItems)
-      .then((res) => {
-        console.log('RESULT:::: ', res);
-        // dispatch(setOrderItems(clonedItems));
-      })
-      .catch((err) => console.error(err));
-  };
 
   return (
     <div className={`${styles.templateWrap}`}>
@@ -84,9 +51,14 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
           )}`}
           size="md"
           isFullWidth={true}
-          onClick={addToOrder}
+          onClick={() =>
+            props.updateOrder &&
+            props.updateOrder(orderState, props.item, quantity)
+          }
         />
       </div>
     </div>
   );
 };
+
+export const OrderOverlay = withOrdering(OrderOverlayComponent);

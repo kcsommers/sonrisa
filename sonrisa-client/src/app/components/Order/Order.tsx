@@ -1,23 +1,9 @@
-import { toggleCart, useAppDispatch, useAppSelector } from '@redux';
-import { useHistory } from 'react-router-dom';
+import { useAppSelector } from '@redux';
 import { CartItem } from './../CartItem/CartItem';
 import styles from './Order.module.scss';
 
 export const Order = () => {
   const orderState = useAppSelector((state) => state.order);
-
-  const dispatch = useAppDispatch();
-
-  const history = useHistory();
-
-  const close = (): void => {
-    dispatch(toggleCart(false));
-  };
-
-  const goToCheckout = (): void => {
-    close();
-    history.push('/checkout');
-  };
 
   const getTotals = (): { tax: string; total: string; subtotal: string } => {
     if (!orderState || !orderState.items.length) {
