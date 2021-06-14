@@ -1,8 +1,11 @@
 import { setOrderItems, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
+import { batch } from 'react-redux';
 import { Api } from '../api/api';
 import { IOrder } from '../ordering/IOrder';
 import { IOrderableItem } from '../ordering/IOrderableItem';
+import { useStorage } from './use-storage';
+import { setOrderId } from './../../redux/order/order';
 
 export interface IOrderingHook {
   orderState: IOrder | undefined;
@@ -14,6 +17,8 @@ export const useOrdering = (): IOrderingHook => {
   const orderState = useAppSelector((state) => state.order);
 
   const dispatch = useAppDispatch();
+
+  const { storageKeys, setSessionItem } = useStorage();
 
   const updateOrder = (item: IOrderableItem, quantity: number): void => {
     if (!orderState) {
@@ -41,7 +46,13 @@ export const useOrdering = (): IOrderingHook => {
     Api.updateOrder(orderState._id, _clonedItems)
       .then((res) => {
         console.log('RESULT:::: ', res);
-        dispatch(setOrderItems(_clonedItems));
+        batch(() => {
+          dispatch(setOrderItems(_clonedItems));
+
+          if (!orderState._id) {
+            // dispatch(setOrderId())
+          }
+        });
       })
       .catch((err) => console.error(err));
   };

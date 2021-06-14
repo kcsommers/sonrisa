@@ -1,4 +1,5 @@
 export { Order } from './Order/Order';
+export { LoadingSpinner } from './LoadingSpinner/LoadingSpinner';
 export { Button } from './Button/Button';
 export { ImageSlider } from './ImageSlider/ImageSlider';
 export { CartItem } from './CartItem/CartItem';
