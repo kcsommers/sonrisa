@@ -5,6 +5,7 @@ div.checkoutPageInner {
   padding: 2rem 2rem 2rem 0;
   flex-wrap: wrap;
   justify-content: stretch;
+  min-height: $body-min-height;
 }
 
 div.paymentSection {

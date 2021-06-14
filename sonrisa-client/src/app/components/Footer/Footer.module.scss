@@ -1,7 +1,16 @@
 @import '../../styles/variables.scss';
 
 footer.footer {
-  height: 200px;
   background-color: $yellow;
-  margin-top: 2rem;
+}
+
+div.footerInner {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.footerInfoWrap {
+  text-align: center;
 }
