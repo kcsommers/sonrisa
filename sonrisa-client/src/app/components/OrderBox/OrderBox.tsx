@@ -32,7 +32,6 @@ export const OrderBox = (props: OrderBoxProps) => {
   };
 
   useEffect(() => {
-    console.log('EFFECT:::: ');
     // set initial quantity
     setQuantity(props.quantity);
   }, [props.quantity]);

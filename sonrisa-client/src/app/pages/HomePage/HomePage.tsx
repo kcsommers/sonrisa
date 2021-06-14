@@ -1,4 +1,4 @@
-import { Button } from '@components';
+import { Button, LoadingSpinner } from '@components';
 import { Api, IOrderableItem } from '@core';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
@@ -46,19 +46,25 @@ export const HomePage = (props: RouteComponentProps) => {
         </p>
         <div className={`${styles.orderBoxesWrap}`}>
           <h3>Menu</h3>
-          <div className={styles.orderBoxesInner}>
-            {doughnuts.map((d) => (
-              <div key={d.name} className={styles.orderBoxWrap}>
-                <OrderBox
-                  item={d}
-                  quantity={
-                    orderState?.items.find((i) => i.item._id === d._id)
-                      ?.quantity || 0
-                  }
-                />
-              </div>
-            ))}
-          </div>
+          {doughnuts && doughnuts.length ? (
+            <div className={styles.orderBoxesInner}>
+              {doughnuts.map((d) => (
+                <div key={d.name} className={styles.orderBoxWrap}>
+                  <OrderBox
+                    item={d}
+                    quantity={
+                      orderState?.items.find((i) => i.item._id === d._id)
+                        ?.quantity || 0
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.loadingWrap}>
+              <LoadingSpinner />
+            </div>
+          )}
         </div>
       </section>
 
