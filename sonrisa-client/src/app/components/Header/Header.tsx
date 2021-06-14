@@ -7,6 +7,7 @@ import {
 import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toggleCart, useAppDispatch, useAppSelector } from '@redux';
+import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 
 type HeaderProps = {
@@ -32,7 +33,9 @@ export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
             styles[`headerLogo-${logoSize}`]
           }`}
         >
-          <img className={styles.logo} src={logo} alt="Sonrisa Logo" />
+          <Link to="/" className={styles.headerLogoLink}>
+            <img className={styles.logo} src={logo} alt="Sonrisa Logo" />
+          </Link>
         </div>
         <div className={styles.headerSidesWrap}>
           <div className={styles.headerLeft}>

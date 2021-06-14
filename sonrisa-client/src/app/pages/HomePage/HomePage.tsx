@@ -1,9 +1,9 @@
 import { Button, LoadingSpinner } from '@components';
-import { Api, IOrderableItem, useStorage } from '@core';
+import { Api, IOrderableItem } from '@core';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
-import { setOrder, useAppSelector, useAppDispatch } from '@redux';
-import { useEffect, useState, useRef } from 'react';
+import { useAppSelector } from '@redux';
+import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
@@ -11,13 +11,7 @@ import styles from './HomePage.module.scss';
 export const HomePage = (props: RouteComponentProps) => {
   const [doughnuts, setDoughnuts] = useState<IOrderableItem[]>([]);
 
-  const { storageKeys, getSessionItem } = useStorage();
-
-  const dispatch = useAppDispatch();
-
   const orderState = useAppSelector((state) => state.order);
-
-  const initializedRef = useRef(false);
 
   // get menu effect
   useEffect(() => {
@@ -29,24 +23,6 @@ export const HomePage = (props: RouteComponentProps) => {
       .then((res) => setDoughnuts(res.data))
       .catch((err) => console.error(err));
   }, [doughnuts]);
-
-  // get order effect
-  useEffect(() => {
-    if (initializedRef.current) {
-      return;
-    }
-
-    initializedRef.current = true;
-
-    const _orderId = getSessionItem(storageKeys.ORDER_NUMBER);
-    if (!_orderId) {
-      return;
-    }
-
-    Api.getOrder(_orderId)
-      .then((res) => dispatch(setOrder(res.data)))
-      .catch((err) => console.error(err));
-  }, [getSessionItem, storageKeys.ORDER_NUMBER]);
 
   return (
     <div className={styles.homePageWrap}>

@@ -11,6 +11,8 @@ export interface IOrderingHook {
   orderState: IOrder | undefined;
 
   updateOrder: (item: IOrderableItem, quantity: number) => void;
+
+  getOrderId: () => string | null;
 }
 
 export const useOrdering = (): IOrderingHook => {
@@ -18,7 +20,11 @@ export const useOrdering = (): IOrderingHook => {
 
   const dispatch = useAppDispatch();
 
-  const { storageKeys, setSessionItem } = useStorage();
+  const { storageKeys, setSessionItem, getSessionItem } = useStorage();
+
+  const getOrderId = (): string | null => {
+    return getSessionItem(storageKeys.ORDER_NUMBER);
+  };
 
   const updateOrder = (item: IOrderableItem, quantity: number): void => {
     if (!orderState) {
@@ -62,5 +68,6 @@ export const useOrdering = (): IOrderingHook => {
   return {
     orderState,
     updateOrder,
+    getOrderId,
   };
 };
