@@ -45,12 +45,14 @@ export const useOrdering = (): IOrderingHook => {
 
     Api.updateOrder(orderState._id, _clonedItems)
       .then((res) => {
-        console.log('RESULT:::: ', res);
+        const _order = res.data;
+        setSessionItem(storageKeys.ORDER_NUMBER, _order._id);
+
         batch(() => {
           dispatch(setOrderItems(_clonedItems));
 
           if (!orderState._id) {
-            // dispatch(setOrderId())
+            dispatch(setOrderId(_order._id));
           }
         });
       })
