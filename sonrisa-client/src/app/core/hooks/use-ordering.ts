@@ -1,21 +1,21 @@
-import { Api, IOrder, IOrderableItem } from '@core';
+import { setOrderItems, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
-import { ComponentType } from 'react';
+import { Api } from '../api/api';
+import { IOrder } from '../ordering/IOrder';
+import { IOrderableItem } from '../ordering/IOrderableItem';
 
-export interface IWithOrdering {
-  updateOrder?: (
-    orderState: IOrder | undefined,
-    item: IOrderableItem,
-    quantity: number
-  ) => void;
+export interface IOrderingHook {
+  orderState: IOrder | undefined;
+
+  updateOrder: (item: IOrderableItem, quantity: number) => void;
 }
 
-export function withOrdering<T>(Component: ComponentType<T & IWithOrdering>) {
-  const updateOrder = (
-    orderState: IOrder | undefined,
-    item: IOrderableItem,
-    quantity: number
-  ): void => {
+export const useOrdering = (): IOrderingHook => {
+  const orderState = useAppSelector((state) => state.order);
+
+  const dispatch = useAppDispatch();
+
+  const updateOrder = (item: IOrderableItem, quantity: number): void => {
     if (!orderState) {
       return;
     }
@@ -41,10 +41,13 @@ export function withOrdering<T>(Component: ComponentType<T & IWithOrdering>) {
     Api.updateOrder(orderState._id, _clonedItems)
       .then((res) => {
         console.log('RESULT:::: ', res);
-        // dispatch(setOrderItems(clonedItems));
+        dispatch(setOrderItems(_clonedItems));
       })
       .catch((err) => console.error(err));
   };
 
-  return (props: T) => <Component {...props} updateOrder={updateOrder} />;
-}
+  return {
+    orderState,
+    updateOrder,
+  };
+};

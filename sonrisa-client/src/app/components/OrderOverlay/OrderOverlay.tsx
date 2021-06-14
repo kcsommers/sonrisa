@@ -1,21 +1,39 @@
 import { Button } from '@components';
-import { IOrderableItem } from '@core';
+import { IOrderableItem, useOrdering } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useAppSelector } from '@redux';
+import { useRef } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
-import { IWithOrdering, withOrdering } from '../hoc/withOrdering';
 import { ImageSlider } from './../ImageSlider/ImageSlider';
 import styles from './OrderOverlay.module.scss';
 
-export interface OrderOverlayProps extends IWithOrdering {
+interface OrderOverlayProps {
   item: IOrderableItem;
 }
 
-const OrderOverlayComponent = (props: OrderOverlayProps) => {
-  const orderState = useAppSelector((state) => state.order);
+export const OrderOverlay = (props: OrderOverlayProps) => {
+  const { orderState, updateOrder } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
+
+  const initializedRef = useRef(false);
+  useEffect(() => {
+    if (initializedRef.current) {
+      return;
+    }
+
+    initializedRef.current = true;
+    const _orderItem = orderState?.items.find(
+      (i) => i.item._id === props.item._id
+    );
+    console.log('INITI:::: ', _orderItem);
+    if (!_orderItem) {
+      return;
+    }
+
+    setQuantity(_orderItem.quantity);
+  }, [orderState?.items, props.item._id]);
 
   return (
     <div className={`${styles.templateWrap}`}>
@@ -46,19 +64,14 @@ const OrderOverlayComponent = (props: OrderOverlayProps) => {
 
       <div className={styles.overlayFooter}>
         <Button
-          text={`Add to Order $${((quantity * props.item.price) / 100).toFixed(
+          text={`Update Cart $${((quantity * props.item.price) / 100).toFixed(
             2
           )}`}
           size="md"
           isFullWidth={true}
-          onClick={() =>
-            props.updateOrder &&
-            props.updateOrder(orderState, props.item, quantity)
-          }
+          onClick={() => updateOrder(props.item, quantity)}
         />
       </div>
     </div>
   );
 };
-
-export const OrderOverlay = withOrdering(OrderOverlayComponent);

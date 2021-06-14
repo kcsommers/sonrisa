@@ -1,19 +1,21 @@
-import { IOrderableItem, OverlayTemplates } from '@core';
+import { IOrderableItem, OverlayTemplates, useOrdering } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { toggleOverlay, useAppDispatch, useAppSelector } from '@redux';
+import { toggleOverlay, useAppDispatch } from '@redux';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button } from '../Button/Button';
-import { IWithOrdering, withOrdering } from '../hoc/withOrdering';
 import styles from './OrderBox.module.scss';
 
-export interface OrderBoxProps extends IWithOrdering {
+interface OrderBoxProps {
   item: IOrderableItem;
+
+  quantity: number;
 }
 
-const OrderBoxComponent = (props: OrderBoxProps) => {
-  const orderState = useAppSelector((state) => state.order);
+export const OrderBox = (props: OrderBoxProps) => {
+  const { updateOrder } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
 
@@ -28,6 +30,12 @@ const OrderBoxComponent = (props: OrderBoxProps) => {
       })
     );
   };
+
+  useEffect(() => {
+    console.log('EFFECT:::: ');
+    // set initial quantity
+    setQuantity(props.quantity);
+  }, [props.quantity]);
 
   return (
     <div className={styles.orderBox}>
@@ -80,14 +88,9 @@ const OrderBoxComponent = (props: OrderBoxProps) => {
             2
           )}`}
           size="sm"
-          onClick={() =>
-            props.updateOrder &&
-            props.updateOrder(orderState, props.item, quantity)
-          }
+          onClick={() => updateOrder(props.item, quantity)}
         />
       </div>
     </div>
   );
 };
-
-export const OrderBox = withOrdering(OrderBoxComponent);

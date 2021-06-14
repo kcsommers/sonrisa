@@ -39,7 +39,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   const _orderId = req.params.id;
 
   if (!_orderId) {
-    return res.status(HttpStatusCodes.BAD_REQUEST).send('Ivalid Order Id');
+    return res.status(HttpStatusCodes.BAD_REQUEST).send('Invalid Order Id');
   }
 
   try {
@@ -52,7 +52,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     });
 
     if (!_order) {
-      return res.status(HttpStatusCodes.BAD_REQUEST).send('Ivalid Order Id');
+      return res.status(HttpStatusCodes.BAD_REQUEST).send('Invalid Order Id');
     }
 
     res.json(_order);
@@ -62,20 +62,23 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // @route   DELETE api/order/:id
-// @desc    Deletes an order by id
+// @desc    Deletes an order by id. Id of -1 deletes all
 // @access  Public
 router.delete('/:id', async (req: Request, res: Response) => {
   const _orderId = req.params.id;
 
   if (!_orderId) {
-    return res.status(HttpStatusCodes.BAD_REQUEST).send('Ivalid Order Id');
+    return res.status(HttpStatusCodes.BAD_REQUEST).send('Invalid Order Id');
   }
 
   try {
-    const _result = await Order.findOneAndDelete({ _id: _orderId });
+    const _result =
+      _orderId === '-1'
+        ? await Order.deleteMany()
+        : await Order.findOneAndDelete({ _id: _orderId });
 
     if (!_result) {
-      return res.status(HttpStatusCodes.BAD_REQUEST).send('Ivalid Order Id');
+      return res.status(HttpStatusCodes.BAD_REQUEST).send('Invalid Order Id');
     }
 
     res.json(_result);

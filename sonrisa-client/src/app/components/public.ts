@@ -1,4 +1,3 @@
-export { withOrdering } from './hoc/withOrdering';
 export { Order } from './Order/Order';
 export { Button } from './Button/Button';
 export { ImageSlider } from './ImageSlider/ImageSlider';
