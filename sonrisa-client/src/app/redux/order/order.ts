@@ -1,4 +1,4 @@
-import { IOrderableItem } from '@core';
+import { IOrderItem } from '@core';
 import { IOrder } from 'app/core/ordering/IOrder';
 import { cloneDeep } from 'lodash';
 import { Reducer } from 'react';
@@ -26,9 +26,9 @@ export const setOrderId = (id: string) =>
     id,
   };
 
-export const setOrderItems = (items: IOrderableItem[]) =>
+export const setOrderItems = (items: IOrderItem[]) =>
   <const>{
-    type: SET_ORDER_ID,
+    type: SET_ORDER_ITEMS,
     items,
   };
 
@@ -41,6 +41,7 @@ export const orderReducer: Reducer<IOrder | undefined, AnyAction> = (
       const clonedState = cloneDeep(state);
       clonedState.items = action.items;
 
+      console.log('SETORDER:::: ', clonedState.items);
       return clonedState;
     }
     case SET_ORDER_ID: {

@@ -2,6 +2,7 @@ import { Button } from '@components';
 import { Api, IOrderableItem } from '@core';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
+import { useAppSelector } from '@redux';
 import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
@@ -9,6 +10,8 @@ import styles from './HomePage.module.scss';
 
 export const HomePage = (props: RouteComponentProps) => {
   const [doughnuts, setDoughnuts] = useState<IOrderableItem[]>([]);
+
+  const orderState = useAppSelector((state) => state.order);
 
   useEffect(() => {
     if (doughnuts && doughnuts.length) {
@@ -46,7 +49,13 @@ export const HomePage = (props: RouteComponentProps) => {
           <div className={styles.orderBoxesInner}>
             {doughnuts.map((d) => (
               <div key={d.name} className={styles.orderBoxWrap}>
-                <OrderBox item={d} />
+                <OrderBox
+                  item={d}
+                  quantity={
+                    orderState?.items.find((i) => i.item._id === d._id)
+                      ?.quantity || 0
+                  }
+                />
               </div>
             ))}
           </div>
