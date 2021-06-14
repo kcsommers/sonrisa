@@ -20,7 +20,7 @@ router.post('/update', async (req: Request, res: Response) => {
     }));
 
     const _order = !_orderId
-      ? await Order.insertMany([{ items: _itemsMapped }])
+      ? await Order.create({ items: _itemsMapped })
       : await Order.findOneAndUpdate(
           { _id: _orderId },
           { items: _itemsMapped }

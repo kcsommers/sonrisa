@@ -27,7 +27,7 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
     const _orderItem = orderState?.items.find(
       (i) => i.item._id === props.item._id
     );
-    console.log('INITI:::: ', _orderItem);
+
     if (!_orderItem) {
       return;
     }
