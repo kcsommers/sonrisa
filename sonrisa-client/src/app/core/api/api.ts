@@ -96,7 +96,7 @@ export const Api = {
   ): Promise<AxiosResponse> => {
     return axios.post(`${getBaseUrl()}/order/payments`, {
       locationId,
-      sourceId: cardToken,
+      cardToken,
     });
   },
 

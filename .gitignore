@@ -29,3 +29,4 @@ node_modules
 package-lock.json
 
 sonrisa-client/.env
+sonrisa-server/.env

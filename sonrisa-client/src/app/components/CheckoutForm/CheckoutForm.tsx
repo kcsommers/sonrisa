@@ -45,7 +45,7 @@ export const CheckoutForm = (props: RouteComponentProps) => {
     try {
       const _cardToken = await _tokenizeCard();
       console.log('card token:::: ', _cardToken);
-      const _paymentResponse = Api.createPayment(
+      Api.createPayment(
         environments[process.env.NODE_ENV].SQUARE_LOCATION_ID as string,
         _cardToken
       )

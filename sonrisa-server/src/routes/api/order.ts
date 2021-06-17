@@ -1,7 +1,10 @@
-import { Router, Response, Request } from 'express';
+import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
-import { IOrderableItem } from '../../models/OrderableItem';
+import { CreatePaymentRequest } from 'square';
+import { v4 as uuidV4 } from 'uuid';
 import Order from '../../models/Order';
+import { IOrderableItem } from '../../models/OrderableItem';
+import { square } from '../../square';
 
 const router: Router = Router();
 
@@ -82,6 +85,38 @@ router.delete('/:id', async (req: Request, res: Response) => {
     }
 
     res.json(_result);
+  } catch (err) {
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
+  }
+});
+
+router.post('/payments', async (req: Request, res: Response) => {
+  const _locationId = req.body.locationId;
+  const _cardToken = req.body.cardToken;
+
+  if (!_locationId || !_cardToken) {
+    return res
+      .status(HttpStatusCodes.BAD_REQUEST)
+      .send('Location id and card token required');
+  }
+
+  const payment: CreatePaymentRequest = {
+    idempotencyKey: uuidV4(),
+    locationId: _locationId,
+    sourceId: _cardToken,
+    amountMoney: {
+      amount: BigInt(100),
+      currency: 'USD',
+    },
+  };
+
+  try {
+    const { result } = await square.paymentsApi.createPayment(payment);
+    res.send(
+      JSON.stringify(result, (k, v) =>
+        typeof v === 'bigint' ? +v.toString() : v
+      )
+    );
   } catch (err) {
     res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
   }
