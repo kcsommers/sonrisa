@@ -27,3 +27,5 @@ sonrisa-server/dist
 sonrisa-server/package-lock.json
 node_modules
 package-lock.json
+
+sonrisa-client/.env
