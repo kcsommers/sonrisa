@@ -90,6 +90,16 @@ export const Api = {
     return axios.post(`${getBaseUrl()}`);
   },
 
+  createPayment: async (
+    locationId: string,
+    cardToken: string
+  ): Promise<AxiosResponse> => {
+    return axios.post(`${getBaseUrl()}/order/payments`, {
+      locationId,
+      sourceId: cardToken,
+    });
+  },
+
   getMenu: (): Promise<AxiosResponse> => {
     return axios.get(`${getBaseUrl()}/menu`);
   },
