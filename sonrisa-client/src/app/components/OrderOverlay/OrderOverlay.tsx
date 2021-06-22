@@ -25,7 +25,7 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
 
     initializedRef.current = true;
     const _orderItem = orderState?.items.find(
-      (i) => i.item._id === props.item._id
+      (i) => i.item.id === props.item.id
     );
 
     if (!_orderItem) {
@@ -33,12 +33,12 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
     }
 
     setQuantity(_orderItem.quantity);
-  }, [orderState?.items, props.item._id]);
+  }, [orderState?.items, props.item.id]);
 
   return (
     <div className={`${styles.templateWrap}`}>
       <div className={styles.overlayBody}>
-        <ImageSlider images={props.item.images.slice(1)} />
+        <ImageSlider images={[]} />
 
         <div className={styles.descriptionWrap}>
           <h3>{props.item.name}</h3>

@@ -18,7 +18,7 @@ export const CartItem = ({ orderItem }: CartItemProps) => {
         <FontAwesomeIcon icon={faTimes} />
       </button>
       <div className={styles.cartItemImgWrap}>
-        <img src={orderItem.item.images[0]} alt={orderItem.item.name} />
+        <img src={orderItem.item.imageUrl} alt={orderItem.item.name} />
       </div>
 
       <div className={styles.itemDetailsWrap}>

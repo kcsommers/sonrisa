@@ -19,10 +19,12 @@ export const HomePage = (props: RouteComponentProps) => {
       return;
     }
 
-    Api.getMenu()
+    Api.getCatalog()
       .then((res) => setDoughnuts(res.data))
       .catch((err) => console.error(err));
   }, [doughnuts]);
+
+  console.log(doughnuts);
 
   return (
     <div className={styles.homePageWrap}>
@@ -54,7 +56,7 @@ export const HomePage = (props: RouteComponentProps) => {
                   <OrderBox
                     item={d}
                     quantity={
-                      orderState?.items.find((i) => i.item._id === d._id)
+                      orderState?.items.find((i) => i.item.id === d.id)
                         ?.quantity || 0
                     }
                   />

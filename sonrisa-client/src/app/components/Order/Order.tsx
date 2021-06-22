@@ -37,7 +37,7 @@ export const Order = () => {
       ) : (
         <>
           {orderState.items.map((item) => (
-            <CartItem orderItem={item} key={item.item._id} />
+            <CartItem orderItem={item} key={item.item.id} />
           ))}
           <div className={styles.checkoutWrap}>
             <div className={styles.checkoutItemWrap}>

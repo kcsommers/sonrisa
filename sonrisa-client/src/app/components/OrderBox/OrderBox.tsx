@@ -70,7 +70,7 @@ export const OrderBox = (props: OrderBoxProps) => {
         }}
       >
         <div className={styles.imgHoverBg}></div>
-        <img src={props.item.images[0]} alt={props.item.name} />
+        <img src={props.item.imageUrl} alt={props.item.name} />
       </div>
       <div className={styles.orderBoxBottom}>
         <div className={styles.nameWrap}>

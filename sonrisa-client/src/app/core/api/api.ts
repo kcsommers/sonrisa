@@ -3,6 +3,7 @@ import { environments } from '../../../environments';
 import { IOrderItem } from '../ordering/IOrderItem';
 import { IPaymentInfo } from '../ordering/IPaymentInfo';
 import { IOrder } from '../ordering/IOrder';
+import { IOrderableItem } from '../ordering/IOrderableItem';
 
 let myInterceptor;
 if (!myInterceptor) {
@@ -69,6 +70,12 @@ const getBaseUrl = () => {
 export const Api = {
   seed: () => axios.get(`${getBaseUrl()}/seed`),
 
+  createOrder: (items: IOrderableItem[]): Promise<AxiosResponse<IOrder>> => {
+    return axios.post(`${getBaseUrl()}/order/create`, {
+      items,
+    });
+  },
+
   updateOrder: (
     orderId: string,
     items: IOrderItem[]
@@ -100,7 +107,7 @@ export const Api = {
     });
   },
 
-  getMenu: (): Promise<AxiosResponse> => {
-    return axios.get(`${getBaseUrl()}/menu`);
+  getCatalog: (): Promise<AxiosResponse> => {
+    return axios.get(`${getBaseUrl()}/catalog`);
   },
 };

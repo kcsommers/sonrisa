@@ -26,6 +26,15 @@ export const useOrdering = (): IOrderingHook => {
     return getSessionItem(storageKeys.ORDER_NUMBER);
   };
 
+  const createOrder = (items: IOrderableItem[]) => {
+    Api.createOrder(items)
+      .then((res) => {
+        const _order = res.data;
+        setSessionItem(storageKeys.ORDER_NUMBER, _order._id);
+      })
+      .catch((err) => console.error(err));
+  };
+
   const updateOrder = (item: IOrderableItem, quantity: number): void => {
     if (!orderState) {
       return;
@@ -34,9 +43,7 @@ export const useOrdering = (): IOrderingHook => {
     const _clonedItems = cloneDeep(orderState.items);
 
     // look for item in cart
-    let _orderItemIndex = _clonedItems.findIndex(
-      (i) => i.item._id === item._id
-    );
+    let _orderItemIndex = _clonedItems.findIndex((i) => i.item.id === item.id);
 
     // if it exists, set the quantity
     if (_orderItemIndex > -1) {

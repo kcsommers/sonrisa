@@ -1,11 +1,15 @@
 export interface IOrderableItem {
+  id: string;
+
   name: string;
 
-  images: string[];
+  imageId: string;
+
+  imageUrl: string;
+
+  categoryId: string;
 
   price: number;
 
   description: string;
-
-  _id: string;
 }
