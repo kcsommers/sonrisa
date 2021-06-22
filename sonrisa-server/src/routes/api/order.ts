@@ -3,13 +3,17 @@ import HttpStatusCodes from 'http-status-codes';
 import { CreatePaymentRequest } from 'square';
 import { v4 as uuidV4 } from 'uuid';
 import Order from '../../models/Order';
-import { IOrderableItem } from '../../models/OrderableItem';
+import { IOrderableItem } from '../../interfaces/IOrderableItem';
 import { square } from '../../square';
 
 const router: Router = Router();
+// @route   POST api/order/create
+// @desc    Creates an order
+// @access  Public
+router.post('/create', async (req: Request, res: Response) => {});
 
 // @route   POST api/order/update
-// @desc    Creates or updates an order
+// @desc    updates an order
 // @access  Public
 router.post('/update', async (req: Request, res: Response) => {
   try {
@@ -18,7 +22,7 @@ router.post('/update', async (req: Request, res: Response) => {
 
     // only store item ids in db
     const _itemsMapped = _items.map((i) => ({
-      item: i.item._id,
+      item: i.item.id,
       quantity: i.quantity,
     }));
 
