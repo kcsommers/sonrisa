@@ -1,8 +1,9 @@
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
-import { CreatePaymentRequest } from 'square';
+import { CreateOrderRequest, CreatePaymentRequest } from 'square';
 import { v4 as uuidV4 } from 'uuid';
 import Order from '../../models/Order';
+import { IOrder } from '../../interfaces/IOrder';
 import { IOrderableItem } from '../../interfaces/IOrderableItem';
 import { square } from '../../square';
 
@@ -10,7 +11,29 @@ const router: Router = Router();
 // @route   POST api/order/create
 // @desc    Creates an order
 // @access  Public
-router.post('/create', async (req: Request, res: Response) => {});
+router.post('/create', async (req: Request, res: Response) => {
+  const _order = <IOrder>req.body.order;
+
+  try {
+    const _response = await square.ordersApi.createOrder({
+      order: {
+        locationId: 'LFDY60R7H887A',
+        lineItems: [
+          {
+            quantity: '1',
+            catalogObjectId: 'OSU7FHOFZSQLABQO67ZNIA7A',
+          },
+        ],
+      },
+      idempotencyKey: uuidV4(),
+    });
+    res.json(_response);
+
+    console.log(_response.result);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 // @route   POST api/order/update
 // @desc    updates an order

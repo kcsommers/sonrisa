@@ -6,33 +6,38 @@ export const Order = () => {
   const orderState = useAppSelector((state) => state.order);
 
   const getTotals = (): { tax: string; total: string; subtotal: string } => {
-    if (!orderState || !orderState.items.length) {
-      return {
-        tax: '$0.00',
-        total: '$0.00',
-        subtotal: '$0.00',
-      };
-    }
+    // if (!orderState || !orderState.items.length) {
+    //   return {
+    //     tax: '$0.00',
+    //     total: '$0.00',
+    //     subtotal: '$0.00',
+    //   };
+    // }
 
-    const subtotal = orderState.items.reduce((t, orderItem) => {
-      t += orderItem.item.price * orderItem.quantity;
-      return t;
-    }, 0);
+    // const subtotal = orderState.items.reduce((t, orderItem) => {
+    //   t += orderItem.item.price * orderItem.quantity;
+    //   return t;
+    // }, 0);
 
-    const tax = subtotal * 0.07;
+    // const tax = subtotal * 0.07;
 
     return {
-      tax: `$${(tax / 100).toFixed(2)}`,
-      total: `$${((subtotal + tax) / 100).toFixed(2)}`,
-      subtotal: `$${(subtotal / 100).toFixed(2)}`,
+      tax: ``,
+      total: ``,
+      subtotal: ``,
     };
+    // return {
+    //   tax: `$${(tax / 100).toFixed(2)}`,
+    //   total: `$${((subtotal + tax) / 100).toFixed(2)}`,
+    //   subtotal: `$${(subtotal / 100).toFixed(2)}`,
+    // };
   };
 
   const { tax, total, subtotal } = getTotals();
 
   return (
     <div className={`${styles.orderWrap}`}>
-      {!orderState?.items.length ? (
+      {/* {!orderState?.items.length ? (
         <p className={styles.noItemsText}>*No items in cart</p>
       ) : (
         <>
@@ -54,7 +59,7 @@ export const Order = () => {
             </div>
           </div>
         </>
-      )}
+      )} */}
     </div>
   );
 };
