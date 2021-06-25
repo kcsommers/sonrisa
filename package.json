@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/kcsommers/sonrisa#readme",
   "dependencies": {
-    "concurrently": "^6.2.0"
+    "concurrently": "^6.2.0",
+    "tslint": "^6.1.3"
   }
 }
