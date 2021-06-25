@@ -1,4 +1,4 @@
-import { IOrderableItem, OverlayTemplates, useOrdering } from '@core';
+import { IOrderLineItem, OverlayTemplates, useOrdering } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toggleOverlay, useAppDispatch } from '@redux';
@@ -9,7 +9,7 @@ import { Button } from '../Button/Button';
 import styles from './OrderBox.module.scss';
 
 interface OrderBoxProps {
-  item: IOrderableItem;
+  item: IOrderLineItem;
 
   quantity: number;
 }
@@ -63,7 +63,7 @@ export const OrderBox = (props: OrderBoxProps) => {
           </motion.span>
         )}
       </AnimatePresence>
-      <div
+      {/* <div
         className={styles.imgWrap}
         onClick={() => {
           openOverlay();
@@ -71,7 +71,7 @@ export const OrderBox = (props: OrderBoxProps) => {
       >
         <div className={styles.imgHoverBg}></div>
         <img src={props.item.imageUrl} alt={props.item.name} />
-      </div>
+      </div> */}
       <div className={styles.orderBoxBottom}>
         <div className={styles.nameWrap}>
           <button onClick={() => setQuantity(Math.max(quantity - 1, 0))}>
@@ -82,13 +82,13 @@ export const OrderBox = (props: OrderBoxProps) => {
             <FontAwesomeIcon icon={faPlus} />
           </button>
         </div>
-        <Button
+        {/* <Button
           text={`Update Cart $${((quantity * props.item.price) / 100).toFixed(
             2
           )}`}
           size="sm"
           onClick={() => updateOrder(props.item, quantity)}
-        />
+        /> */}
       </div>
     </div>
   );

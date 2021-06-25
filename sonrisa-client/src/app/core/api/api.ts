@@ -1,9 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { environments } from '../../../environments';
-import { IOrderItem } from '../ordering/IOrderItem';
-import { IPaymentInfo } from '../ordering/IPaymentInfo';
-import { IOrder } from '../ordering/IOrder';
-import { IOrderableItem } from '../ordering/IOrderableItem';
+import { IOrder } from '../orders/IOrder';
+import { IOrderLineItem } from '../orders/IOrderLineItem';
 
 let myInterceptor;
 if (!myInterceptor) {
@@ -70,15 +68,15 @@ const getBaseUrl = () => {
 export const Api = {
   seed: () => axios.get(`${getBaseUrl()}/seed`),
 
-  createOrder: (items: IOrderableItem[]): Promise<AxiosResponse<IOrder>> => {
+  createOrder: (order: IOrder): Promise<AxiosResponse<IOrder>> => {
     return axios.post(`${getBaseUrl()}/order/create`, {
-      items,
+      order,
     });
   },
 
   updateOrder: (
     orderId: string,
-    items: IOrderItem[]
+    items: IOrderLineItem[]
   ): Promise<AxiosResponse<IOrder>> => {
     return axios.post(`${getBaseUrl()}/order/update`, {
       orderId,
@@ -91,7 +89,7 @@ export const Api = {
   },
 
   submitOrder: (
-    paymentInfo: IPaymentInfo,
+    paymentInfo: any,
     orderNumber: number
   ): Promise<AxiosResponse> => {
     return axios.post(`${getBaseUrl()}`);

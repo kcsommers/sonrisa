@@ -1,5 +1,5 @@
 import { Button } from '@components';
-import { IOrderableItem, useOrdering } from '@core';
+import { IOrderLineItem, useOrdering } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRef } from 'react';
@@ -9,7 +9,7 @@ import { ImageSlider } from './../ImageSlider/ImageSlider';
 import styles from './OrderOverlay.module.scss';
 
 interface OrderOverlayProps {
-  item: IOrderableItem;
+  item: IOrderLineItem;
 }
 
 export const OrderOverlay = (props: OrderOverlayProps) => {
@@ -18,22 +18,22 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
   const [quantity, setQuantity] = useState(0);
 
   const initializedRef = useRef(false);
-  useEffect(() => {
-    if (initializedRef.current) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (initializedRef.current) {
+  //     return;
+  //   }
 
-    initializedRef.current = true;
-    const _orderItem = orderState?.items.find(
-      (i) => i.item.id === props.item.id
-    );
+  //   initializedRef.current = true;
+  //   // const _orderItem = orderState?.items.find(
+  //   //   (i) => i.item.id === props.item.id
+  //   // );
 
-    if (!_orderItem) {
-      return;
-    }
+  //   // if (!_orderItem) {
+  //   //   return;
+  //   // }
 
-    setQuantity(_orderItem.quantity);
-  }, [orderState?.items, props.item.id]);
+  //   // setQuantity(_orderItem.quantity);
+  // }, [orderState?.items, props.item.id]);
 
   return (
     <div className={`${styles.templateWrap}`}>
@@ -42,7 +42,7 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
 
         <div className={styles.descriptionWrap}>
           <h3>{props.item.name}</h3>
-          <p>{props.item.description}</p>
+          {/* <p>{props.item.description}</p> */}
         </div>
 
         <div className={styles.quantityWrap}>
@@ -63,14 +63,14 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
       </div>
 
       <div className={styles.overlayFooter}>
-        <Button
+        {/* <Button
           text={`Update Cart $${((quantity * props.item.price) / 100).toFixed(
             2
           )}`}
           size="md"
           isFullWidth={true}
           onClick={() => updateOrder(props.item, quantity)}
-        />
+        /> */}
       </div>
     </div>
   );

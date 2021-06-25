@@ -1,5 +1,5 @@
 import { Button, LoadingSpinner } from '@components';
-import { Api, IOrderableItem } from '@core';
+import { Api, IOrderLineItem } from '@core';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
 import { useAppSelector } from '@redux';
@@ -9,7 +9,7 @@ import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 
 export const HomePage = (props: RouteComponentProps) => {
-  const [doughnuts, setDoughnuts] = useState<IOrderableItem[]>([]);
+  const [doughnuts, setDoughnuts] = useState<IOrderLineItem[]>([]);
 
   const orderState = useAppSelector((state) => state.order);
 
@@ -55,10 +55,11 @@ export const HomePage = (props: RouteComponentProps) => {
                 <div key={d.name} className={styles.orderBoxWrap}>
                   <OrderBox
                     item={d}
-                    quantity={
-                      orderState?.items.find((i) => i.item.id === d.id)
-                        ?.quantity || 0
-                    }
+                    quantity={2}
+                    // quantity={
+                    //   orderState?.items.find((i) => i.item.id === d.id)
+                    //     ?.quantity || 0
+                    // }
                   />
                 </div>
               ))}

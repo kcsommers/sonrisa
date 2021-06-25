@@ -1,20 +1,20 @@
-import { IOrderableItem, IOrderItem } from '@core';
+import { IOrderLineItem } from '@core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './CartItem.module.scss';
 
 type CartItemProps = {
-  orderItem: IOrderItem;
+  orderItem: IOrderLineItem;
 };
 
 export const CartItem = ({ orderItem }: CartItemProps) => {
-  const removeFromCart = (item: IOrderableItem): void => {
+  const removeFromCart = (item: IOrderLineItem): void => {
     // dispatch(removeItem(item));
   };
 
   return (
-    <div key={orderItem.item.name} className={styles.cartItemWrap}>
-      <button onClick={() => removeFromCart(orderItem.item)}>
+    <div className={styles.cartItemWrap}>
+      {/* <button onClick={() => removeFromCart(orderItem.item)}>
         <FontAwesomeIcon icon={faTimes} />
       </button>
       <div className={styles.cartItemImgWrap}>
@@ -33,7 +33,7 @@ export const CartItem = ({ orderItem }: CartItemProps) => {
             ${((orderItem.quantity * orderItem.item.price) / 100).toFixed(2)}
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
