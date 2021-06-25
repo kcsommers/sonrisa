@@ -1,9 +1,9 @@
 import { Document, model, Model, Schema } from 'mongoose';
 import { ICustomer } from './Customer';
-import { IOrderableItem } from './OrderableItem';
 
 export interface IOrderItem extends Document {
-  item: IOrderableItem['_id'];
+  item: any;
+  // item: IOrderableItem['_id'];
 
   quantity: Number;
 }
