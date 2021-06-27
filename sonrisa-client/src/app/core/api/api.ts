@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
+import { CatalogItem, Order, OrderLineItem } from 'square';
 import { environments } from '../../../environments';
-import { IOrder } from '../orders/IOrder';
-import { IOrderLineItem } from '../orders/IOrderLineItem';
 
 let myInterceptor;
 if (!myInterceptor) {
@@ -68,7 +67,7 @@ const getBaseUrl = () => {
 export const Api = {
   seed: () => axios.get(`${getBaseUrl()}/seed`),
 
-  createOrder: (order: IOrder): Promise<AxiosResponse<IOrder>> => {
+  createOrder: (order: Order): Promise<AxiosResponse<Order>> => {
     return axios.post(`${getBaseUrl()}/order/create`, {
       order,
     });
@@ -76,15 +75,15 @@ export const Api = {
 
   updateOrder: (
     orderId: string,
-    items: IOrderLineItem[]
-  ): Promise<AxiosResponse<IOrder>> => {
+    items: OrderLineItem[]
+  ): Promise<AxiosResponse<Order>> => {
     return axios.post(`${getBaseUrl()}/order/update`, {
       orderId,
       items,
     });
   },
 
-  getOrder: (orderId: string): Promise<AxiosResponse<IOrder>> => {
+  getOrder: (orderId: string): Promise<AxiosResponse<Order>> => {
     return axios.get(`${getBaseUrl()}/order/${orderId}`);
   },
 
@@ -105,7 +104,7 @@ export const Api = {
     });
   },
 
-  getCatalog: (): Promise<AxiosResponse> => {
+  getCatalog: (): Promise<AxiosResponse<CatalogItem[]>> => {
     return axios.get(`${getBaseUrl()}/catalog`);
   },
 };

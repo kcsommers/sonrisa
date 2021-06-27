@@ -1,15 +1,14 @@
 import { Button } from '@components';
-import { IOrderLineItem, useOrdering } from '@core';
+import { useOrdering } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRef } from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { OrderLineItem } from 'square';
 import { ImageSlider } from './../ImageSlider/ImageSlider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './OrderOverlay.module.scss';
 
 interface OrderOverlayProps {
-  item: IOrderLineItem;
+  item: OrderLineItem;
 }
 
 export const OrderOverlay = (props: OrderOverlayProps) => {

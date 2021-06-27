@@ -1,14 +1,14 @@
-import { IOrderLineItem } from '@core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { OrderLineItem } from 'square';
 import styles from './CartItem.module.scss';
 
 type CartItemProps = {
-  orderItem: IOrderLineItem;
+  orderItem: OrderLineItem;
 };
 
 export const CartItem = ({ orderItem }: CartItemProps) => {
-  const removeFromCart = (item: IOrderLineItem): void => {
+  const removeFromCart = (item: OrderLineItem): void => {
     // dispatch(removeItem(item));
   };
 

@@ -1,15 +1,16 @@
 import { Button, LoadingSpinner } from '@components';
-import { Api, IOrderLineItem } from '@core';
+import { Api } from '@core';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
 import { useAppSelector } from '@redux';
 import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { CatalogItem } from 'square';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 
 export const HomePage = (props: RouteComponentProps) => {
-  const [doughnuts, setDoughnuts] = useState<IOrderLineItem[]>([]);
+  const [doughnuts, setDoughnuts] = useState<CatalogItem[]>([]);
 
   const orderState = useAppSelector((state) => state.order);
 
@@ -53,14 +54,7 @@ export const HomePage = (props: RouteComponentProps) => {
             <div className={styles.orderBoxesInner}>
               {doughnuts.map((d) => (
                 <div key={d.name} className={styles.orderBoxWrap}>
-                  <OrderBox
-                    item={d}
-                    quantity={2}
-                    // quantity={
-                    //   orderState?.items.find((i) => i.item.id === d.id)
-                    //     ?.quantity || 0
-                    // }
-                  />
+                  <OrderBox item={d} quantity={2} />
                 </div>
               ))}
             </div>
