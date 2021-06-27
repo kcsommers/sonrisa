@@ -1,15 +1,16 @@
-import { IOrderLineItem, OverlayTemplates, useOrdering } from '@core';
+import { OverlayTemplates, useOrdering } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toggleOverlay, useAppDispatch } from '@redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { CatalogItem } from 'square';
 import { Button } from '../Button/Button';
 import styles from './OrderBox.module.scss';
 
 interface OrderBoxProps {
-  item: IOrderLineItem;
+  item: CatalogItem;
 
   quantity: number;
 }

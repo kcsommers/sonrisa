@@ -2,15 +2,14 @@ import { setOrderItems, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
 import { batch } from 'react-redux';
 import { Api } from '../api/api';
-import { IOrder } from '../orders/IOrder';
 import { useStorage } from './use-storage';
 import { setOrderId } from './../../redux/order/order';
-import { IOrderLineItem } from '../orders/IOrderLineItem';
+import { Order, OrderLineItem } from 'square';
 
 export interface IOrderingHook {
-  orderState: IOrder | undefined;
+  orderState: Order | undefined;
 
-  updateOrder: (item: IOrderLineItem, quantity: number) => void;
+  updateOrder: (item: OrderLineItem, quantity: number) => void;
 
   getOrderId: () => string | null;
 }
@@ -26,7 +25,7 @@ export const useOrdering = (): IOrderingHook => {
     return getSessionItem(storageKeys.ORDER_NUMBER);
   };
 
-  const createOrder = (order: IOrder) => {
+  const createOrder = (order: Order) => {
     Api.createOrder(order)
       .then((res) => {
         const _order = res.data;
@@ -35,7 +34,7 @@ export const useOrdering = (): IOrderingHook => {
       .catch((err) => console.error(err));
   };
 
-  const updateOrder = (item: IOrderLineItem, quantity: number): void => {
+  const updateOrder = (item: OrderLineItem, quantity: number): void => {
     if (!orderState) {
       return;
     }

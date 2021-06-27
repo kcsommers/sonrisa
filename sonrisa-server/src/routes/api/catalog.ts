@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import { square } from '../../square';
+import { CatalogImage, CatalogItem, CatalogObject } from 'square';
 
 class CatalogItemTypes {
   public static ITEM = 'ITEM';
@@ -11,44 +12,29 @@ class CatalogItemTypes {
 const router: Router = Router();
 
 // SQUARE ROUTE
-router.get('/', async (req: Request, res: Response<any[] | string>) => {
+router.get('/', async (req: Request, res: Response<CatalogItem[] | string>) => {
   try {
     const _res = await square.catalogApi.listCatalog('', 'image,item');
     const _items = _res.result.objects;
 
-    const _orderableItems = _items.reduce((arr: any[], catelogItem) => {
-      if (catelogItem.type === CatalogItemTypes.ITEM) {
-        const _itemIndex = arr.findIndex(
-          (i) => i.imageId === catelogItem.imageId
-        );
-        const _item = _itemIndex > -1 ? arr[_itemIndex] : {};
-
-        _item.id = catelogItem.id;
-        _item.name = catelogItem.itemData.name;
-        _item.description = catelogItem.itemData.description;
-        _item.price =
-          +catelogItem.itemData.variations[0].itemVariationData.priceMoney.amount.toString();
-        _item.imageId = catelogItem.imageId;
-
-        if (_itemIndex < 0) {
-          arr.push(_item);
+    const _imageMap = new Map<string, string>();
+    const _catalogItems: CatalogItem[] = _items
+      .filter((o) => {
+        if (o.type === CatalogItemTypes.IMAGE) {
+          _imageMap.set(o.id, o.imageData.url);
+          return false;
         }
-      } else if (catelogItem.type === CatalogItemTypes.IMAGE) {
-        const _itemIndex = arr.findIndex((i) => i.imageId === catelogItem.id);
-        const _item = _itemIndex > -1 ? arr[_itemIndex] : {};
 
-        _item.imageUrl = catelogItem.imageData.url;
+        return true;
+      })
+      .map((o) => {
+        return {
+          ...o.itemData,
+          imageUrl: '',
+        };
+      });
 
-        if (_itemIndex < 0) {
-          _item.imageId = catelogItem.id;
-          arr.push(_item);
-        }
-      }
-
-      return arr;
-    }, []);
-
-    res.json(_orderableItems);
+    res.json(_catalogItems);
   } catch (err) {
     console.error(err.message);
     res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
