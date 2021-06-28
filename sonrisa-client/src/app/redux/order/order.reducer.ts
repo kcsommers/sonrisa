@@ -10,7 +10,7 @@ const initialState = <Order>{
 
   customerId: '',
 
-  lineItems: [],
+  line_items: [],
 
   state: '',
 
@@ -28,6 +28,8 @@ const initialState = <Order>{
     amount: BigInt(0),
     currency: 'USD',
   },
+
+  version: 0,
 };
 
 export const orderReducer: Reducer<Order | undefined, AnyAction> = (
