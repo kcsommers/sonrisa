@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { CatalogItem, Order, OrderLineItem } from 'square';
+import { CatalogItem, CatalogObject, Order, OrderLineItem } from 'square';
 import { environments } from '../../../environments';
 
 let myInterceptor;
@@ -67,19 +67,21 @@ const getBaseUrl = () => {
 export const Api = {
   seed: () => axios.get(`${getBaseUrl()}/seed`),
 
-  createOrder: (order: Order): Promise<AxiosResponse<Order>> => {
+  createOrder: (lineItems: OrderLineItem[]): Promise<AxiosResponse<Order>> => {
     return axios.post(`${getBaseUrl()}/order/create`, {
-      order,
+      lineItems,
     });
   },
 
   updateOrder: (
     orderId: string,
+    version: number,
     items: OrderLineItem[]
   ): Promise<AxiosResponse<Order>> => {
     return axios.post(`${getBaseUrl()}/order/update`, {
       orderId,
       items,
+      version,
     });
   },
 
@@ -104,7 +106,7 @@ export const Api = {
     });
   },
 
-  getCatalog: (): Promise<AxiosResponse<CatalogItem[]>> => {
+  getCatalog: (): Promise<AxiosResponse<CatalogObject[]>> => {
     return axios.get(`${getBaseUrl()}/catalog`);
   },
 };

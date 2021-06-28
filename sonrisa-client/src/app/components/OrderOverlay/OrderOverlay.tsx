@@ -12,7 +12,7 @@ interface OrderOverlayProps {
 }
 
 export const OrderOverlay = (props: OrderOverlayProps) => {
-  const { orderState, updateOrder } = useOrdering();
+  // const { orderState, updateOrder } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
 

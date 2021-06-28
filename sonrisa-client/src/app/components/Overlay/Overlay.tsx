@@ -1,12 +1,8 @@
-import { OverlayTemplates } from '@core';
-import { toggleOverlay, useAppDispatch, useAppSelector } from '@redux';
+import { useAppDispatch, useAppSelector } from '@redux';
 import { AnimatePresence, motion } from 'framer-motion';
-import { getTemplate } from './overlay-templates';
 import styles from './Overlay.module.scss';
 
 export const Overlay = () => {
-  const state = useAppSelector((state) => state.overlay);
-
   const dispatch = useAppDispatch();
 
   const templateVariants = {
@@ -37,19 +33,11 @@ export const Overlay = () => {
     if (!(event.target as Element).classList.contains('overlay-container')) {
       return;
     }
-
-    dispatch(
-      toggleOverlay({
-        isOpen: false,
-        template: OverlayTemplates.NONE,
-        context: null,
-      })
-    );
   };
 
-  return state ? (
+  return (
     <AnimatePresence>
-      {state.isOpen && (
+      {/* {state.isOpen && (
         <motion.div
           className={`${styles.overlayContainer} overlay-container`}
           initial="enter"
@@ -67,7 +55,7 @@ export const Overlay = () => {
             {getTemplate(state.template, state.context)}
           </motion.div>
         </motion.div>
-      )}
+      )} */}
     </AnimatePresence>
-  ) : null;
+  );
 };
