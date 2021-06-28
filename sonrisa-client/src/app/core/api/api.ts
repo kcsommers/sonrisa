@@ -1,8 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
+import { CatalogItem, CatalogObject, Order, OrderLineItem } from 'square';
 import { environments } from '../../../environments';
-import { IOrderItem } from '../ordering/IOrderItem';
-import { IPaymentInfo } from '../ordering/IPaymentInfo';
-import { IOrder } from '../ordering/IOrder';
 
 let myInterceptor;
 if (!myInterceptor) {
@@ -69,28 +67,46 @@ const getBaseUrl = () => {
 export const Api = {
   seed: () => axios.get(`${getBaseUrl()}/seed`),
 
-  updateOrder: (
-    orderId: string,
-    items: IOrderItem[]
-  ): Promise<AxiosResponse<IOrder>> => {
-    return axios.post(`${getBaseUrl()}/order/update`, {
-      orderId,
-      items,
+  createOrder: (lineItems: OrderLineItem[]): Promise<AxiosResponse<Order>> => {
+    return axios.post(`${getBaseUrl()}/order/create`, {
+      lineItems,
     });
   },
 
-  getOrder: (orderId: string): Promise<AxiosResponse<IOrder>> => {
+  updateOrder: (
+    orderId: string,
+    version: number,
+    items: OrderLineItem[]
+  ): Promise<AxiosResponse<Order>> => {
+    return axios.post(`${getBaseUrl()}/order/update`, {
+      orderId,
+      items,
+      version,
+    });
+  },
+
+  getOrder: (orderId: string): Promise<AxiosResponse<Order>> => {
     return axios.get(`${getBaseUrl()}/order/${orderId}`);
   },
 
   submitOrder: (
-    paymentInfo: IPaymentInfo,
+    paymentInfo: any,
     orderNumber: number
   ): Promise<AxiosResponse> => {
     return axios.post(`${getBaseUrl()}`);
   },
 
-  getMenu: (): Promise<AxiosResponse> => {
-    return axios.get(`${getBaseUrl()}/menu`);
+  createPayment: async (
+    locationId: string,
+    cardToken: string
+  ): Promise<AxiosResponse> => {
+    return axios.post(`${getBaseUrl()}/order/payments`, {
+      locationId,
+      cardToken,
+    });
+  },
+
+  getCatalog: (): Promise<AxiosResponse<CatalogObject[]>> => {
+    return axios.get(`${getBaseUrl()}/catalog`);
   },
 };

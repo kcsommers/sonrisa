@@ -1,24 +1,24 @@
-import { IOrderableItem, IOrderItem } from '@core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { OrderLineItem } from 'square';
 import styles from './CartItem.module.scss';
 
 type CartItemProps = {
-  orderItem: IOrderItem;
+  orderItem: OrderLineItem;
 };
 
 export const CartItem = ({ orderItem }: CartItemProps) => {
-  const removeFromCart = (item: IOrderableItem): void => {
+  const removeFromCart = (item: OrderLineItem): void => {
     // dispatch(removeItem(item));
   };
 
   return (
-    <div key={orderItem.item.name} className={styles.cartItemWrap}>
-      <button onClick={() => removeFromCart(orderItem.item)}>
+    <div className={styles.cartItemWrap}>
+      {/* <button onClick={() => removeFromCart(orderItem.item)}>
         <FontAwesomeIcon icon={faTimes} />
       </button>
       <div className={styles.cartItemImgWrap}>
-        <img src={orderItem.item.images[0]} alt={orderItem.item.name} />
+        <img src={orderItem.item.imageUrl} alt={orderItem.item.name} />
       </div>
 
       <div className={styles.itemDetailsWrap}>
@@ -33,7 +33,7 @@ export const CartItem = ({ orderItem }: CartItemProps) => {
             ${((orderItem.quantity * orderItem.item.price) / 100).toFixed(2)}
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -1,40 +1,61 @@
-import { IOrderableItem, OverlayTemplates, useOrdering } from '@core';
+import {
+  calculateCost,
+  getItemPrice,
+  getItemVariationId,
+  getMoneyString,
+  logger,
+  useOrdering,
+} from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { toggleOverlay, useAppDispatch } from '@redux';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { CatalogObject } from 'square';
 import { Button } from '../Button/Button';
 import styles from './OrderBox.module.scss';
 
 interface OrderBoxProps {
-  item: IOrderableItem;
+  item: CatalogObject;
 
-  quantity: number;
+  imageUrl: string;
 }
 
-export const OrderBox = (props: OrderBoxProps) => {
-  const { updateOrder } = useOrdering();
+export const OrderBox = ({ item, imageUrl }: OrderBoxProps) => {
+  const { getItemQuantity, setItemQuantity, orderState } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
 
-  const dispatch = useAppDispatch();
+  const [price, setPrice] = useState(BigInt(0));
 
-  const openOverlay = () => {
-    dispatch(
-      toggleOverlay({
-        isOpen: true,
-        template: OverlayTemplates.ORDER,
-        context: props.item,
+  const openOverlay = () => {};
+
+  const updateCart = () => {
+    setItemQuantity(item, quantity)
+      .then((res) => {
+        logger.log('[setItemQuantity response]:::: ', res);
       })
-    );
+      .catch((err) => logger.error(err));
   };
 
   useEffect(() => {
-    // set initial quantity
-    setQuantity(props.quantity);
-  }, [props.quantity]);
+    setPrice(getItemPrice(item) ?? BigInt(0));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // on init effect
+  // updates local quantity ans price if order id changes
+  const orderIdRef = useRef('');
+  useEffect(() => {
+    if (!item || orderState?.id === orderIdRef.current) {
+      return;
+    }
+
+    orderIdRef.current = orderState?.id as string;
+    setQuantity(getItemQuantity(getItemVariationId(item) || ''));
+    setPrice(getItemPrice(item) ?? BigInt(0));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderState?.id]);
 
   return (
     <div className={styles.orderBox}>
@@ -70,24 +91,22 @@ export const OrderBox = (props: OrderBoxProps) => {
         }}
       >
         <div className={styles.imgHoverBg}></div>
-        <img src={props.item.images[0]} alt={props.item.name} />
+        <img src={imageUrl} alt={item.itemData?.name} />
       </div>
       <div className={styles.orderBoxBottom}>
         <div className={styles.nameWrap}>
           <button onClick={() => setQuantity(Math.max(quantity - 1, 0))}>
             <FontAwesomeIcon icon={faMinus} />
           </button>
-          <span>{props.item.name}</span>
+          <span>{item.itemData?.name}</span>
           <button onClick={() => setQuantity(quantity + 1)}>
             <FontAwesomeIcon icon={faPlus} />
           </button>
         </div>
         <Button
-          text={`Update Cart $${((quantity * props.item.price) / 100).toFixed(
-            2
-          )}`}
+          text={`Update Cart ${getMoneyString(calculateCost(price, quantity))}`}
           size="sm"
-          onClick={() => updateOrder(props.item, quantity)}
+          onClick={updateCart}
         />
       </div>
     </div>

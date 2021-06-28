@@ -5,7 +5,7 @@ import auth from './routes/api/auth';
 import order from './routes/api/order';
 import profile from './routes/api/profile';
 import user from './routes/api/user';
-import menu from './routes/api/menu';
+import catalog from './routes/api/catalog';
 
 const app = express();
 
@@ -94,7 +94,7 @@ app.use('/api/auth', auth);
 app.use('/api/user', user);
 app.use('/api/profile', profile);
 app.use('/api/order', order);
-app.use('/api/menu', menu);
+app.use('/api/catalog', catalog);
 
 const port = app.get('port');
 const server = app.listen(port, () =>

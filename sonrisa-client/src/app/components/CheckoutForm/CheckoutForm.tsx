@@ -2,6 +2,16 @@ import { Button } from './../Button/Button';
 import { useState, useEffect } from 'react';
 import styles from './CheckoutForm.module.scss';
 import { RouteComponentProps } from 'react-router';
+import { environments } from '../../../environments';
+import { Api } from '@core';
+
+const PaymentStatuses = {
+  PENDING: 'PENDING',
+
+  SUCCESS: 'SUCCESS',
+
+  ERROR: 'ERROR',
+};
 
 export const CheckoutForm = (props: RouteComponentProps) => {
   const [name, setName] = useState('');
@@ -10,38 +20,67 @@ export const CheckoutForm = (props: RouteComponentProps) => {
 
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const submit = () => {
-    console.log('NAME:::: ', name);
+  const [paymentMethod, setPaymentMethod] = useState(null);
+
+  const [paymentStatus, setPaymentStatus] = useState('');
+
+  const submit = async () => {
+    const _tokenizeCard = async () => {
+      if (!paymentMethod) {
+        return;
+      }
+
+      const tokenResult = await (paymentMethod as any).tokenize();
+      if (tokenResult.status === 'OK') {
+        return tokenResult.token;
+      } else {
+        let errorMessage = `Tokenization failed-status: ${tokenResult.status}`;
+        if (tokenResult.errors) {
+          errorMessage += ` and errors: ${JSON.stringify(tokenResult.errors)}`;
+        }
+        throw new Error(errorMessage);
+      }
+    };
+
+    try {
+      const _cardToken = await _tokenizeCard();
+      console.log('card token:::: ', _cardToken);
+      Api.createPayment(
+        environments[process.env.NODE_ENV].SQUARE_LOCATION_ID as string,
+        _cardToken
+      )
+        .then((res) => {
+          console.log('payment response:::: ', res);
+        })
+        .catch((err) => console.error(err));
+      setPaymentStatus(PaymentStatuses.SUCCESS);
+    } catch (e) {
+      console.error(e.message);
+      setPaymentStatus(PaymentStatuses.ERROR);
+    }
   };
 
   useEffect(() => {
-    const initializeCard = async (payments: any) => {
-      const card = await payments.card();
-      await card.attach('#card-container');
-      return card;
-    };
+    const _initPayments = async () => {
+      const _appId = 'sandbox-sq0idb-IKN0-pQaUMYaI8XxPsxWDA';
+      const _locationId = 'LFDY60R7H887A';
 
-    const initPayments = async () => {
-      const appId = 'sandbox-sq0idb-IKN0-pQaUMYaI8XxPsxWDA';
-      const locationId = 'LFDY60R7H887A';
-
-      const payments = (window as any).Square.payments(appId, locationId);
-      console.log('PAYMENT:::: ', payments);
+      const _payments = (window as any).Square.payments(_appId, _locationId);
       try {
-        const card = await initializeCard(payments);
-        console.log('CArD:::: ', card);
+        const _card = await _payments.card();
+        await _card.attach('#card-container');
+        setPaymentMethod(_card);
       } catch (e) {
         console.error('Initializing Card failed', e);
         return;
       }
     };
 
-    console.log((window as any).Square);
     if (!(window as any).Square) {
       throw new Error('Square.js failed to load properly');
     }
 
-    initPayments();
+    _initPayments();
   }, []);
 
   return (
