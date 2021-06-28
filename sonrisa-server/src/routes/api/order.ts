@@ -1,91 +1,90 @@
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
-import { CreateOrderRequest, CreatePaymentRequest } from 'square';
+import {
+  CreateOrderResponse,
+  CreatePaymentRequest,
+  Order,
+  OrderLineItem,
+  UpdateOrderRequest,
+} from 'square';
 import { v4 as uuidV4 } from 'uuid';
-import Order from '../../models/Order';
+import { environments } from '../../environments';
 import { square } from '../../square';
 
 const router: Router = Router();
 // @route   POST api/order/create
 // @desc    Creates an order
 // @access  Public
-router.post('/create', async (req: Request, res: Response) => {
-  const _order = req.body.order;
+router.post(
+  '/create',
+  async (req: Request, res: Response<CreateOrderResponse>) => {
+    const _lineItems = req.body.lineItems;
+    const _orderData = <Order>{
+      locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
+      lineItems: _lineItems,
+    };
 
-  try {
-    const _response = await square.ordersApi.createOrder({
-      order: {
-        locationId: 'LFDY60R7H887A',
-        lineItems: [
-          {
-            quantity: '1',
-            catalogObjectId: 'OSU7FHOFZSQLABQO67ZNIA7A',
-          },
-        ],
-      },
-      idempotencyKey: uuidV4(),
-    });
-    res.json(_response);
-
-    console.log(_response.result);
-  } catch (error) {
-    console.log(error);
+    try {
+      const _response = await square.ordersApi.createOrder({
+        order: _orderData,
+        idempotencyKey: uuidV4(),
+      });
+      console.log('[create order response]:::: ', _response.body);
+      const _order = JSON.parse(<string>_response.body).order;
+      res.send(_order);
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    }
   }
-});
+);
 
-// @route   POST api/order/update
-// @desc    updates an order
+// @route   PUT api/order/update
+// @desc    updates an order by id
 // @access  Public
-router.post('/update', async (req: Request, res: Response) => {
+router.post('/update', async (req: Request, res: Response<Order>) => {
   try {
-    const _orderId: string = req.body.orderId;
-    const _items: { item: any; quantity: number }[] = req.body.items;
+    const _orderId = <string>req.body.orderId;
+    const _lineItems = <OrderLineItem[]>req.body.items;
+    const _version = <number>req.body.version;
 
-    // only store item ids in db
-    const _itemsMapped = _items.map((i) => ({
-      item: i.item.id,
-      quantity: i.quantity,
-    }));
+    const _request = <UpdateOrderRequest>{
+      idempotencyKey: uuidV4(),
+      order: {
+        locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
+        lineItems: _lineItems,
+        version: _version,
+      },
+    };
 
-    const _order = !_orderId
-      ? await Order.create({ items: _itemsMapped })
-      : await Order.findOneAndUpdate(
-          { _id: _orderId },
-          { items: _itemsMapped }
-        );
-
-    res.json(_order);
+    const _response = await square.ordersApi.updateOrder(_orderId, _request);
+    console.log('[update order response]:::: ', _response.body);
+    const _order = JSON.parse(<string>_response.body).order;
+    res.send(_order);
   } catch (err) {
-    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
+    console.error(err);
+    res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
   }
 });
 
 // @route   GET api/order/:id
 // @desc    Retrieves an order by id
 // @access  Public
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', async (req: Request, res: Response<Order>) => {
   const _orderId = req.params.id;
 
   if (!_orderId) {
-    return res.status(HttpStatusCodes.BAD_REQUEST).send('Invalid Order Id');
+    return res.sendStatus(HttpStatusCodes.BAD_REQUEST);
   }
 
   try {
-    const _order = await Order.findById(_orderId).populate({
-      path: 'items',
-      populate: {
-        path: 'item',
-        model: 'OrderableItem',
-      },
-    });
+    const _response = await square.ordersApi.retrieveOrder(_orderId);
 
-    if (!_order) {
-      return res.status(HttpStatusCodes.BAD_REQUEST).send('Invalid Order Id');
-    }
-
-    res.json(_order);
+    console.log('[create order response]:::: ', _response.body);
+    const _order = JSON.parse(<string>_response.body).order;
+    res.send(_order);
   } catch (err) {
-    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
+    res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
   }
 });
 
@@ -100,16 +99,14 @@ router.delete('/:id', async (req: Request, res: Response) => {
   }
 
   try {
-    const _result =
-      _orderId === '-1'
-        ? await Order.deleteMany()
-        : await Order.findOneAndDelete({ _id: _orderId });
-
-    if (!_result) {
-      return res.status(HttpStatusCodes.BAD_REQUEST).send('Invalid Order Id');
-    }
-
-    res.json(_result);
+    // const _result =
+    //   _orderId === '-1'
+    //     ? await Order.deleteMany()
+    //     : await Order.findOneAndDelete({ _id: _orderId });
+    // if (!_result) {
+    //   return res.status(HttpStatusCodes.BAD_REQUEST).send('Invalid Order Id');
+    // }
+    // res.json(_result);
   } catch (err) {
     res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
   }

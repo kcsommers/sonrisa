@@ -8,5 +8,3 @@ export const square = new Client({
       : Environment.Sandbox,
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
 });
-
-console.log('access token:::: ', process.env.SQUARE_ACCESS_TOKEN);
