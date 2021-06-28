@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import { square } from '../../square';
 import { CatalogImage, CatalogItem, CatalogObject } from 'square';
+const JSONbig = require('json-bigint');
 
 class CatalogItemTypes {
   public static ITEM = 'ITEM';
@@ -11,34 +12,26 @@ class CatalogItemTypes {
 
 const router: Router = Router();
 
-// SQUARE ROUTE
-router.get('/', async (req: Request, res: Response<CatalogItem[] | string>) => {
-  try {
-    const _res = await square.catalogApi.listCatalog('', 'image,item');
-    const _items = _res.result.objects;
+/**
+ * @route POST api/order/create
+ * @access PUBLIC
+ * @description Fetches the entire square catalog and returns as a json string
+ * Because of limitation on bigint serialization the price is converted to a string
+ * and must be converted back to bigint client side
+ */
+router.get(
+  '/',
+  async (req: Request, res: Response<CatalogObject[] | Error>) => {
+    try {
+      const _res = await square.catalogApi.listCatalog('', 'image,item');
+      const _items = _res.result.objects;
 
-    const _imageMap = new Map<string, string>();
-    const _catalogItems: CatalogItem[] = _items
-      .filter((o) => {
-        if (o.type === CatalogItemTypes.IMAGE) {
-          _imageMap.set(o.id, o.imageData.url);
-          return false;
-        }
-
-        return true;
-      })
-      .map((o) => {
-        return {
-          ...o.itemData,
-          imageUrl: '',
-        };
-      });
-
-    res.json(_catalogItems);
-  } catch (err) {
-    console.error(err.message);
-    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
+      res.send(JSON.parse(JSONbig.stringify(_items)));
+    } catch (err) {
+      console.error(err.message);
+      res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    }
   }
-});
+);
 
 export default router;

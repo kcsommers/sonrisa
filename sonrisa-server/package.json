@@ -6,9 +6,9 @@
   "license": "MIT",
   "scripts": {
     "tsc": "tsc",
-    "watch-tsc": "tsc -w",
-    "deploy": "node dist/src/server.js",
-    "watch-deploy": "nodemon dist/src/server.js",
+    "watch-tsc": "NODE_ENV=devolopment tsc -w",
+    "deploy": "NODE_ENV=production node dist/src/server.js",
+    "watch-deploy": "NODE_ENV=development nodemon dist/src/server.js",
     "server": "concurrently \"npm run watch-tsc\" \"npm run watch-deploy\"",
     "start": "npm run deploy",
     "heroku-postbuild": "npm run tsc"
@@ -22,6 +22,7 @@
     "express-validator": "^5.3.1",
     "gravatar": "^1.8.0",
     "http-status-codes": "^1.3.2",
+    "json-bigint": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.7",
     "request": "^2.88.0",
