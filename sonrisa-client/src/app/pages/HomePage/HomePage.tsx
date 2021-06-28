@@ -1,28 +1,23 @@
 import { Button, LoadingSpinner } from '@components';
-import { Api, IOrderableItem } from '@core';
+import { logger, useCatalog } from '@core';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
-import { useAppSelector } from '@redux';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 
 export const HomePage = (props: RouteComponentProps) => {
-  const [doughnuts, setDoughnuts] = useState<IOrderableItem[]>([]);
+  const { setCatalogObjects, catalogItems, catalogImageMap } = useCatalog();
 
-  const orderState = useAppSelector((state) => state.order);
-
-  // get menu effect
+  // on init effect
   useEffect(() => {
-    if (doughnuts && doughnuts.length) {
-      return;
-    }
-
-    Api.getMenu()
-      .then((res) => setDoughnuts(res.data))
-      .catch((err) => console.error(err));
-  }, [doughnuts]);
+    // set the catalog objects
+    setCatalogObjects()
+      .then((res) => logger.log('[Got menu]'))
+      .catch((err) => logger.error(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={styles.homePageWrap}>
@@ -47,16 +42,13 @@ export const HomePage = (props: RouteComponentProps) => {
         </p>
         <div className={`${styles.orderBoxesWrap}`}>
           <h3>Menu</h3>
-          {doughnuts && doughnuts.length ? (
+          {catalogItems && catalogItems.length ? (
             <div className={styles.orderBoxesInner}>
-              {doughnuts.map((d) => (
-                <div key={d.name} className={styles.orderBoxWrap}>
+              {catalogItems.map((item) => (
+                <div key={item.id} className={styles.orderBoxWrap}>
                   <OrderBox
-                    item={d}
-                    quantity={
-                      orderState?.items.find((i) => i.item._id === d._id)
-                        ?.quantity || 0
-                    }
+                    item={item}
+                    imageUrl={catalogImageMap.get(item.imageId as string) || ''}
                   />
                 </div>
               ))}

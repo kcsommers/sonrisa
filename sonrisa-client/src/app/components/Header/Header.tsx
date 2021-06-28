@@ -64,9 +64,9 @@ export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
             {showCart && (
               <button className={styles.cartBtn} onClick={openCart}>
                 <FontAwesomeIcon icon={faShoppingCart} />
-                {orderState && orderState.items.length > 0 && (
+                {/* {orderState && orderState.items.length > 0 && (
                   <span>{orderState?.items.length}</span>
-                )}
+                )} */}
               </button>
             )}
           </div>
