@@ -1,18 +1,25 @@
 import { Button } from '@components';
-import { useOrdering } from '@core';
+import {
+  getItemDescription,
+  getItemName,
+  useCatalog,
+  useOrdering,
+} from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef } from 'react';
-import { OrderLineItem } from '@square';
+import { CatalogObject, OrderLineItem } from '@square';
 import { ImageSlider } from './../ImageSlider/ImageSlider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './OrderOverlay.module.scss';
 
 interface OrderOverlayProps {
-  item: OrderLineItem;
+  item: CatalogObject;
 }
 
-export const OrderOverlay = (props: OrderOverlayProps) => {
-  // const { orderState, updateOrder } = useOrdering();
+export const OrderOverlay = ({ item }: OrderOverlayProps) => {
+  const { orderState } = useOrdering();
+
+  const { catalogImageMap } = useCatalog();
 
   const [quantity, setQuantity] = useState(0);
 
@@ -34,14 +41,15 @@ export const OrderOverlay = (props: OrderOverlayProps) => {
   //   // setQuantity(_orderItem.quantity);
   // }, [orderState?.items, props.item.id]);
 
+  console.log('ID:::: ', item?.id, catalogImageMap.keys());
   return (
     <div className={`${styles.templateWrap}`}>
       <div className={styles.overlayBody}>
-        <ImageSlider images={[]} />
+        <ImageSlider images={[catalogImageMap.get(item?.id || '') || '']} />
 
         <div className={styles.descriptionWrap}>
-          <h3>{props.item.name}</h3>
-          {/* <p>{props.item.description}</p> */}
+          <h3>{getItemName(item)}</h3>
+          <p>{getItemDescription(item)}</p>
         </div>
 
         <div className={styles.quantityWrap}>

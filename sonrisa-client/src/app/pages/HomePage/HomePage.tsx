@@ -1,14 +1,29 @@
-import { Button, LoadingSpinner } from '@components';
+import { Button, LoadingSpinner, OrderOverlay, Overlay } from '@components';
 import { logger, useCatalog } from '@core';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { CatalogObject } from '@square';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 
 export const HomePage = (props: RouteComponentProps) => {
   const { setCatalogObjects, catalogItems, catalogImageMap } = useCatalog();
+
+  const [orderOverlayOpen, setOrderOverlayOpen] = useState(false);
+
+  const [orderOverlayItem, setOrderOverlayItem] = useState<CatalogObject>();
+
+  const openOverlay = (selectedItem: CatalogObject): void => {
+    setOrderOverlayItem(selectedItem);
+    setOrderOverlayOpen(true);
+  };
+
+  const closeOverlay = (): void => {
+    setOrderOverlayItem(undefined);
+    setOrderOverlayOpen(false);
+  };
 
   // on init effect
   useEffect(() => {
@@ -51,6 +66,7 @@ export const HomePage = (props: RouteComponentProps) => {
                     imageUrl={
                       catalogImageMap.get(item.image_id as string) || ''
                     }
+                    onClick={openOverlay}
                   />
                 </div>
               ))}
@@ -111,6 +127,9 @@ export const HomePage = (props: RouteComponentProps) => {
           </div>
         </div>
       </section>
+      <Overlay isOpen={orderOverlayOpen} onClose={closeOverlay}>
+        <OrderOverlay item={orderOverlayItem as CatalogObject} />
+      </Overlay>
     </div>
   );
 };
