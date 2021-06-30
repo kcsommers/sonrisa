@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { CatalogObject } from '@square';
+import { CatalogObject } from 'square';
 import { Button } from '../Button/Button';
 import styles from './OrderBox.module.scss';
 

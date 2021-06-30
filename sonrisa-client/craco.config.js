@@ -23,7 +23,6 @@ module.exports = {
       '@images': path.resolve(__dirname, 'src/assets/images'),
       '@redux': path.resolve(__dirname, 'src/app/redux'),
       '@core': path.resolve(__dirname, 'src/app/core/public.ts'),
-      '@square': path.resolve(__dirname, 'src/app/square/public.ts'),
     },
   },
   devServer: {

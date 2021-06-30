@@ -1,3 +1,4 @@
+import { getCamelcaseKeys } from '../../core/public';
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import {
@@ -6,6 +7,7 @@ import {
   Order,
   OrderLineItem,
   UpdateOrderRequest,
+  UpdateOrderResponse,
 } from 'square';
 import { v4 as uuidV4 } from 'uuid';
 import { environments } from '../../environments';
@@ -15,29 +17,30 @@ const router: Router = Router();
 // @route   POST api/order/create
 // @desc    Creates an order
 // @access  Public
-router.post(
-  '/create',
-  async (req: Request, res: Response<CreateOrderResponse>) => {
-    const _lineItems = req.body.lineItems;
-    const _orderData = <Order>{
-      locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
-      lineItems: _lineItems,
-    };
+router.post('/create', async (req: Request, res: Response<Order>) => {
+  const _lineItems = req.body.lineItems;
+  const _orderData = <Order>{
+    locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
+    lineItems: _lineItems,
+  };
 
-    try {
-      const _response = await square.ordersApi.createOrder({
-        order: _orderData,
-        idempotencyKey: uuidV4(),
-      });
-      console.log('[create order response]:::: ', _response.body);
-      const _order = JSON.parse(<string>_response.body).order;
-      res.send(_order);
-    } catch (error) {
-      console.error(error);
-      res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
-    }
+  try {
+    const _response = await square.ordersApi.createOrder({
+      order: _orderData,
+      idempotencyKey: uuidV4(),
+    });
+    console.log('[create order response]:::: ', _response.body);
+    const _responseParsed = <CreateOrderResponse>(
+      JSON.parse(<string>_response.body)
+    );
+    const _camelCaseOrder = <Order>getCamelcaseKeys(_responseParsed.order);
+
+    res.send(_camelCaseOrder);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
   }
-);
+});
 
 // @route   PUT api/order/update
 // @desc    updates an order by id
@@ -81,8 +84,15 @@ router.get('/:id', async (req: Request, res: Response<Order>) => {
     const _response = await square.ordersApi.retrieveOrder(_orderId);
 
     console.log('[create order response]:::: ', _response.body);
-    const _order = JSON.parse(<string>_response.body).order;
-    res.send(_order);
+    const _resParsed = <UpdateOrderResponse>JSON.parse(<string>_response.body);
+    const _camelCaseOrder = <Order>getCamelcaseKeys(_resParsed.order);
+
+    if (!_camelCaseOrder) {
+      console.error('Error converting to camel case');
+      return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    }
+
+    res.send(_camelCaseOrder);
   } catch (err) {
     res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
   }
