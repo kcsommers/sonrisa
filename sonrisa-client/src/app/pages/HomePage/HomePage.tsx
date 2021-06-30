@@ -48,7 +48,9 @@ export const HomePage = (props: RouteComponentProps) => {
                 <div key={item.id} className={styles.orderBoxWrap}>
                   <OrderBox
                     item={item}
-                    imageUrl={catalogImageMap.get(item.imageId as string) || ''}
+                    imageUrl={
+                      catalogImageMap.get(item.image_id as string) || ''
+                    }
                   />
                 </div>
               ))}

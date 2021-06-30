@@ -1,6 +1,6 @@
 import { setOrder, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
-import { CatalogObject, Order, OrderLineItem } from 'square';
+import { CatalogObject, Order, OrderLineItem } from '@square';
 import { Api } from '../api/api';
 import { logger } from '../logger';
 import { getItemVariationId } from '../utils';
@@ -38,14 +38,14 @@ export const useOrdering = (): IOrderingHook => {
   const getItemQuantity = (itemId: string): number => {
     if (
       !orderState ||
-      !(orderState as any).line_items ||
-      !(orderState as any).line_items.length
+      !orderState.line_items ||
+      !orderState.line_items.length
     ) {
       return 0;
     }
 
-    const _item = (orderState as any).line_items.find(
-      (item: any) => (item as any).catalog_object_id === itemId
+    const _item = orderState.line_items.find(
+      (item) => item.catalog_object_id === itemId
     );
     if (!_item) {
       return 0;
@@ -59,7 +59,7 @@ export const useOrdering = (): IOrderingHook => {
     quantity: number
   ): Promise<Order> => {
     // make a copy of the current order items
-    const _clonedItems = cloneDeep((orderState as any)?.line_items || []);
+    const _clonedItems = cloneDeep(orderState?.line_items || []);
     console.log('[cloned items]:::: ', orderState, _clonedItems);
     // look for the item being updated
     let _lineItem = _clonedItems.find((i: any) => {
@@ -76,7 +76,7 @@ export const useOrdering = (): IOrderingHook => {
       // otherwise create a new line item and push it into the items array
       _lineItem = {
         quantity: String(quantity),
-        catalogObjectId: getItemVariationId(item),
+        catalog_object_id: getItemVariationId(item),
       };
 
       _clonedItems?.push(_lineItem);
