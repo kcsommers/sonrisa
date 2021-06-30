@@ -1,6 +1,6 @@
 import { setOrder, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
-import { CatalogObject, Order, OrderLineItem } from '@square';
+import { CatalogObject, Order, OrderLineItem } from 'square';
 import { Api } from '../api/api';
 import { logger } from '../logger';
 import { getItemVariationId } from '../utils';
@@ -32,20 +32,18 @@ export const useOrdering = (): IOrderingHook => {
 
   const getOrderById = async (orderId: string): Promise<Order> => {
     const _response = await Api.getOrder(orderId);
+    console.log('order:::: ', _response.data);
+
     return _response.data;
   };
 
   const getItemQuantity = (itemId: string): number => {
-    if (
-      !orderState ||
-      !orderState.line_items ||
-      !orderState.line_items.length
-    ) {
+    if (!orderState || !orderState.lineItems || !orderState.lineItems.length) {
       return 0;
     }
 
-    const _item = orderState.line_items.find(
-      (item) => item.catalog_object_id === itemId
+    const _item = orderState.lineItems.find(
+      (item) => item.catalogObjectId === itemId
     );
     if (!_item) {
       return 0;
@@ -59,12 +57,10 @@ export const useOrdering = (): IOrderingHook => {
     quantity: number
   ): Promise<Order> => {
     // make a copy of the current order items
-    const _clonedItems = cloneDeep(orderState?.line_items || []);
-    console.log('[cloned items]:::: ', orderState, _clonedItems);
+    const _clonedItems = cloneDeep(orderState?.lineItems || []);
     // look for the item being updated
     let _lineItem = _clonedItems.find((i: any) => {
-      console.log('item:::: ', i.catalog_object_id, getItemVariationId(item));
-      return i.catalog_object_id === getItemVariationId(item);
+      return i.catalogObjectId === getItemVariationId(item);
     });
 
     console.log('_LINE', _lineItem);
@@ -76,13 +72,11 @@ export const useOrdering = (): IOrderingHook => {
       // otherwise create a new line item and push it into the items array
       _lineItem = {
         quantity: String(quantity),
-        catalog_object_id: getItemVariationId(item),
+        catalogObjectId: getItemVariationId(item),
       };
 
       _clonedItems?.push(_lineItem);
     }
-
-    console.log('cloned items:::: ', _clonedItems);
 
     try {
       // if theres an existing id update the order

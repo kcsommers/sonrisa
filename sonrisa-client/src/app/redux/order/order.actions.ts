@@ -1,4 +1,4 @@
-import { Order, OrderLineItem } from '@square';
+import { Order, OrderLineItem } from 'square';
 
 export const SET_ORDER = 'SET_ORDER';
 
