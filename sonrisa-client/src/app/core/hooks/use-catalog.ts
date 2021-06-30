@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CatalogObject } from '@square';
+import { CatalogObject } from 'square';
 import { Api } from '../api/api';
 import { CatalogObjectTypes } from '../catalog/CatalogObjectTypes';
 import { logger } from '../logger';
@@ -39,13 +39,13 @@ export const useCatalog = (): ICatalogHook => {
           // the price needs to be converted from a string to bigint
           // in this very gross way
           if (
-            catalogObject.item_data?.variations?.[0]?.item_variation_data
-              ?.price_money
+            catalogObject.itemData?.variations?.[0]?.itemVariationData
+              ?.priceMoney
           ) {
-            catalogObject.item_data.variations[0].item_variation_data.price_money.amount =
+            catalogObject.itemData.variations[0].itemVariationData.priceMoney.amount =
               BigInt(
-                catalogObject.item_data?.variations?.[0]?.item_variation_data
-                  ?.price_money?.amount ?? 0
+                catalogObject.itemData?.variations?.[0]?.itemVariationData
+                  ?.priceMoney?.amount ?? 0
               );
           }
 
@@ -54,10 +54,7 @@ export const useCatalog = (): ICatalogHook => {
 
         // if its an image filter it out and store the url
         if (catalogObject.type === CatalogObjectTypes.IMAGE) {
-          _imageMap.set(
-            catalogObject.id,
-            <string>catalogObject.image_data?.url
-          );
+          _imageMap.set(catalogObject.id, <string>catalogObject.imageData?.url);
           return false;
         }
 
