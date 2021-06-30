@@ -1,30 +1,30 @@
 import { Reducer } from 'react';
 import { AnyAction } from 'redux';
-import { Order } from '@square';
+import { Order } from 'square';
 import { SET_ORDER } from './order.actions';
 
 const initialState = <Order>{
   id: '',
 
-  location_id: '',
+  locationId: '',
 
-  customer_id: '',
+  customerId: '',
 
-  line_items: [],
+  lineItems: [],
 
   state: '',
 
-  total_money: {
+  totalMoney: {
     amount: BigInt(0),
     currency: 'USD',
   },
 
-  total_tax_money: {
+  totalTaxMoney: {
     amount: BigInt(0),
     currency: 'USD',
   },
 
-  total_tip_money: {
+  totalTipMoney: {
     amount: BigInt(0),
     currency: 'USD',
   },

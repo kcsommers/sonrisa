@@ -7,7 +7,7 @@ import {
 } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef } from 'react';
-import { CatalogObject, OrderLineItem } from '@square';
+import { OrderLineItem } from 'square';
 import { ImageSlider } from './../ImageSlider/ImageSlider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './OrderOverlay.module.scss';
