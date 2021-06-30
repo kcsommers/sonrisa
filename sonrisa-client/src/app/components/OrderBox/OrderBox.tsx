@@ -1,5 +1,6 @@
 import {
   calculateCost,
+  getItemName,
   getItemPrice,
   getItemVariationId,
   getMoneyString,
@@ -11,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { CatalogObject } from 'square';
+import { CatalogObject } from '@square';
 import { Button } from '../Button/Button';
 import styles from './OrderBox.module.scss';
 
@@ -91,14 +92,14 @@ export const OrderBox = ({ item, imageUrl }: OrderBoxProps) => {
         }}
       >
         <div className={styles.imgHoverBg}></div>
-        <img src={imageUrl} alt={item.itemData?.name} />
+        <img src={imageUrl} alt={getItemName(item)} />
       </div>
       <div className={styles.orderBoxBottom}>
         <div className={styles.nameWrap}>
           <button onClick={() => setQuantity(Math.max(quantity - 1, 0))}>
             <FontAwesomeIcon icon={faMinus} />
           </button>
-          <span>{item.itemData?.name}</span>
+          <span>{getItemName(item)}</span>
           <button onClick={() => setQuantity(quantity + 1)}>
             <FontAwesomeIcon icon={faPlus} />
           </button>
