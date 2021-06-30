@@ -20,16 +20,16 @@ interface OrderBoxProps {
   item: CatalogObject;
 
   imageUrl: string;
+
+  onClick: (item: CatalogObject) => void;
 }
 
-export const OrderBox = ({ item, imageUrl }: OrderBoxProps) => {
+export const OrderBox = ({ item, imageUrl, onClick }: OrderBoxProps) => {
   const { getItemQuantity, setItemQuantity, orderState } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
 
   const [price, setPrice] = useState(BigInt(0));
-
-  const openOverlay = () => {};
 
   const updateCart = () => {
     setItemQuantity(item, quantity)
@@ -85,12 +85,7 @@ export const OrderBox = ({ item, imageUrl }: OrderBoxProps) => {
           </motion.span>
         )}
       </AnimatePresence>
-      <div
-        className={styles.imgWrap}
-        onClick={() => {
-          openOverlay();
-        }}
-      >
+      <div className={styles.imgWrap} onClick={() => onClick(item)}>
         <div className={styles.imgHoverBg}></div>
         <img src={imageUrl} alt={getItemName(item)} />
       </div>
