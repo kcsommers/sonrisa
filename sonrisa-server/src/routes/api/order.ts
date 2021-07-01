@@ -94,6 +94,7 @@ router.get('/:id', async (req: Request, res: Response<Order>) => {
 
     res.send(_camelCaseOrder);
   } catch (err) {
+    console.error(err);
     res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
   }
 });

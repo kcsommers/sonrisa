@@ -1,0 +1,9 @@
+export const catalogImages = {
+  development: {
+    NO64X2IBHQJA67BLARL2J7AT: [],
+    QKZWNLHASJKT7WUONVZXABCI: [],
+    B7F6XU3IPNYPR4HXBP5GBJEN: [],
+    VQ7HS4EXUN7ZTNAQPZTYZUIO: [],
+    Y5CMOCXDDJ5ENZQ7BO7GVQ6F: [],
+  },
+};
