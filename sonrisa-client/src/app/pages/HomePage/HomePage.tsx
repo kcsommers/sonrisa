@@ -4,7 +4,7 @@ import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
 import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { CatalogObject } from '@square';
+import { CatalogObject } from 'square';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 
@@ -63,7 +63,10 @@ export const HomePage = (props: RouteComponentProps) => {
                 <div key={item.id} className={styles.orderBoxWrap}>
                   <OrderBox
                     item={item}
-                    imageUrl={catalogImageMap.get(item.imageId as string) || ''}
+                    imageUrl={
+                      catalogImageMap[item.imageId as string]?.[0] || ''
+                    }
+                    onClick={openOverlay}
                   />
                 </div>
               ))}
