@@ -32,8 +32,6 @@ export const useOrdering = (): IOrderingHook => {
 
   const getOrderById = async (orderId: string): Promise<Order> => {
     const _response = await Api.getOrder(orderId);
-    console.log('order:::: ', _response.data);
-
     return _response.data;
   };
 

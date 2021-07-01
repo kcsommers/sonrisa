@@ -1,4 +1,3 @@
-import { Button } from '@components';
 import {
   getItemDescription,
   getItemName,
@@ -6,10 +5,11 @@ import {
   useOrdering,
 } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect, useRef } from 'react';
-import { OrderLineItem } from 'square';
-import { ImageSlider } from './../ImageSlider/ImageSlider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRef, useState } from 'react';
+import { CatalogObject } from 'square';
+
+import { ImageSlider } from './../ImageSlider/ImageSlider';
 import styles from './OrderOverlay.module.scss';
 
 interface OrderOverlayProps {
@@ -41,11 +41,10 @@ export const OrderOverlay = ({ item }: OrderOverlayProps) => {
   //   // setQuantity(_orderItem.quantity);
   // }, [orderState?.items, props.item.id]);
 
-  console.log('ID:::: ', item?.id, catalogImageMap.keys());
   return (
     <div className={`${styles.templateWrap}`}>
       <div className={styles.overlayBody}>
-        <ImageSlider images={[catalogImageMap.get(item?.id || '') || '']} />
+        <ImageSlider images={catalogImageMap[item.imageId || ''] || []} />
 
         <div className={styles.descriptionWrap}>
           <h3>{getItemName(item)}</h3>

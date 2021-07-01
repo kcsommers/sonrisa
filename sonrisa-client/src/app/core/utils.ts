@@ -1,7 +1,6 @@
 import { CatalogObject } from 'square';
 
 export const calculateCost = (itemPrice: bigint, quantity: number): bigint => {
-  console.log('typeof::::', typeof itemPrice);
   return BigInt(itemPrice) * BigInt(quantity);
 };
 
@@ -31,5 +30,5 @@ export const getItemName = (item: CatalogObject): string => {
 };
 
 export const getItemDescription = (item: CatalogObject): string => {
-  return item.item_data?.description || '';
+  return item.itemData?.description || '';
 };
