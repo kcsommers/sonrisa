@@ -1,7 +1,7 @@
 import { CatalogObject } from 'square';
 
 export const calculateCost = (itemPrice: bigint, quantity: number): bigint => {
-  return itemPrice * BigInt(quantity);
+  return BigInt(itemPrice) * BigInt(quantity);
 };
 
 export const getMoneyString = (amount: bigint): string => {
@@ -27,4 +27,8 @@ export const getItemVariation = (
 
 export const getItemName = (item: CatalogObject): string => {
   return item.itemData?.name || '';
+};
+
+export const getItemDescription = (item: CatalogObject): string => {
+  return item.itemData?.description || '';
 };

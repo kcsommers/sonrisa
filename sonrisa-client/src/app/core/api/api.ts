@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { CatalogItem, CatalogObject, Order, OrderLineItem } from 'square';
 import { environments } from '../../../environments';
+import { IGetCatalogResponse } from './interfaces/IGetCatalogResponse';
 
 let myInterceptor;
 if (!myInterceptor) {
@@ -106,7 +107,7 @@ export const Api = {
     });
   },
 
-  getCatalog: (): Promise<AxiosResponse<CatalogObject[]>> => {
+  getCatalog: (): Promise<AxiosResponse<IGetCatalogResponse>> => {
     return axios.get(`${getBaseUrl()}/catalog`);
   },
 };

@@ -2,9 +2,16 @@ import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import { square } from '../../square';
 import { CatalogImage, CatalogItem, CatalogObject } from 'square';
+import { catalogImages } from '../../data/catalog-images';
 const JSONbig = require('json-bigint');
 
-class CatalogItemTypes {
+interface IGetCatalogResponse {
+  catalogItems: CatalogObject[];
+
+  catalogImageMap: { [imageId: string]: string[] };
+}
+
+class CatalogObjectTypes {
   public static ITEM = 'ITEM';
 
   public static IMAGE = 'IMAGE';
@@ -21,12 +28,38 @@ const router: Router = Router();
  */
 router.get(
   '/',
-  async (req: Request, res: Response<CatalogObject[] | Error>) => {
+  async (req: Request, res: Response<IGetCatalogResponse | Error>) => {
     try {
       const _res = await square.catalogApi.listCatalog('', 'image,item');
-      const _items = _res.result.objects;
+      const _allCatalogObjects = _res.result.objects;
 
-      res.send(JSON.parse(JSONbig.stringify(_items)));
+      const _imageMap: { [imageId: string]: string[] } = {};
+      const _items = <CatalogObject[]>_allCatalogObjects.filter(
+        (catalogObject) => {
+          // if its a catalog item add it to the array
+          if (catalogObject.type === CatalogObjectTypes.ITEM) {
+            return true;
+          }
+
+          // if its an image filter it out and store the url
+          if (catalogObject.type === CatalogObjectTypes.IMAGE) {
+            const _allImages =
+              catalogImages[process.env.NODE_ENV][catalogObject.id] || [];
+
+            _imageMap[catalogObject.id] = [
+              catalogObject.imageData?.url as string,
+              ..._allImages,
+            ];
+            return false;
+          }
+
+          return false;
+        }
+      );
+
+      const _itemsParsed = JSON.parse(JSONbig.stringify(_items));
+
+      res.send({ catalogItems: _itemsParsed, catalogImageMap: _imageMap });
     } catch (err) {
       console.error(err.message);
       res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
