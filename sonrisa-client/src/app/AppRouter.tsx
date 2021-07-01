@@ -32,7 +32,6 @@ export const AppRouter = () => {
         </Switch>
       </div>
       <Footer />
-      <Overlay />
       <Cart />
     </Router>
   );
