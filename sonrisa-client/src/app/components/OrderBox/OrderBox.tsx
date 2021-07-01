@@ -31,9 +31,16 @@ export const OrderBox = ({ item, imageUrl, onClick }: OrderBoxProps) => {
 
   const [price, setPrice] = useState(BigInt(0));
 
+  const prevQuantityRef = useRef(quantity);
+
   const updateCart = () => {
+    if (quantity === prevQuantityRef.current) {
+      return;
+    }
+
     setItemQuantity(item, quantity)
       .then((res) => {
+        prevQuantityRef.current = quantity;
         logger.log('[setItemQuantity response]:::: ', res);
       })
       .catch((err) => logger.error(err));
@@ -52,8 +59,11 @@ export const OrderBox = ({ item, imageUrl, onClick }: OrderBoxProps) => {
       return;
     }
 
+    const _quantity = getItemQuantity(getItemVariationId(item) || '');
+
+    prevQuantityRef.current = _quantity;
     orderIdRef.current = orderState?.id as string;
-    setQuantity(getItemQuantity(getItemVariationId(item) || ''));
+    setQuantity(_quantity);
     setPrice(getItemPrice(item) ?? BigInt(0));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderState?.id]);
