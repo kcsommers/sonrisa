@@ -10,14 +10,6 @@ export const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const btns = document.querySelectorAll('button');
-    btns.forEach((b) => {
-      b.addEventListener('click', () => b.blur());
-    });
-    return () => {};
-  }, []);
-
-  useEffect(() => {
     const _orderId = getOrderId();
     if (!_orderId) {
       return;
