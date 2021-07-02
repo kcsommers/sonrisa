@@ -1,5 +1,21 @@
-import { Button, LoadingSpinner, OrderOverlay, Overlay } from '@components';
-import { logger, useCatalog } from '@core';
+import {
+  Button,
+  LoadingSpinner,
+  OrderOverlay,
+  Overlay,
+  SnackbarComponent,
+} from '@components';
+import {
+  ColorTypes,
+  ISnackbarConfig,
+  logger,
+  useCatalog,
+  useSnackbar,
+} from '@core';
+import {
+  faCheckCircle,
+  faExclamationCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
 import { useEffect, useState } from 'react';
@@ -9,6 +25,8 @@ import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 
 export const HomePage = (props: RouteComponentProps) => {
+  const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
+
   const { setCatalogObjects, catalogItems, catalogImageMap } = useCatalog();
 
   const [orderOverlayOpen, setOrderOverlayOpen] = useState(false);
@@ -23,6 +41,24 @@ export const HomePage = (props: RouteComponentProps) => {
   const closeOverlay = (): void => {
     setOrderOverlayItem(undefined);
     setOrderOverlayOpen(false);
+  };
+
+  const onOrderUpdate = (success: boolean) => {
+    setSnackbarVisible(
+      success
+        ? {
+            message: 'Cart Updated',
+            icon: faCheckCircle,
+            iconColor: 'success',
+            duration: 4000,
+          }
+        : {
+            message: 'Error Updating Cart',
+            icon: faExclamationCircle,
+            iconColor: 'error',
+            duration: 4000,
+          }
+    );
   };
 
   // on init effect
@@ -67,6 +103,7 @@ export const HomePage = (props: RouteComponentProps) => {
                       catalogImageMap[item.imageId as string]?.[0] || ''
                     }
                     onClick={openOverlay}
+                    onOrderUpdate={onOrderUpdate}
                   />
                 </div>
               ))}
@@ -130,6 +167,15 @@ export const HomePage = (props: RouteComponentProps) => {
       <Overlay isOpen={orderOverlayOpen} onClose={closeOverlay}>
         <OrderOverlay item={orderOverlayItem as CatalogObject} />
       </Overlay>
+      <SnackbarComponent
+        isVisible={snackbarVisible}
+        config={{
+          message: 'Cart Updated',
+          icon: faCheckCircle,
+          iconColor: ColorTypes.SUCCESS,
+          duration: 500,
+        }}
+      />
     </div>
   );
 };
