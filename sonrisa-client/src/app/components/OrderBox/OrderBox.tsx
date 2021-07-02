@@ -10,7 +10,6 @@ import {
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { CatalogObject } from 'square';
 import { Button } from '../Button/Button';
@@ -22,9 +21,16 @@ interface OrderBoxProps {
   imageUrl: string;
 
   onClick: (item: CatalogObject) => void;
+
+  onOrderUpdate: (success: boolean) => void;
 }
 
-export const OrderBox = ({ item, imageUrl, onClick }: OrderBoxProps) => {
+export const OrderBox = ({
+  item,
+  imageUrl,
+  onClick,
+  onOrderUpdate,
+}: OrderBoxProps) => {
   const { getItemQuantity, setItemQuantity, orderState } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
@@ -41,9 +47,13 @@ export const OrderBox = ({ item, imageUrl, onClick }: OrderBoxProps) => {
     setItemQuantity(item, quantity)
       .then((res) => {
         prevQuantityRef.current = quantity;
+        onOrderUpdate(true);
         logger.log('[setItemQuantity response]:::: ', res);
       })
-      .catch((err) => logger.error(err));
+      .catch((err) => {
+        onOrderUpdate(false);
+        logger.error(err);
+      });
   };
 
   useEffect(() => {
