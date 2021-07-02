@@ -58,6 +58,7 @@ export const Overlay = ({
           onClick={close}
         >
           <motion.div
+            className={styles.overlayInner}
             initial="enter"
             animate="center"
             exit="exit"

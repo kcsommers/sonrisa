@@ -4,7 +4,8 @@ div.templateWrap {
   flex: 1;
   background-color: #fff;
   box-shadow: $box-shadow;
-  width: 600px;
+  width: 50%;
+  margin: 0 auto;
   max-height: 75vh;
   display: flex;
   flex-direction: column;
