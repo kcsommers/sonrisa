@@ -4,6 +4,7 @@ import { CatalogObject } from 'square';
 import { catalogImages } from '../../data/catalog-images';
 import { square } from '../../square';
 import JSONBig from 'json-bigint';
+import { getItemImageId, getItemVariationId } from '../../core/utils';
 
 interface IGetCatalogResponse {
   catalogItems: CatalogObject[];
@@ -33,7 +34,8 @@ router.get(
       const _res = await square.catalogApi.listCatalog('', 'image,item');
       const _allCatalogObjects = _res.result.objects;
 
-      const _imageMap: { [imageId: string]: string[] } = {};
+      const _imageMapByImageId: { [imageId: string]: string[] } = {};
+      const _imageMapByItemId: { [itemId: string]: string[] } = {};
       const _items = <CatalogObject[]>_allCatalogObjects.filter(
         (catalogObject) => {
           // if its a catalog item add it to the array
@@ -46,7 +48,7 @@ router.get(
             const _allImages =
               catalogImages[process.env.NODE_ENV][catalogObject.id] || [];
 
-            _imageMap[catalogObject.id] = [
+            _imageMapByImageId[catalogObject.id] = [
               catalogObject.imageData?.url as string,
               ..._allImages,
             ];
@@ -57,9 +59,21 @@ router.get(
         }
       );
 
+      // create image map based on item id
+      _items.forEach((item) => {
+        const _itemId = getItemVariationId(item);
+        const _imageId = getItemImageId(item);
+        const _images = _imageMapByImageId[_imageId];
+
+        _imageMapByItemId[_itemId] = _images;
+      });
+
       const _itemsParsed = JSON.parse(JSONBig.stringify(_items));
 
-      res.json({ catalogItems: _itemsParsed, catalogImageMap: _imageMap });
+      res.json({
+        catalogItems: _itemsParsed,
+        catalogImageMap: _imageMapByItemId,
+      });
     } catch (err) {
       console.error(err.message);
       res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
