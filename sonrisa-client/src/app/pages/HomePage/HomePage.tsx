@@ -1,17 +1,21 @@
-import { Button, LoadingSpinner, SnackbarComponent } from '@components';
-import { logger, useCatalog, useSnackbar } from '@core';
+import { Button, Cart, LoadingSpinner, SnackbarComponent } from '@components';
+import { getItemVariationId, logger, useCatalog, useSnackbar } from '@core';
 import {
   faCheckCircle,
   faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
-import { useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 
-export const HomePage = (props: RouteComponentProps) => {
+interface HomePageProps extends RouteComponentProps {
+  setCartVisible: Dispatch<SetStateAction<boolean>>;
+}
+
+export const HomePage = (props: HomePageProps) => {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
 
   const { setCatalogObjects, catalogItems, catalogImageMap } = useCatalog();
@@ -72,10 +76,12 @@ export const HomePage = (props: RouteComponentProps) => {
                 <div key={item.id} className={styles.orderBoxWrap}>
                   <OrderBox
                     item={item}
-                    imageUrl={
-                      catalogImageMap[item.imageId as string]?.[0] || ''
-                    }
                     onOrderUpdate={onOrderUpdate}
+                    imageUrl={
+                      catalogImageMap[
+                        getItemVariationId(item) as string
+                      ]?.[0] || ''
+                    }
                   />
                 </div>
               ))}

@@ -1,50 +1,88 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { toggleCart, useAppDispatch, useAppSelector } from '@redux';
+import { useAppDispatch, useAppSelector } from '@redux';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../Button/Button';
 import { Order } from '../Order/Order';
 import styles from './Cart.module.scss';
 
-export const Cart = () => {
-  const cartState = useAppSelector((state) => state.cart);
+interface ICartProps {
+  isVisible: boolean;
 
-  const dispatch = useAppDispatch();
+  setIsVisible: (isVisible: boolean) => void;
+}
 
+const containerVariants = {
+  enter: {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+  },
+  center: {
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+  },
+  exit: {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+  },
+};
+
+const innerVariants = {
+  enter: {
+    x: '100%',
+  },
+  center: {
+    x: '0%',
+  },
+  exit: {
+    x: '100%',
+  },
+};
+
+export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
   const history = useHistory();
 
-  const close = (): void => {
-    dispatch(toggleCart(false));
-  };
-
   const goToCheckout = (): void => {
-    close();
+    setIsVisible(false);
     history.push('/checkout');
   };
 
   return (
-    <div
-      className={`${styles.cartWrap} cart-wrap ${
-        cartState?.isOpen ? styles.cartOpen : ''
-      }`}
-      onClick={(e) => {
-        if ((e.target as Element).classList.contains('cart-wrap')) {
-          close();
-        }
-      }}
-    >
-      <div className={`${styles.cartInner}`}>
-        <div className={styles.cartHeader}>
-          <h4>Cart</h4>
-          <button onClick={close}>
-            <FontAwesomeIcon icon={faTimes} />
-          </button>
-        </div>
-        <div className={styles.cartBody}>
-          <Order />
-          <Button text="Checkout" onClick={goToCheckout} />
-        </div>
-      </div>
-    </div>
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          className={styles.cartWrap}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          variants={containerVariants}
+          onClick={(e) => {
+            if ((e.target as Element).classList.contains('cart-wrap')) {
+              setIsVisible(false);
+            }
+          }}
+        >
+          <motion.div
+            className={`${styles.cartInner}`}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              duration: 0.2,
+            }}
+            variants={innerVariants}
+          >
+            <div className={styles.cartHeader}>
+              <h4>Cart</h4>
+              <button onClick={() => setIsVisible(false)}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+            <div className={styles.cartBody}>
+              <Order />
+              <Button text="Checkout" onClick={goToCheckout} />
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };

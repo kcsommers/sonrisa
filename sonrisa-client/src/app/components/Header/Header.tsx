@@ -7,7 +7,8 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { toggleCart, useAppDispatch, useAppSelector } from '@redux';
+import { useAppDispatch, useAppSelector } from '@redux';
+import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 
@@ -15,16 +16,18 @@ type HeaderProps = {
   logoSize?: 'sm' | 'lg';
 
   showCart?: boolean;
+
+  setCartVisible: Dispatch<SetStateAction<boolean>>;
 };
 
-export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
+export const Header = ({
+  logoSize = 'lg',
+  showCart = true,
+  setCartVisible,
+}: HeaderProps) => {
   const { orderState } = useOrdering();
 
   const dispatch = useAppDispatch();
-
-  const openCart = () => {
-    dispatch(toggleCart(true));
-  };
 
   return (
     <header className={styles.header}>
@@ -63,7 +66,10 @@ export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
           </div>
           <div className={styles.headerRight}>
             {showCart && (
-              <button className={styles.cartBtn} onClick={openCart}>
+              <button
+                className={styles.cartBtn}
+                onClick={() => setCartVisible(true)}
+              >
                 <FontAwesomeIcon icon={faShoppingCart} />
                 {orderState &&
                 orderState.lineItems &&

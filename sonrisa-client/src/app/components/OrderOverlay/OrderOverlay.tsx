@@ -3,6 +3,7 @@ import {
   getItemDescription,
   getItemName,
   getItemPrice,
+  getItemVariationId,
   getMoneyString,
   logger,
   useCatalog,
@@ -38,7 +39,9 @@ export const OrderOverlay = ({
     <div className={`${styles.templateWrap}`}>
       <div className={styles.overlayBody}>
         <div className={styles.imgSliderWrap}>
-          <ImageSlider images={catalogImageMap[item.imageId || ''] || []} />
+          <ImageSlider
+            images={catalogImageMap[getItemVariationId(item) || ''] || []}
+          />
         </div>
 
         <div className={styles.descriptionWrap}>

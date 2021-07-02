@@ -122,7 +122,7 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
           onClick={updateCart}
         />
       </div>
-      <Overlay isOpen={overlayOpen} onClose={() => setOverlayOpen(false)}>
+      <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay
           item={item}
           quantity={quantity}

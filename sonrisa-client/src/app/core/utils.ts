@@ -1,4 +1,4 @@
-import { CatalogObject } from 'square';
+import { CatalogObject, Order } from 'square';
 
 export const calculateCost = (itemPrice: string, quantity: number): number => {
   return quantity * +itemPrice;
@@ -40,4 +40,19 @@ export const getColor = (colorType: string): string => {
   };
 
   return _colorMap[colorType] || colorType;
+};
+
+export const getOrderSubtotal = (order: Order): number => {
+  const _tax = +(order.totalTaxMoney?.amount as string);
+  const _total = +(order.totalMoney?.amount as string);
+
+  return _total - _tax;
+};
+
+export const getOrderTotal = (order: Order): number => {
+  return +(order.totalMoney?.amount as string);
+};
+
+export const getOrderTax = (order: Order): number => {
+  return +(order.totalTaxMoney?.amount as string);
 };
