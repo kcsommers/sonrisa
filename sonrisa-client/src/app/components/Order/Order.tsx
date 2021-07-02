@@ -1,65 +1,54 @@
-import { useAppSelector } from '@redux';
-import { CartItem } from './../CartItem/CartItem';
+import {
+  getMoneyString,
+  getOrderSubtotal,
+  getOrderTax,
+  getOrderTotal,
+  useCatalog,
+  useOrdering,
+} from '@core';
+import { CartItem } from '../CartItem/CartItem';
 import styles from './Order.module.scss';
 
 export const Order = () => {
-  const orderState = useAppSelector((state) => state.order);
+  const { orderState } = useOrdering();
 
-  const getTotals = (): { tax: string; total: string; subtotal: string } => {
-    // if (!orderState || !orderState.items.length) {
-    //   return {
-    //     tax: '$0.00',
-    //     total: '$0.00',
-    //     subtotal: '$0.00',
-    //   };
-    // }
-
-    // const subtotal = orderState.items.reduce((t, orderItem) => {
-    //   t += orderItem.item.price * orderItem.quantity;
-    //   return t;
-    // }, 0);
-
-    // const tax = subtotal * 0.07;
-
-    return {
-      tax: ``,
-      total: ``,
-      subtotal: ``,
-    };
-    // return {
-    //   tax: `$${(tax / 100).toFixed(2)}`,
-    //   total: `$${((subtotal + tax) / 100).toFixed(2)}`,
-    //   subtotal: `$${(subtotal / 100).toFixed(2)}`,
-    // };
-  };
-
-  const { tax, total, subtotal } = getTotals();
+  const { catalogImageMap } = useCatalog();
 
   return (
     <div className={`${styles.orderWrap}`}>
-      {/* {!orderState?.items.length ? (
+      {!orderState?.lineItems?.length ? (
         <p className={styles.noItemsText}>*No items in cart</p>
       ) : (
         <>
-          {orderState.items.map((item) => (
-            <CartItem orderItem={item} key={item.item.id} />
+          {orderState.lineItems?.map((item) => (
+            <CartItem
+              orderItem={item}
+              key={item.uid}
+              imageUrl={catalogImageMap[item.catalogObjectId as string]?.[0]}
+            />
           ))}
           <div className={styles.checkoutWrap}>
             <div className={styles.checkoutItemWrap}>
               <p className={styles.checkoutItemLabel}>Subtotal</p>
-              <p className={styles.checkoutItemTotal}>{subtotal}</p>
+              <p className={styles.checkoutItemTotal}>
+                {getMoneyString(getOrderSubtotal(orderState))}
+              </p>
             </div>
             <div className={styles.checkoutItemWrap}>
               <p className={styles.checkoutItemLabel}>Tax</p>
-              <p className={styles.checkoutItemTotal}>{tax}</p>
+              <p className={styles.checkoutItemTotal}>
+                {getMoneyString(getOrderTax(orderState))}
+              </p>
             </div>
             <div className={styles.checkoutItemWrap}>
               <p className={styles.checkoutItemLabel}>Total</p>
-              <p className={styles.checkoutItemTotal}>{total}</p>
+              <p className={styles.checkoutItemTotal}>
+                {getMoneyString(getOrderTotal(orderState))}
+              </p>
             </div>
           </div>
         </>
-      )} */}
+      )}
     </div>
   );
 };

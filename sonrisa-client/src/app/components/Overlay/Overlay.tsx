@@ -1,4 +1,3 @@
-import { useAppDispatch, useAppSelector } from '@redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PropsWithChildren } from 'react';
 import styles from './Overlay.module.scss';
@@ -6,12 +5,12 @@ import styles from './Overlay.module.scss';
 type OverlayProps = PropsWithChildren<{
   isOpen: boolean;
 
-  onClose: () => void;
+  setIsOpen: (isOpen: boolean) => void;
 }>;
 
 export const Overlay = ({
   children,
-  onClose,
+  setIsOpen,
   isOpen = false,
 }: OverlayProps) => {
   const templateVariants = {
@@ -39,18 +38,18 @@ export const Overlay = ({
   };
 
   const close = (event: React.MouseEvent) => {
-    if (!(event.target as Element).classList.contains('overlay-container')) {
+    if (!(event.target as Element).classList.contains(styles.overlayInner)) {
       return;
     }
 
-    onClose();
+    setIsOpen(false);
   };
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className={`${styles.overlayContainer} overlay-container`}
+          className={styles.overlayContainer}
           initial="enter"
           animate="center"
           exit="exit"
