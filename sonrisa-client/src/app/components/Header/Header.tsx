@@ -1,4 +1,5 @@
 import logo from '@assets/images/sonrisa_logo.jpg';
+import { useOrdering } from '@core';
 import {
   faFacebook,
   faInstagram,
@@ -17,7 +18,7 @@ type HeaderProps = {
 };
 
 export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
-  const orderState = useAppSelector((state) => state.order);
+  const { orderState } = useOrdering();
 
   const dispatch = useAppDispatch();
 
@@ -64,9 +65,13 @@ export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
             {showCart && (
               <button className={styles.cartBtn} onClick={openCart}>
                 <FontAwesomeIcon icon={faShoppingCart} />
-                {/* {orderState && orderState.items.length > 0 && (
-                  <span>{orderState?.items.length}</span>
-                )} */}
+                {orderState &&
+                orderState.lineItems &&
+                orderState.lineItems.length ? (
+                  <span className="whatthefuck">
+                    {orderState.lineItems.length}
+                  </span>
+                ) : null}
               </button>
             )}
           </div>

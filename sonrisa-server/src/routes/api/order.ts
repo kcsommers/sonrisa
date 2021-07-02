@@ -4,6 +4,7 @@ import HttpStatusCodes from 'http-status-codes';
 import {
   CreateOrderResponse,
   CreatePaymentRequest,
+  CreatePaymentResponse,
   Order,
   OrderLineItem,
   UpdateOrderRequest,

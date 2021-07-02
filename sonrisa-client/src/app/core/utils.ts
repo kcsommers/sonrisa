@@ -1,17 +1,17 @@
 import { CatalogObject } from 'square';
 
-export const calculateCost = (itemPrice: bigint, quantity: number): bigint => {
-  return BigInt(itemPrice) * BigInt(quantity);
+export const calculateCost = (itemPrice: string, quantity: number): number => {
+  return quantity * +itemPrice;
 };
 
-export const getMoneyString = (amount: bigint): string => {
-  return `$${(Number(amount) / 100).toFixed(2)}`;
+export const getMoneyString = (amount: number): string => {
+  return `$${(amount / 100).toFixed(2)}`;
 };
 
-export const getItemPrice = (item: CatalogObject): bigint => {
+export const getItemPrice = (item: CatalogObject): string => {
   return (
-    item.itemData?.variations?.[0].itemVariationData?.priceMoney?.amount ||
-    BigInt(0)
+    (item.itemData?.variations?.[0].itemVariationData?.priceMoney
+      ?.amount as string) || '0'
   );
 };
 

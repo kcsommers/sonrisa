@@ -1,9 +1,9 @@
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
-import { square } from '../../square';
-import { CatalogImage, CatalogItem, CatalogObject } from 'square';
+import { CatalogObject } from 'square';
 import { catalogImages } from '../../data/catalog-images';
-const JSONbig = require('json-bigint');
+import { square } from '../../square';
+import JSONBig from 'json-bigint';
 
 interface IGetCatalogResponse {
   catalogItems: CatalogObject[];
@@ -23,8 +23,8 @@ const router: Router = Router();
  * @route POST api/order/create
  * @access PUBLIC
  * @description Fetches the entire square catalog and returns as a json string
- * Because of limitation on bigint serialization the price is converted to a string
- * and must be converted back to bigint client side
+ * Because of limitation on bigint serialization the price is converted to a string then a number
+ *
  */
 router.get(
   '/',
@@ -57,9 +57,9 @@ router.get(
         }
       );
 
-      const _itemsParsed = JSON.parse(JSONbig.stringify(_items));
+      const _itemsParsed = JSON.parse(JSONBig.stringify(_items));
 
-      res.send({ catalogItems: _itemsParsed, catalogImageMap: _imageMap });
+      res.json({ catalogItems: _itemsParsed, catalogImageMap: _imageMap });
     } catch (err) {
       console.error(err.message);
       res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);

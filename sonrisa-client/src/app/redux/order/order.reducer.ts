@@ -15,17 +15,17 @@ const initialState = <Order>{
   state: '',
 
   totalMoney: {
-    amount: BigInt(0),
+    amount: '0',
     currency: 'USD',
   },
 
   totalTaxMoney: {
-    amount: BigInt(0),
+    amount: '0',
     currency: 'USD',
   },
 
   totalTipMoney: {
-    amount: BigInt(0),
+    amount: '0',
     currency: 'USD',
   },
 
