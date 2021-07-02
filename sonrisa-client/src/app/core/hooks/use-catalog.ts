@@ -6,7 +6,6 @@ import {
 } from '@redux';
 import { batch } from 'react-redux';
 import { CatalogObject } from 'square';
-
 import { Api } from '../api/api';
 import { logger } from '../logger';
 
@@ -59,18 +58,3 @@ export const useCatalog = (): ICatalogHook => {
     },
   };
 };
-
-// // if its a catalog item add it to the array
-// if (catalogObject.type === CatalogObjectTypes.ITEM) {
-//   // the price needs to be converted from a string to bigint
-//   // in this very gross way
-//   if (
-//     catalogObject.itemData?.variations?.[0]?.itemVariationData
-//       ?.priceMoney
-//   ) {
-//     catalogObject.itemData.variations[0].itemVariationData.priceMoney.amount =
-//       BigInt(
-//         catalogObject.itemData?.variations?.[0]?.itemVariationData
-//           ?.priceMoney?.amount ?? 0
-//       );
-//   }
