@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import styles from './Overlay.module.scss';
 
 type OverlayProps = PropsWithChildren<{
@@ -8,35 +8,35 @@ type OverlayProps = PropsWithChildren<{
   setIsOpen: (isOpen: boolean) => void;
 }>;
 
+const templateVariants = {
+  enter: {
+    y: '100%',
+  },
+  center: {
+    y: '0%',
+  },
+  exit: {
+    y: '100%',
+  },
+};
+
+const containerVariants = {
+  enter: {
+    opacity: 0,
+  },
+  center: {
+    opacity: 1,
+  },
+  exit: {
+    opacity: 0,
+  },
+};
+
 export const Overlay = ({
   children,
   setIsOpen,
   isOpen = false,
 }: OverlayProps) => {
-  const templateVariants = {
-    enter: {
-      y: '100%',
-    },
-    center: {
-      y: '0%',
-    },
-    exit: {
-      y: '100%',
-    },
-  };
-
-  const containerVariants = {
-    enter: {
-      opacity: 0,
-    },
-    center: {
-      opacity: 1,
-    },
-    exit: {
-      opacity: 0,
-    },
-  };
-
   const close = (event: React.MouseEvent) => {
     if (!(event.target as Element).classList.contains(styles.overlayInner)) {
       return;
@@ -44,6 +44,15 @@ export const Overlay = ({
 
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    const body = document.querySelector('body');
+    if (!body) {
+      return;
+    }
+
+    body.style.overflow = isOpen ? 'hidden' : 'auto';
+  }, [isOpen]);
 
   return (
     <AnimatePresence>

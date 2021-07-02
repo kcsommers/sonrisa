@@ -1,7 +1,7 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useAppDispatch, useAppSelector } from '@redux';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../Button/Button';
 import { Order } from '../Order/Order';
@@ -28,12 +28,15 @@ const containerVariants = {
 const innerVariants = {
   enter: {
     x: '100%',
+    boxShadow: '0',
   },
   center: {
     x: '0%',
+    boxShadow: '-5px 0px 50px 1px #aaaaaa',
   },
   exit: {
     x: '100%',
+    boxShadow: '0',
   },
 };
 
@@ -45,6 +48,15 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
     history.push('/checkout');
   };
 
+  useEffect(() => {
+    const body = document.querySelector('body');
+    if (!body) {
+      return;
+    }
+
+    body.style.overflow = isVisible ? 'hidden' : 'auto';
+  }, [isVisible]);
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -55,18 +67,20 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
           exit="exit"
           variants={containerVariants}
           onClick={(e) => {
-            if ((e.target as Element).classList.contains('cart-wrap')) {
+            if ((e.target as Element).classList.contains(styles.cartWrap)) {
               setIsVisible(false);
             }
           }}
         >
           <motion.div
-            className={`${styles.cartInner}`}
+            className={styles.cartInner}
             initial="enter"
             animate="center"
             exit="exit"
             transition={{
-              duration: 0.2,
+              duration: 0.3,
+              type: 'tween',
+              ease: 'circOut',
             }}
             variants={innerVariants}
           >
