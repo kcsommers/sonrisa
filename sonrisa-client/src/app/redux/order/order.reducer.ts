@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 import { Order } from 'square';
 import { SET_ORDER } from './order.actions';
 
-const initialState = <Order>{
+const initialState: Order = {
   id: '',
 
   locationId: '',

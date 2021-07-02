@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { CatalogItem, CatalogObject, Order, OrderLineItem } from 'square';
+import { Order, OrderLineItem } from 'square';
 import { environments } from '../../../environments';
 import { IGetCatalogResponse } from './interfaces/IGetCatalogResponse';
 

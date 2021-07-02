@@ -84,7 +84,7 @@ router.get('/:id', async (req: Request, res: Response<Order>) => {
   try {
     const _response = await square.ordersApi.retrieveOrder(_orderId);
 
-    console.log('[create order response]:::: ', _response.body);
+    console.log('[get order response]:::: ', _response.body);
     const _resParsed = <UpdateOrderResponse>JSON.parse(<string>_response.body);
     const _camelCaseOrder = <Order>getCamelcaseKeys(_resParsed.order);
 

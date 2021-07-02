@@ -9,7 +9,7 @@ div.templateWrap {
   max-height: 75vh;
   display: flex;
   flex-direction: column;
-  border-radius: 3px;
+  border-radius: $border-radius;
 }
 
 div.overlayBody {

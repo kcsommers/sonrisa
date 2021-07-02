@@ -7,7 +7,6 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useAppDispatch, useAppSelector } from '@redux';
 import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
@@ -26,8 +25,6 @@ export const Header = ({
   setCartVisible,
 }: HeaderProps) => {
   const { orderState } = useOrdering();
-
-  const dispatch = useAppDispatch();
 
   return (
     <header className={styles.header}>

@@ -5,13 +5,10 @@ import {
   getItemPrice,
   getItemVariationId,
   getMoneyString,
-  logger,
   useCatalog,
-  useOrdering,
 } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRef, useState } from 'react';
 import { CatalogObject } from 'square';
 import { Button } from '../Button/Button';
 import { ImageSlider } from './../ImageSlider/ImageSlider';
