@@ -1,4 +1,4 @@
-import { Button, Cart, LoadingSpinner, SnackbarComponent } from '@components';
+import { Button, LoadingSpinner, SnackbarComponent } from '@components';
 import { getItemVariationId, logger, useCatalog, useSnackbar } from '@core';
 import {
   faCheckCircle,
@@ -6,7 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
@@ -18,7 +18,7 @@ interface HomePageProps extends RouteComponentProps {
 export const HomePage = (props: HomePageProps) => {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
 
-  const { setCatalogObjects, catalogItems, catalogImageMap } = useCatalog();
+  const { catalogItems, catalogImageMap } = useCatalog();
 
   const onOrderUpdate = (success: boolean) => {
     setSnackbarVisible(
@@ -37,15 +37,6 @@ export const HomePage = (props: HomePageProps) => {
           }
     );
   };
-
-  // on init effect
-  useEffect(() => {
-    // set the catalog objects
-    setCatalogObjects()
-      .then((res) => logger.log('[Got menu]'))
-      .catch((err) => logger.error(err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className={styles.homePageWrap}>

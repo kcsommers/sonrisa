@@ -15,7 +15,7 @@ export const Order = () => {
   const { catalogImageMap } = useCatalog();
 
   return (
-    <div className={`${styles.orderWrap}`}>
+    <div>
       {!orderState?.lineItems?.length ? (
         <p className={styles.noItemsText}>*No items in cart</p>
       ) : (

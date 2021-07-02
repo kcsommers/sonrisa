@@ -85,8 +85,6 @@ export const CheckoutForm = (props: RouteComponentProps) => {
 
   return (
     <div className={styles.checkoutFormWrap}>
-      <div id="card-container"></div>
-
       <div className={styles.inputWrap}>
         <input
           type="name"
@@ -111,6 +109,8 @@ export const CheckoutForm = (props: RouteComponentProps) => {
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
       </div>
+      <div id="card-container"></div>
+
       <div className={styles.inputWrap}>
         <Button text="Submit Payment" onClick={submit} />
       </div>
