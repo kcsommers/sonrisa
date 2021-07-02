@@ -32,3 +32,12 @@ export const getItemName = (item: CatalogObject): string => {
 export const getItemDescription = (item: CatalogObject): string => {
   return item.itemData?.description || '';
 };
+
+export const getColor = (colorType: string): string => {
+  const _colorMap: any = {
+    success: '#22bc33',
+    error: '#bb2224',
+  };
+
+  return _colorMap[colorType] || colorType;
+};
