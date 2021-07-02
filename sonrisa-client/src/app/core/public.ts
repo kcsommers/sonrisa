@@ -1,7 +1,10 @@
-export * from './api/api';
-export * from './utils';
+export { useSnackbar } from './hooks/use-snackbar';
 export { logger } from './logger';
 export { useOrdering } from './hooks/use-ordering';
 export { useCatalog } from './hooks/use-catalog';
 export { useStorage } from './hooks/use-storage';
 export type { OrderStates } from './orders/OrderStates';
+export type { ISnackbarConfig } from './models/SnackbarConfig';
+export { ColorTypes } from './models/ColorTypes';
+export * from './api/api';
+export * from './utils';

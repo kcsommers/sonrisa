@@ -1,3 +1,4 @@
+export { SnackbarComponent } from './Snackbar/SnackbarComponent';
 export { Order } from './Order/Order';
 export { LoadingSpinner } from './LoadingSpinner/LoadingSpinner';
 export { Button } from './Button/Button';
