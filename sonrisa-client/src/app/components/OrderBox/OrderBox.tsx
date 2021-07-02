@@ -13,6 +13,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { CatalogObject } from 'square';
 import { Button } from '../Button/Button';
+import { OrderOverlay } from '../OrderOverlay/OrderOverlay';
+import { Overlay } from '../Overlay/Overlay';
 import styles from './OrderBox.module.scss';
 
 interface OrderBoxProps {
@@ -20,22 +22,17 @@ interface OrderBoxProps {
 
   imageUrl: string;
 
-  onClick: (item: CatalogObject) => void;
-
   onOrderUpdate: (success: boolean) => void;
 }
 
-export const OrderBox = ({
-  item,
-  imageUrl,
-  onClick,
-  onOrderUpdate,
-}: OrderBoxProps) => {
+export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
   const { getItemQuantity, setItemQuantity, orderState } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
 
-  const [price, setPrice] = useState(BigInt(0));
+  const [price, setPrice] = useState('0');
+
+  const [overlayOpen, setOverlayOpen] = useState(false);
 
   const prevQuantityRef = useRef(quantity);
 
@@ -57,12 +54,12 @@ export const OrderBox = ({
   };
 
   useEffect(() => {
-    setPrice(getItemPrice(item) ?? BigInt(0));
+    setPrice(getItemPrice(item));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // on init effect
-  // updates local quantity ans price if order id changes
+  // updates local quantity and price if order id changes
   const orderIdRef = useRef('');
   useEffect(() => {
     if (!item || orderState?.id === orderIdRef.current) {
@@ -74,7 +71,7 @@ export const OrderBox = ({
     prevQuantityRef.current = _quantity;
     orderIdRef.current = orderState?.id as string;
     setQuantity(_quantity);
-    setPrice(getItemPrice(item) ?? BigInt(0));
+    setPrice(getItemPrice(item));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderState?.id]);
 
@@ -105,7 +102,7 @@ export const OrderBox = ({
           </motion.span>
         )}
       </AnimatePresence>
-      <div className={styles.imgWrap} onClick={() => onClick(item)}>
+      <div className={styles.imgWrap} onClick={() => setOverlayOpen(true)}>
         <div className={styles.imgHoverBg}></div>
         <img src={imageUrl} alt={getItemName(item)} />
       </div>
@@ -125,6 +122,14 @@ export const OrderBox = ({
           onClick={updateCart}
         />
       </div>
+      <Overlay isOpen={overlayOpen} onClose={() => setOverlayOpen(false)}>
+        <OrderOverlay
+          item={item}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          updateCart={updateCart}
+        />
+      </Overlay>
     </div>
   );
 };
