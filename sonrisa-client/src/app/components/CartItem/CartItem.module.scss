@@ -4,7 +4,6 @@ div.cartItemWrap {
   display: flex;
   border-bottom: 2px solid $offwhite;
   align-items: center;
-  padding-right: 1rem;
   position: relative;
 
   > button {
@@ -17,8 +16,8 @@ div.cartItemWrap {
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 0.5rem;
-    right: 1rem;
+    top: 0rem;
+    right: 0rem;
     color: $red;
     font-size: 0.8rem;
   }

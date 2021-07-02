@@ -1,4 +1,4 @@
-import { calculateCost, getItemPrice, getMoneyString } from '@core';
+import { getMoneyString } from '@core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { OrderLineItem } from 'square';
