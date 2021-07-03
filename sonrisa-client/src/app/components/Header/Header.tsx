@@ -1,4 +1,5 @@
 import logo from '@assets/images/sonrisa_logo.jpg';
+import { useOrdering } from '@core';
 import {
   faFacebook,
   faInstagram,
@@ -6,7 +7,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { toggleCart, useAppDispatch, useAppSelector } from '@redux';
+import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 
@@ -14,16 +15,16 @@ type HeaderProps = {
   logoSize?: 'sm' | 'lg';
 
   showCart?: boolean;
+
+  setCartVisible: Dispatch<SetStateAction<boolean>>;
 };
 
-export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
-  const orderState = useAppSelector((state) => state.order);
-
-  const dispatch = useAppDispatch();
-
-  const openCart = () => {
-    dispatch(toggleCart(true));
-  };
+export const Header = ({
+  logoSize = 'lg',
+  showCart = true,
+  setCartVisible,
+}: HeaderProps) => {
+  const { orderState } = useOrdering();
 
   return (
     <header className={styles.header}>
@@ -62,11 +63,18 @@ export const Header = ({ logoSize = 'lg', showCart = true }: HeaderProps) => {
           </div>
           <div className={styles.headerRight}>
             {showCart && (
-              <button className={styles.cartBtn} onClick={openCart}>
+              <button
+                className={styles.cartBtn}
+                onClick={() => setCartVisible(true)}
+              >
                 <FontAwesomeIcon icon={faShoppingCart} />
-                {/* {orderState && orderState.items.length > 0 && (
-                  <span>{orderState?.items.length}</span>
-                )} */}
+                {orderState &&
+                orderState.lineItems &&
+                orderState.lineItems.length ? (
+                  <span className="whatthefuck">
+                    {orderState.lineItems.length}
+                  </span>
+                ) : null}
               </button>
             )}
           </div>

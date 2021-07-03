@@ -1,3 +1,5 @@
+export { OrderFullfillmentTypes } from './orders/OrderFullfillmentTypes';
+export { OrderFullfillmentScheduleTypes } from './orders/OrderFullfillmentScheduleTypes';
 export { useSnackbar } from './hooks/use-snackbar';
 export { logger } from './logger';
 export { useOrdering } from './hooks/use-ordering';

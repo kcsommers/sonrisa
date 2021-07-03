@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styles from './Button.module.scss';
 
 type ButtonProps = {
@@ -16,12 +17,24 @@ export const Button = ({
   size = 'md',
   onClick,
 }: ButtonProps) => {
+  const [buttonEl, setButtonEl] = useState<HTMLButtonElement>();
+
+  const clicked = (event: React.MouseEvent) => {
+    if (!onClick || !buttonEl) {
+      return;
+    }
+
+    buttonEl.blur();
+    onClick();
+  };
+
   return (
     <button
       className={`app-btn ${styles.btn} ${styles[`btn-${size}`]} ${
         isFullWidth ? styles.btnFullWidth : ''
       }`}
-      onClick={onClick}
+      onClick={clicked}
+      ref={(el: HTMLButtonElement) => setButtonEl(el)}
     >
       {text}
     </button>

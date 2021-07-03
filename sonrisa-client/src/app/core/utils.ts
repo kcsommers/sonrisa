@@ -1,17 +1,17 @@
-import { CatalogObject } from 'square';
+import { CatalogObject, Order } from 'square';
 
-export const calculateCost = (itemPrice: bigint, quantity: number): bigint => {
-  return BigInt(itemPrice) * BigInt(quantity);
+export const calculateCost = (itemPrice: string, quantity: number): number => {
+  return quantity * +itemPrice;
 };
 
-export const getMoneyString = (amount: bigint): string => {
-  return `$${(Number(amount) / 100).toFixed(2)}`;
+export const getMoneyString = (amount: number): string => {
+  return `$${(amount / 100).toFixed(2)}`;
 };
 
-export const getItemPrice = (item: CatalogObject): bigint => {
+export const getItemPrice = (item: CatalogObject): string => {
   return (
-    item.itemData?.variations?.[0].itemVariationData?.priceMoney?.amount ||
-    BigInt(0)
+    (item.itemData?.variations?.[0].itemVariationData?.priceMoney
+      ?.amount as string) || '0'
   );
 };
 
@@ -36,8 +36,27 @@ export const getItemDescription = (item: CatalogObject): string => {
 export const getColor = (colorType: string): string => {
   const _colorMap: any = {
     success: '#22bc33',
-    error: '#bb2224',
+    error: '#cc0023',
   };
 
   return _colorMap[colorType] || colorType;
+};
+
+export const getOrderSubtotal = (order: Order): number => {
+  const _tax = +(order.totalTaxMoney?.amount as string);
+  const _total = +(order.totalMoney?.amount as string);
+
+  return _total - _tax;
+};
+
+export const getOrderTotal = (order: Order): number => {
+  return +(order.totalMoney?.amount as string);
+};
+
+export const getOrderTip = (order: Order): number => {
+  return +(order.totalTipMoney?.amount as string);
+};
+
+export const getOrderTax = (order: Order): number => {
+  return +(order.totalTaxMoney?.amount as string);
 };

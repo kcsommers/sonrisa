@@ -1,9 +1,10 @@
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
-import { square } from '../../square';
-import { CatalogImage, CatalogItem, CatalogObject } from 'square';
+import { CatalogObject } from 'square';
 import { catalogImages } from '../../data/catalog-images';
-const JSONbig = require('json-bigint');
+import { square } from '../../square';
+import JSONBig from 'json-bigint';
+import { getItemImageId, getItemVariationId } from '../../core/utils';
 
 interface IGetCatalogResponse {
   catalogItems: CatalogObject[];
@@ -23,8 +24,8 @@ const router: Router = Router();
  * @route POST api/order/create
  * @access PUBLIC
  * @description Fetches the entire square catalog and returns as a json string
- * Because of limitation on bigint serialization the price is converted to a string
- * and must be converted back to bigint client side
+ * Because of limitation on bigint serialization the price is converted to a string then a number
+ *
  */
 router.get(
   '/',
@@ -33,7 +34,8 @@ router.get(
       const _res = await square.catalogApi.listCatalog('', 'image,item');
       const _allCatalogObjects = _res.result.objects;
 
-      const _imageMap: { [imageId: string]: string[] } = {};
+      const _imageMapByImageId: { [imageId: string]: string[] } = {};
+      const _imageMapByItemId: { [itemId: string]: string[] } = {};
       const _items = <CatalogObject[]>_allCatalogObjects.filter(
         (catalogObject) => {
           // if its a catalog item add it to the array
@@ -46,7 +48,7 @@ router.get(
             const _allImages =
               catalogImages[process.env.NODE_ENV][catalogObject.id] || [];
 
-            _imageMap[catalogObject.id] = [
+            _imageMapByImageId[catalogObject.id] = [
               catalogObject.imageData?.url as string,
               ..._allImages,
             ];
@@ -57,9 +59,21 @@ router.get(
         }
       );
 
-      const _itemsParsed = JSON.parse(JSONbig.stringify(_items));
+      // create image map based on item id
+      _items.forEach((item) => {
+        const _itemId = getItemVariationId(item);
+        const _imageId = getItemImageId(item);
+        const _images = _imageMapByImageId[_imageId];
 
-      res.send({ catalogItems: _itemsParsed, catalogImageMap: _imageMap });
+        _imageMapByItemId[_itemId] = _images;
+      });
+
+      const _itemsParsed = JSON.parse(JSONBig.stringify(_items));
+
+      res.json({
+        catalogItems: _itemsParsed,
+        catalogImageMap: _imageMapByItemId,
+      });
     } catch (err) {
       console.error(err.message);
       res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
