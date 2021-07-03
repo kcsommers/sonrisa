@@ -1,5 +1,5 @@
-export class OrderFullfillmentTypes {
-  public static PICKUP = 'PICKUP';
+export const OrderFullfillmentTypes = {
+  PICKUP: 'PICKUP',
 
-  public static SHIPMENT = 'SHIPMENT';
-}
+  SHIPMENT: 'SHIPMENT',
+};

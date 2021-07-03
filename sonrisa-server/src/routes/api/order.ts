@@ -8,6 +8,7 @@ import {
   Customer,
   Order,
   OrderLineItem,
+  RetrieveOrderResponse,
   UpdateOrderRequest,
   UpdateOrderResponse,
 } from 'square';
@@ -23,116 +24,121 @@ const router: Router = Router();
 /**
  * @route  POST api/order/create
  * @access PUBLIC
- * @description ureates an order
+ * @description creates an order
  */
-router.post('/create', async (req: Request, res: Response<Order>) => {
-  const _lineItems = req.body.lineItems;
-  const _today = new Date();
-  const _nextweek = new Date(
-    _today.getFullYear(),
-    _today.getMonth(),
-    _today.getDate() + 7
-  );
+router.post(
+  '/create',
+  async (req: Request, res: Response<CreateOrderResponse>) => {
+    const _lineItems = req.body.lineItems;
 
-  const _orderData: Order = {
-    locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
-    lineItems: _lineItems,
-    fulfillments: [
-      {
-        type: OrderFullfillmentTypes.PICKUP,
-        pickupDetails: {
-          scheduleType: OrderFullfillmentScheduleTypes.SCHEDULED,
-          pickupAt: _nextweek.toISOString(),
-          note: 'Arf burf grrr',
-          recipient: {
-            displayName: 'Joni Blue',
-            emailAddress: 'joni@gmail.com',
-            phoneNumber: '3308192592',
-          },
-        },
-      },
-    ],
-  };
+    const _orderData: Order = {
+      locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
+      lineItems: _lineItems,
+    };
 
-  try {
-    const _response = await square.ordersApi.createOrder({
-      order: _orderData,
-      idempotencyKey: uuidV4(),
-    });
-    console.log('[create order response]:::: ', _response.body);
-    const _responseParsed = <CreateOrderResponse>(
-      JSON.parse(<string>_response.body)
-    );
-    const _camelCaseOrder = <Order>getCamelcaseKeys(_responseParsed.order);
+    try {
+      const _response = await square.ordersApi.createOrder({
+        order: _orderData,
+        idempotencyKey: uuidV4(),
+      });
+      console.log('[create order response]:::: ', _response.body);
 
-    res.send(_camelCaseOrder);
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      const _resParsed = JSON.parse(
+        _response.body as string
+      ) as CreateOrderResponse;
+
+      const _camelCaseOrder = getCamelcaseKeys(_resParsed.order) as Order;
+      if (!_camelCaseOrder) {
+        console.error('Error converting to camel case');
+        return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      }
+
+      res.json({ errors: _resParsed.errors, order: _camelCaseOrder });
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    }
   }
-});
+);
 
 /**
  * @route POST api/order/update
  * @access PUBLIC
  * @description updates an order by id
  */
-router.post('/update', async (req: Request, res: Response<Order>) => {
-  try {
-    const _orderId = <string>req.body.orderId;
-    const _lineItems = <OrderLineItem[]>req.body.items;
-    const _version = <number>req.body.version;
+router.post(
+  '/update',
+  async (req: Request, res: Response<UpdateOrderResponse>) => {
+    try {
+      const _data = req.body.data;
+      const _orderId = <string>req.body.orderId;
+      const _version = <number>req.body.version;
 
-    const _request = <UpdateOrderRequest>{
-      idempotencyKey: uuidV4(),
-      order: {
-        locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
-        lineItems: _lineItems,
-        version: _version,
-      },
-    };
+      const _request = <UpdateOrderRequest>{
+        idempotencyKey: uuidV4(),
+        order: {
+          locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
+          version: _version,
+          ..._data,
+        },
+      };
 
-    const _response = await square.ordersApi.updateOrder(_orderId, _request);
-    console.log('[update order response]:::: ', _response.body);
-    const _order = JSON.parse(<string>_response.body).order;
-    const _camelCaseOrder = <Order>getCamelcaseKeys(_order);
-    res.send(_camelCaseOrder);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      const _response = await square.ordersApi.updateOrder(_orderId, _request);
+      console.log('[update order response]:::: ', _response.body);
+
+      const _resParsed = JSON.parse(
+        _response.body as string
+      ) as UpdateOrderResponse;
+
+      const _camelCaseOrder = getCamelcaseKeys(_resParsed.order) as Order;
+      if (!_camelCaseOrder) {
+        console.error('Error converting to camel case');
+        return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      }
+
+      res.json({ errors: _resParsed.errors, order: _camelCaseOrder });
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    }
   }
-});
+);
 
 /**
  * @route GET api/order/:id
  * @access PUBLIC
  * @description Retrieves an order by id
  */
-router.get('/:id', async (req: Request, res: Response<Order>) => {
-  const _orderId = req.params.id;
+router.get(
+  '/:id',
+  async (req: Request, res: Response<RetrieveOrderResponse>) => {
+    const _orderId = req.params.id;
 
-  if (!_orderId) {
-    return res.sendStatus(HttpStatusCodes.BAD_REQUEST);
-  }
-
-  try {
-    const _response = await square.ordersApi.retrieveOrder(_orderId);
-
-    console.log('[get order response]:::: ', _response.body);
-    const _resParsed = <UpdateOrderResponse>JSON.parse(<string>_response.body);
-    const _camelCaseOrder = <Order>getCamelcaseKeys(_resParsed.order);
-
-    if (!_camelCaseOrder) {
-      console.error('Error converting to camel case');
-      return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    if (!_orderId) {
+      return res.sendStatus(HttpStatusCodes.BAD_REQUEST);
     }
 
-    res.send(_camelCaseOrder);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    try {
+      const _response = await square.ordersApi.retrieveOrder(_orderId);
+      console.log('[get order response]:::: ', _response.body);
+
+      const _resParsed = JSON.parse(
+        _response.body as string
+      ) as RetrieveOrderResponse;
+
+      const _camelCaseOrder = getCamelcaseKeys(_resParsed.order) as Order;
+      if (!_camelCaseOrder) {
+        console.error('Error converting to camel case');
+        return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      }
+
+      res.json({ errors: _resParsed.errors, order: _camelCaseOrder });
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    }
   }
-});
+);
 
 /**
  * @route POST api/order/payments
