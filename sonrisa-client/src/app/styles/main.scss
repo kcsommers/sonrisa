@@ -74,8 +74,12 @@ textarea {
   font-size: 16px;
 
   &:focus {
-    box-shadow: 0 1px 3px $yellow, 0 1px 2px $yellow;
+    border-color: $yellow;
   }
+}
+
+textarea {
+  min-height: 150px;
 }
 
 *.responsive-container {
@@ -93,4 +97,8 @@ button:not(.app-btn) {
   &:focus {
     transform: scale(1.1);
   }
+}
+
+.error-color {
+  color: $error;
 }

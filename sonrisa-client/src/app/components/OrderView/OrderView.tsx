@@ -7,9 +7,9 @@ import {
   useOrdering,
 } from '@core';
 import { CartItem } from '../CartItem/CartItem';
-import styles from './Order.module.scss';
+import styles from './OrderView.module.scss';
 
-export const Order = () => {
+export const OrderView = () => {
   const { orderState } = useOrdering();
 
   const { catalogImageMap } = useCatalog();

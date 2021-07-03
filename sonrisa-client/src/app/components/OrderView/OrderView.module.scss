@@ -10,7 +10,7 @@ div.checkoutItemWrap {
   justify-content: space-between;
 
   &:not(:last-child) {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   > p:first-child {
@@ -19,7 +19,7 @@ div.checkoutItemWrap {
 }
 
 div.checkoutWrap {
-  border: 3px solid $dark;
+  border: 2px solid $dark;
   border-radius: $border-radius;
   padding: 1rem 2rem;
   margin: 2rem 0;

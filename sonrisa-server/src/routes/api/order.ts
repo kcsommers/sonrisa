@@ -5,6 +5,7 @@ import {
   CreateOrderResponse,
   CreatePaymentRequest,
   CreatePaymentResponse,
+  Customer,
   Order,
   OrderLineItem,
   UpdateOrderRequest,
@@ -13,16 +14,44 @@ import {
 import { v4 as uuidV4 } from 'uuid';
 import { environments } from '../../environments';
 import { square } from '../../square';
+import JSONBig from 'json-bigint';
+import { OrderFullfillmentTypes } from '../../core/orders/OrderFullfillmentTypes';
+import { OrderFullfillmentScheduleTypes } from '../../core/orders/OrderFullfillmentScheduleTypes';
 
 const router: Router = Router();
-// @route   POST api/order/create
-// @desc    Creates an order
-// @access  Public
+
+/**
+ * @route  POST api/order/create
+ * @access PUBLIC
+ * @description ureates an order
+ */
 router.post('/create', async (req: Request, res: Response<Order>) => {
   const _lineItems = req.body.lineItems;
-  const _orderData = <Order>{
+  const _today = new Date();
+  const _nextweek = new Date(
+    _today.getFullYear(),
+    _today.getMonth(),
+    _today.getDate() + 7
+  );
+
+  const _orderData: Order = {
     locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
     lineItems: _lineItems,
+    fulfillments: [
+      {
+        type: OrderFullfillmentTypes.PICKUP,
+        pickupDetails: {
+          scheduleType: OrderFullfillmentScheduleTypes.SCHEDULED,
+          pickupAt: _nextweek.toISOString(),
+          note: 'Arf burf grrr',
+          recipient: {
+            displayName: 'Joni Blue',
+            emailAddress: 'joni@gmail.com',
+            phoneNumber: '3308192592',
+          },
+        },
+      },
+    ],
   };
 
   try {
@@ -43,9 +72,11 @@ router.post('/create', async (req: Request, res: Response<Order>) => {
   }
 });
 
-// @route   PUT api/order/update
-// @desc    updates an order by id
-// @access  Public
+/**
+ * @route POST api/order/update
+ * @access PUBLIC
+ * @description updates an order by id
+ */
 router.post('/update', async (req: Request, res: Response<Order>) => {
   try {
     const _orderId = <string>req.body.orderId;
@@ -64,16 +95,19 @@ router.post('/update', async (req: Request, res: Response<Order>) => {
     const _response = await square.ordersApi.updateOrder(_orderId, _request);
     console.log('[update order response]:::: ', _response.body);
     const _order = JSON.parse(<string>_response.body).order;
-    res.send(_order);
+    const _camelCaseOrder = <Order>getCamelcaseKeys(_order);
+    res.send(_camelCaseOrder);
   } catch (err) {
     console.error(err);
     res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
   }
 });
 
-// @route   GET api/order/:id
-// @desc    Retrieves an order by id
-// @access  Public
+/**
+ * @route GET api/order/:id
+ * @access PUBLIC
+ * @description Retrieves an order by id
+ */
 router.get('/:id', async (req: Request, res: Response<Order>) => {
   const _orderId = req.params.id;
 
@@ -100,9 +134,41 @@ router.get('/:id', async (req: Request, res: Response<Order>) => {
   }
 });
 
-// @route   DELETE api/order/:id
-// @desc    Deletes an order by id. Id of -1 deletes all
-// @access  Public
+/**
+ * @route POST api/order/payments
+ * @access PUBLIC
+ * @description Creates a square payment using the CreatePaymentRequest
+ * and the Customer provided in the request body
+ *
+ */
+router.post('/payments', async (req: Request, res: Response) => {
+  const _request = req.body.request as CreatePaymentRequest;
+  const _customer = req.body.customer as Customer;
+
+  if (!_request || !_customer) {
+    return res
+      .status(HttpStatusCodes.BAD_REQUEST)
+      .send('Location id and card token required');
+  }
+
+  try {
+    const _result = await square.paymentsApi.createPayment(_request);
+    const _resultParsed = JSON.parse(JSONBig.stringify(_result));
+
+    console.log('create payment response:::: ', _resultParsed);
+
+    res.json(_resultParsed);
+  } catch (err) {
+    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
+  }
+});
+
+/**
+ * @route DELETE api/order/:id
+ * @access PUBLIC
+ * @description Deletes an order by id. Id of -1 deletes all
+ *
+ */
 router.delete('/:id', async (req: Request, res: Response) => {
   const _orderId = req.params.id;
 
@@ -119,38 +185,6 @@ router.delete('/:id', async (req: Request, res: Response) => {
     //   return res.status(HttpStatusCodes.BAD_REQUEST).send('Invalid Order Id');
     // }
     // res.json(_result);
-  } catch (err) {
-    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
-  }
-});
-
-router.post('/payments', async (req: Request, res: Response) => {
-  const _locationId = req.body.locationId;
-  const _cardToken = req.body.cardToken;
-
-  if (!_locationId || !_cardToken) {
-    return res
-      .status(HttpStatusCodes.BAD_REQUEST)
-      .send('Location id and card token required');
-  }
-
-  const payment: CreatePaymentRequest = {
-    idempotencyKey: uuidV4(),
-    locationId: _locationId,
-    sourceId: _cardToken,
-    amountMoney: {
-      amount: BigInt(100),
-      currency: 'USD',
-    },
-  };
-
-  try {
-    const { result } = await square.paymentsApi.createPayment(payment);
-    res.send(
-      JSON.stringify(result, (k, v) =>
-        typeof v === 'bigint' ? +v.toString() : v
-      )
-    );
   } catch (err) {
     res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
   }

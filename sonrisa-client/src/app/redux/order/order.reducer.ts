@@ -1,3 +1,4 @@
+import { OrderFullfillmentScheduleTypes, OrderFullfillmentTypes } from '@core';
 import { Reducer } from 'react';
 import { AnyAction } from 'redux';
 import { Order } from 'square';
@@ -13,6 +14,8 @@ const initialState: Order = {
   lineItems: [],
 
   state: '',
+
+  fulfillments: [],
 
   totalMoney: {
     amount: '0',

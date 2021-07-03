@@ -1,5 +1,5 @@
 export { SnackbarComponent } from './Snackbar/SnackbarComponent';
-export { Order } from './Order/Order';
+export { OrderView } from './OrderView/OrderView';
 export { LoadingSpinner } from './LoadingSpinner/LoadingSpinner';
 export { Button } from './Button/Button';
 export { ImageSlider } from './ImageSlider/ImageSlider';

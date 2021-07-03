@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../Button/Button';
-import { Order } from '../Order/Order';
+import { OrderView } from '../OrderView/OrderView';
 import styles from './Cart.module.scss';
 
 interface ICartProps {
@@ -28,7 +28,7 @@ const containerVariants = {
 const innerVariants = {
   enter: {
     x: '100%',
-    boxShadow: '0',
+    boxShadow: '0px 0px 0px 0px #aaaaaa',
   },
   center: {
     x: '0%',
@@ -36,7 +36,7 @@ const innerVariants = {
   },
   exit: {
     x: '100%',
-    boxShadow: '0',
+    boxShadow: '0px 0px 0px 0px #aaaaaa',
   },
 };
 
@@ -91,7 +91,7 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
               </button>
             </div>
             <div className={styles.cartBody}>
-              <Order />
+              <OrderView />
               <Button text="Checkout" onClick={goToCheckout} />
             </div>
           </motion.div>
