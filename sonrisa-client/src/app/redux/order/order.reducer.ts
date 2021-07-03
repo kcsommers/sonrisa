@@ -1,9 +1,10 @@
+import { OrderFullfillmentScheduleTypes, OrderFullfillmentTypes } from '@core';
 import { Reducer } from 'react';
 import { AnyAction } from 'redux';
 import { Order } from 'square';
 import { SET_ORDER } from './order.actions';
 
-const initialState = <Order>{
+const initialState: Order = {
   id: '',
 
   locationId: '',
@@ -14,18 +15,20 @@ const initialState = <Order>{
 
   state: '',
 
+  fulfillments: [],
+
   totalMoney: {
-    amount: BigInt(0),
+    amount: '0',
     currency: 'USD',
   },
 
   totalTaxMoney: {
-    amount: BigInt(0),
+    amount: '0',
     currency: 'USD',
   },
 
   totalTipMoney: {
-    amount: BigInt(0),
+    amount: '0',
     currency: 'USD',
   },
 

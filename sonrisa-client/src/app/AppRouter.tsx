@@ -1,13 +1,16 @@
-import { Cart, Footer, Overlay, Header } from '@components';
+import { Cart, Footer, Header } from '@components';
+import { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { CheckoutPage } from './pages/CheckoutPage/CheckoutPage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { OrderSuccessPage } from './pages/OrderSuccessPage/OrderSuccessPage';
 
 export const AppRouter = () => {
+  const [cartVisible, setCartVisible] = useState(false);
+
   return (
     <Router>
-      <Header />
+      <Header setCartVisible={setCartVisible} />
       <div
         style={{
           maxWidth: '1980px',
@@ -18,7 +21,13 @@ export const AppRouter = () => {
         }}
       >
         <Switch>
-          <Route exact path="/" render={(props) => <HomePage {...props} />} />
+          <Route
+            exact
+            path="/"
+            render={(props) => (
+              <HomePage {...props} setCartVisible={setCartVisible} />
+            )}
+          />
           <Route
             exact
             path="/checkout"
@@ -32,7 +41,7 @@ export const AppRouter = () => {
         </Switch>
       </div>
       <Footer />
-      <Cart />
+      <Cart isVisible={cartVisible} setIsVisible={setCartVisible} />
     </Router>
   );
 };

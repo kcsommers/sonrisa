@@ -9,5 +9,9 @@ div.overlayContainer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+div.overlayInner {
+  width: 100%;
   padding: 4rem;
 }

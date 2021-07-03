@@ -1,6 +1,6 @@
 import { setOrder, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
-import { CatalogObject, Order, OrderLineItem } from 'square';
+import { CatalogObject, Order } from 'square';
 import { Api } from '../api/api';
 import { logger } from '../logger';
 import { getItemVariationId } from '../utils';

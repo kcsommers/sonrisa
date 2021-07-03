@@ -9,7 +9,6 @@ body {
 }
 
 * {
-  font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
 }
 
@@ -29,12 +28,12 @@ span,
 button,
 p {
   color: $dark;
-  font-size: 1.2rem;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Square Market', sans-serif;
+  font-size: 16px;
 }
 
 p {
-  line-height: 1.75rem;
+  line-height: calc(100% + 10px);
 }
 
 button {
@@ -61,19 +60,26 @@ h4 {
 
 input,
 textarea {
+  height: 48px;
   display: block;
   width: 100%;
-  box-shadow: $box-shadow;
-  border: none;
+  border-radius: 6px;
   outline: none;
   background-color: #fff;
   margin-bottom: 1rem;
+  border: 1px solid #d9d9d9;
   padding: 0.5rem;
   transition: all 0.3s ease;
+  font-family: 'Square Market';
+  font-size: 16px;
 
   &:focus {
-    box-shadow: 0 1px 3px $yellow, 0 1px 2px $yellow;
+    border-color: $yellow;
   }
+}
+
+textarea {
+  min-height: 150px;
 }
 
 *.responsive-container {
@@ -91,4 +97,8 @@ button:not(.app-btn) {
   &:focus {
     transform: scale(1.1);
   }
+}
+
+.error-color {
+  color: $error;
 }
