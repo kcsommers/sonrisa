@@ -36,7 +36,7 @@ export const getItemDescription = (item: CatalogObject): string => {
 export const getColor = (colorType: string): string => {
   const _colorMap: any = {
     success: '#22bc33',
-    error: '#bb2224',
+    error: '#cc0023',
   };
 
   return _colorMap[colorType] || colorType;
@@ -51,6 +51,10 @@ export const getOrderSubtotal = (order: Order): number => {
 
 export const getOrderTotal = (order: Order): number => {
   return +(order.totalMoney?.amount as string);
+};
+
+export const getOrderTip = (order: Order): number => {
+  return +(order.totalTipMoney?.amount as string);
 };
 
 export const getOrderTax = (order: Order): number => {

@@ -1,5 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
-import { Order, OrderLineItem } from 'square';
+import {
+  CreatePaymentRequest,
+  CreatePaymentResponse,
+  Customer,
+  Order,
+  OrderLineItem,
+} from 'square';
 import { environments } from '../../../environments';
 import { IGetCatalogResponse } from './interfaces/IGetCatalogResponse';
 
@@ -90,21 +96,11 @@ export const Api = {
     return axios.get(`${getBaseUrl()}/order/${orderId}`);
   },
 
-  submitOrder: (
-    paymentInfo: any,
-    orderNumber: number
-  ): Promise<AxiosResponse> => {
-    return axios.post(`${getBaseUrl()}`);
-  },
-
   createPayment: async (
-    locationId: string,
-    cardToken: string
-  ): Promise<AxiosResponse> => {
-    return axios.post(`${getBaseUrl()}/order/payments`, {
-      locationId,
-      cardToken,
-    });
+    request: CreatePaymentRequest,
+    customer: Customer
+  ): Promise<AxiosResponse<CreatePaymentResponse>> => {
+    return axios.post(`${getBaseUrl()}/order/payments`, { request, customer });
   },
 
   getCatalog: (): Promise<AxiosResponse<IGetCatalogResponse>> => {
