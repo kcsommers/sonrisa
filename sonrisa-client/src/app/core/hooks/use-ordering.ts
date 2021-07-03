@@ -1,6 +1,12 @@
 import { setOrder, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
-import { CatalogObject, Order } from 'square';
+import {
+  CatalogObject,
+  CreatePaymentRequest,
+  Customer,
+  Order,
+  Payment,
+} from 'square';
 import { Api } from '../api/api';
 import { logger } from '../logger';
 import { getItemVariationId } from '../utils';
@@ -16,6 +22,13 @@ export interface IOrderingHook {
   getItemQuantity: (itemId: string) => number;
 
   setItemQuantity: (item: CatalogObject, quantity: number) => Promise<Order>;
+
+  updateOrder: (data: any) => Promise<Order>;
+
+  createPayment: (
+    request: CreatePaymentRequest,
+    customer: Customer
+  ) => Promise<Payment>;
 }
 
 export const useOrdering = (): IOrderingHook => {
@@ -52,6 +65,25 @@ export const useOrdering = (): IOrderingHook => {
     }
 
     return +_item.quantity;
+  };
+
+  const updateOrder = async (data: any): Promise<Order> => {
+    try {
+      const _response = await Api.updateOrder(
+        currentOrder?.id as string,
+        currentOrder?.version as number,
+        data
+      );
+
+      const _order = _response.data.order as Order;
+
+      setSessionItem(storageKeys.ORDER_NUMBER, _order.id);
+      dispatch(setOrder(_order));
+      return _order;
+    } catch (err) {
+      logger.error(err);
+      throw new Error(err);
+    }
   };
 
   const setItemQuantity = async (
@@ -98,11 +130,28 @@ export const useOrdering = (): IOrderingHook => {
     }
   };
 
+  const createPayment = async (
+    request: CreatePaymentRequest,
+    customer: Customer
+  ): Promise<Payment> => {
+    try {
+      const _response = await Api.createPayment(request, customer);
+      const _payment = _response.data.payment as Payment;
+
+      return _payment;
+    } catch (err) {
+      logger.error(err);
+      throw new Error(err);
+    }
+  };
+
   return {
     currentOrder,
     getOrderId,
     getOrderById,
     getItemQuantity,
     setItemQuantity,
+    updateOrder,
+    createPayment,
   };
 };

@@ -1,4 +1,3 @@
-import { getCamelcaseKeys } from '../../core/public';
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import {
@@ -7,17 +6,15 @@ import {
   CreatePaymentResponse,
   Customer,
   Order,
-  OrderLineItem,
+  Payment,
   RetrieveOrderResponse,
   UpdateOrderRequest,
   UpdateOrderResponse,
 } from 'square';
 import { v4 as uuidV4 } from 'uuid';
+import { getCamelcaseKeys } from '../../core/public';
 import { environments } from '../../environments';
 import { square } from '../../square';
-import JSONBig from 'json-bigint';
-import { OrderFullfillmentTypes } from '../../core/orders/OrderFullfillmentTypes';
-import { OrderFullfillmentScheduleTypes } from '../../core/orders/OrderFullfillmentScheduleTypes';
 
 const router: Router = Router();
 
@@ -147,27 +144,36 @@ router.get(
  * and the Customer provided in the request body
  *
  */
-router.post('/payments', async (req: Request, res: Response) => {
-  const _request = req.body.request as CreatePaymentRequest;
-  const _customer = req.body.customer as Customer;
+router.post(
+  '/payments',
+  async (req: Request, res: Response<CreatePaymentResponse>) => {
+    const _request = req.body.request as CreatePaymentRequest;
+    const _customer = req.body.customer as Customer;
 
-  if (!_request || !_customer) {
-    return res
-      .status(HttpStatusCodes.BAD_REQUEST)
-      .send('Location id and card token required');
+    if (!_request || !_customer) {
+      return res.status(HttpStatusCodes.BAD_REQUEST);
+    }
+
+    try {
+      const _response = await square.paymentsApi.createPayment(_request);
+      console.log('[create payment response]:::: ', _response.body);
+
+      const _resParsed = JSON.parse(
+        _response.body as string
+      ) as CreatePaymentResponse;
+
+      const _camelCasePayment = getCamelcaseKeys(_resParsed.payment) as Payment;
+      if (!_camelCasePayment) {
+        console.error('Error converting to camel case');
+        return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      }
+
+      res.json({ errors: _resParsed.errors, payment: _camelCasePayment });
+    } catch (err) {
+      res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    }
   }
-
-  try {
-    const _result = await square.paymentsApi.createPayment(_request);
-    const _resultParsed = JSON.parse(JSONBig.stringify(_result));
-
-    console.log('create payment response:::: ', _resultParsed);
-
-    res.json(_resultParsed);
-  } catch (err) {
-    res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).send('Server Error');
-  }
-});
+);
 
 /**
  * @route DELETE api/order/:id

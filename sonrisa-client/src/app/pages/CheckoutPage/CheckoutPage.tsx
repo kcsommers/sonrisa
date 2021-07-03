@@ -15,7 +15,7 @@ import { v4 as uuidV4 } from 'uuid';
 import styles from './CheckoutPage.module.scss';
 
 export const CheckoutPage = (props: RouteComponentProps) => {
-  const { currentOrder } = useOrdering();
+  const { currentOrder, updateOrder, createPayment } = useOrdering();
 
   const formSubmitted = (
     customer: Customer,
@@ -33,23 +33,23 @@ export const CheckoutPage = (props: RouteComponentProps) => {
         pickupDetails: {
           scheduleType: OrderFullfillmentScheduleTypes.SCHEDULED,
           pickupAt: getPickupTime(),
-          note: 'Arf burf grrr',
+          note: message,
           recipient: {
-            displayName: 'Joni Blue',
-            emailAddress: 'joni@gmail.com',
-            phoneNumber: '3308192592',
+            displayName: `${customer.givenName} ${customer.familyName}`,
+            emailAddress: customer.emailAddress,
+            phoneNumber: customer.phoneNumber,
           },
         },
       },
     ];
 
-    Api.updateOrder(currentOrder.id as string, currentOrder.version as number, {
-      fulfillments: _fulfillments,
-    }).then();
+    updateOrder({ fulfillments: _fulfillments })
+      .then((res) => {})
+      .catch((err) => console.error(err));
 
+    // then create the payment request
     const _totalMoney = getOrderTotal(currentOrder);
     const _tipMoney = getOrderTip(currentOrder);
-
     const request: CreatePaymentRequest = {
       idempotencyKey: uuidV4(),
       sourceId: cardToken,
@@ -64,9 +64,12 @@ export const CheckoutPage = (props: RouteComponentProps) => {
       },
     };
 
-    Api.createPayment(request, customer)
+    // create the payment
+    createPayment(request, customer)
       .then((res) => {
         logger.log('[create payment response]:::: ', res);
+        // route to success page on success
+        props.history.push('/checkout/success');
       })
       .catch((err) => console.error(err));
   };
