@@ -24,7 +24,7 @@ export const Header = ({
   showCart = true,
   setCartVisible,
 }: HeaderProps) => {
-  const { orderState } = useOrdering();
+  const { currentOrder } = useOrdering();
 
   return (
     <header className={styles.header}>
@@ -68,11 +68,11 @@ export const Header = ({
                 onClick={() => setCartVisible(true)}
               >
                 <FontAwesomeIcon icon={faShoppingCart} />
-                {orderState &&
-                orderState.lineItems &&
-                orderState.lineItems.length ? (
+                {currentOrder &&
+                currentOrder.lineItems &&
+                currentOrder.lineItems.length ? (
                   <span className="whatthefuck">
-                    {orderState.lineItems.length}
+                    {currentOrder.lineItems.length}
                   </span>
                 ) : null}
               </button>

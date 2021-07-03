@@ -1,5 +1,5 @@
-export class OrderFullfillmentScheduleTypes {
-  public static SCHEDULED = 'SCHEDULED';
+export const OrderFullfillmentScheduleTypes = {
+  SCHEDULED: 'SCHEDULED',
 
-  public static ASAP = 'ASAP';
-}
+  ASAP: 'ASAP',
+};

@@ -60,3 +60,14 @@ export const getOrderTip = (order: Order): number => {
 export const getOrderTax = (order: Order): number => {
   return +(order.totalTaxMoney?.amount as string);
 };
+
+export const getPickupTime = (): string => {
+  const _today = new Date();
+  const _nextweek = new Date(
+    _today.getFullYear(),
+    _today.getMonth(),
+    _today.getDate() + 7
+  );
+
+  return _nextweek.toISOString();
+};

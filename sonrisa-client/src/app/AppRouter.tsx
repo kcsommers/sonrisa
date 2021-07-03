@@ -33,11 +33,7 @@ export const AppRouter = () => {
             path="/checkout"
             render={(props) => <CheckoutPage {...props} />}
           />
-          <Route
-            exact
-            path="/checkout/success"
-            render={(props) => <OrderSuccessPage {...props} />}
-          />
+          <Route exact path="/checkout/success" component={OrderSuccessPage} />
         </Switch>
       </div>
       <Footer />

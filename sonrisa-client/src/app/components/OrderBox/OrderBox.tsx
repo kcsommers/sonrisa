@@ -26,7 +26,7 @@ interface OrderBoxProps {
 }
 
 export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
-  const { getItemQuantity, setItemQuantity, orderState } = useOrdering();
+  const { getItemQuantity, setItemQuantity, currentOrder } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
 
@@ -62,18 +62,18 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
   // updates local quantity and price if order id changes
   const orderIdRef = useRef('');
   useEffect(() => {
-    if (!item || orderState?.id === orderIdRef.current) {
+    if (!item || currentOrder?.id === orderIdRef.current) {
       return;
     }
 
     const _quantity = getItemQuantity(getItemVariationId(item) || '');
 
     prevQuantityRef.current = _quantity;
-    orderIdRef.current = orderState?.id as string;
+    orderIdRef.current = currentOrder?.id as string;
     setQuantity(_quantity);
     setPrice(getItemPrice(item));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [orderState?.id]);
+  }, [currentOrder?.id]);
 
   return (
     <div className={styles.orderBox}>

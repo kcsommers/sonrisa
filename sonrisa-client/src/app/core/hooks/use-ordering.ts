@@ -1,13 +1,19 @@
 import { setOrder, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
-import { CatalogObject, Order } from 'square';
+import {
+  CatalogObject,
+  CreatePaymentRequest,
+  Customer,
+  Order,
+  Payment,
+} from 'square';
 import { Api } from '../api/api';
 import { logger } from '../logger';
 import { getItemVariationId } from '../utils';
 import { useStorage } from './use-storage';
 
 export interface IOrderingHook {
-  orderState: Order | undefined;
+  currentOrder: Order | undefined;
 
   getOrderId: () => string;
 
@@ -16,10 +22,17 @@ export interface IOrderingHook {
   getItemQuantity: (itemId: string) => number;
 
   setItemQuantity: (item: CatalogObject, quantity: number) => Promise<Order>;
+
+  updateOrder: (data: any) => Promise<Order>;
+
+  createPayment: (
+    request: CreatePaymentRequest,
+    customer: Customer
+  ) => Promise<Payment>;
 }
 
 export const useOrdering = (): IOrderingHook => {
-  const orderState = useAppSelector((state) => state.order);
+  const currentOrder = useAppSelector((state) => state.order);
 
   const { setSessionItem, getSessionItem, storageKeys } = useStorage();
 
@@ -32,15 +45,19 @@ export const useOrdering = (): IOrderingHook => {
 
   const getOrderById = async (orderId: string): Promise<Order> => {
     const _response = await Api.getOrder(orderId);
-    return _response.data;
+    return _response.data.order as Order;
   };
 
   const getItemQuantity = (itemId: string): number => {
-    if (!orderState || !orderState.lineItems || !orderState.lineItems.length) {
+    if (
+      !currentOrder ||
+      !currentOrder.lineItems ||
+      !currentOrder.lineItems.length
+    ) {
       return 0;
     }
 
-    const _item = orderState.lineItems.find(
+    const _item = currentOrder.lineItems.find(
       (item) => item.catalogObjectId === itemId
     );
     if (!_item) {
@@ -50,18 +67,35 @@ export const useOrdering = (): IOrderingHook => {
     return +_item.quantity;
   };
 
+  const updateOrder = async (data: any): Promise<Order> => {
+    try {
+      const _response = await Api.updateOrder(
+        currentOrder?.id as string,
+        currentOrder?.version as number,
+        data
+      );
+
+      const _order = _response.data.order as Order;
+
+      setSessionItem(storageKeys.ORDER_NUMBER, _order.id);
+      dispatch(setOrder(_order));
+      return _order;
+    } catch (err) {
+      logger.error(err);
+      throw new Error(err);
+    }
+  };
+
   const setItemQuantity = async (
     item: CatalogObject,
     quantity: number
   ): Promise<Order> => {
     // make a copy of the current order items
-    const _clonedItems = cloneDeep(orderState?.lineItems || []);
+    const _clonedItems = cloneDeep(currentOrder?.lineItems || []);
     // look for the item being updated
     let _lineItem = _clonedItems.find((i: any) => {
       return i.catalogObjectId === getItemVariationId(item);
     });
-
-    console.log('_LINE', _lineItem);
 
     // if it exists just update the quantity
     if (_lineItem) {
@@ -79,17 +113,32 @@ export const useOrdering = (): IOrderingHook => {
     try {
       // if theres an existing id update the order
       // otherwise create a new one
-      const _response = orderState?.id
-        ? await Api.updateOrder(
-            orderState?.id,
-            orderState?.version || 0,
-            _clonedItems
-          )
+      const _response = currentOrder?.id
+        ? await Api.updateOrder(currentOrder?.id, currentOrder?.version || 0, {
+            lineItems: _clonedItems,
+          })
         : await Api.createOrder(_clonedItems);
 
-      setSessionItem(storageKeys.ORDER_NUMBER, _response.data.id);
-      dispatch(setOrder(_response.data));
-      return _response.data;
+      const _order = _response.data.order as Order;
+
+      setSessionItem(storageKeys.ORDER_NUMBER, _order.id);
+      dispatch(setOrder(_order));
+      return _order;
+    } catch (err) {
+      logger.error(err);
+      throw new Error(err);
+    }
+  };
+
+  const createPayment = async (
+    request: CreatePaymentRequest,
+    customer: Customer
+  ): Promise<Payment> => {
+    try {
+      const _response = await Api.createPayment(request, customer);
+      const _payment = _response.data.payment as Payment;
+
+      return _payment;
     } catch (err) {
       logger.error(err);
       throw new Error(err);
@@ -97,10 +146,12 @@ export const useOrdering = (): IOrderingHook => {
   };
 
   return {
-    orderState,
+    currentOrder,
     getOrderId,
     getOrderById,
     getItemQuantity,
     setItemQuantity,
+    updateOrder,
+    createPayment,
   };
 };

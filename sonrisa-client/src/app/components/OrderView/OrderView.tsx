@@ -10,17 +10,17 @@ import { CartItem } from '../CartItem/CartItem';
 import styles from './OrderView.module.scss';
 
 export const OrderView = () => {
-  const { orderState } = useOrdering();
+  const { currentOrder } = useOrdering();
 
   const { catalogImageMap } = useCatalog();
 
   return (
     <div>
-      {!orderState?.lineItems?.length ? (
+      {!currentOrder?.lineItems?.length ? (
         <p className={styles.noItemsText}>*No items in cart</p>
       ) : (
         <>
-          {orderState.lineItems?.map((item) => (
+          {currentOrder.lineItems?.map((item) => (
             <CartItem
               orderItem={item}
               key={item.uid}
@@ -31,19 +31,19 @@ export const OrderView = () => {
             <div className={styles.checkoutItemWrap}>
               <p className={styles.checkoutItemLabel}>Subtotal</p>
               <p className={styles.checkoutItemTotal}>
-                {getMoneyString(getOrderSubtotal(orderState))}
+                {getMoneyString(getOrderSubtotal(currentOrder))}
               </p>
             </div>
             <div className={styles.checkoutItemWrap}>
               <p className={styles.checkoutItemLabel}>Tax</p>
               <p className={styles.checkoutItemTotal}>
-                {getMoneyString(getOrderTax(orderState))}
+                {getMoneyString(getOrderTax(currentOrder))}
               </p>
             </div>
             <div className={styles.checkoutItemWrap}>
               <p className={styles.checkoutItemLabel}>Total</p>
               <p className={styles.checkoutItemTotal}>
-                {getMoneyString(getOrderTotal(orderState))}
+                {getMoneyString(getOrderTotal(currentOrder))}
               </p>
             </div>
           </div>
