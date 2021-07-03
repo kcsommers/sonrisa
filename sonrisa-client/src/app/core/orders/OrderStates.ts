@@ -1,7 +1,7 @@
-export class OrderStates {
-  public static OPEN = 'OPEN';
+export const OrderStates = {
+  OPEN: 'OPEN',
 
-  public static CLOSED = 'CLOSED';
+  CLOSED: 'CLOSED',
 
-  public static CANCELED = 'CANCELED';
-}
+  CANCELED: 'CANCELED',
+};

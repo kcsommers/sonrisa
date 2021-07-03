@@ -1,26 +1,21 @@
-import { Api, getOrderTip, getOrderTotal, logger } from '@core';
+import { logger } from '@core';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { CreatePaymentRequest, Customer, Order } from 'square';
-import { v4 as uuidV4 } from 'uuid';
+import { Customer } from 'square';
 import { environments } from '../../../environments';
 import { Button } from './../Button/Button';
 import styles from './CheckoutForm.module.scss';
 
 interface ICheckoutFormProps {
-  order: Order;
+  formSubmitted: (
+    customer: Customer,
+    message: string,
+    cardToken: string
+  ) => void;
 }
 
-const PaymentStatuses = {
-  PENDING: 'PENDING',
-
-  SUCCESS: 'SUCCESS',
-
-  ERROR: 'ERROR',
-};
-
-export const CheckoutForm = ({ order }: ICheckoutFormProps) => {
+export const CheckoutForm = ({ formSubmitted }: ICheckoutFormProps) => {
   const [givenName, setGivenName] = useState('');
 
   const [givenNameError, setGivenNameError] = useState('');
@@ -41,9 +36,7 @@ export const CheckoutForm = ({ order }: ICheckoutFormProps) => {
 
   const [message, setMessage] = useState('');
 
-  const [paymentStatus, setPaymentStatus] = useState('');
-
-  const validateFormm = (): boolean => {
+  const validateForm = (): boolean => {
     let isValid = true;
 
     if (!givenName) {
@@ -74,16 +67,13 @@ export const CheckoutForm = ({ order }: ICheckoutFormProps) => {
   };
 
   const submit = async () => {
-    if (!validateFormm()) {
+    if (!validateForm() || !paymentMethod) {
       return;
     }
 
     const _tokenizeCard = async () => {
-      if (!paymentMethod) {
-        return;
-      }
-
       const tokenResult = await (paymentMethod as any).tokenize();
+
       if (tokenResult.status === 'OK') {
         return tokenResult.token;
       } else {
@@ -99,39 +89,16 @@ export const CheckoutForm = ({ order }: ICheckoutFormProps) => {
       const _cardToken = await _tokenizeCard();
       logger.log('card token:::: ', _cardToken);
 
-      const _totalMoney = getOrderTotal(order);
-      const _tipMoney = getOrderTip(order);
-
-      const request: CreatePaymentRequest = {
-        idempotencyKey: uuidV4(),
-        sourceId: _cardToken,
-        orderId: order.id,
-        amountMoney: {
-          currency: 'USD',
-          amount: String(_totalMoney - _tipMoney),
-        },
-        tipMoney: {
-          currency: 'USD',
-          amount: String(_tipMoney),
-        },
-      };
-
-      const customer: Customer = {
+      const _customer: Customer = {
         givenName,
         familyName,
         emailAddress,
         phoneNumber,
       };
 
-      Api.createPayment(request, customer)
-        .then((res) => {
-          logger.log('payment response:::: ', res);
-        })
-        .catch((err) => console.error(err));
-      setPaymentStatus(PaymentStatuses.SUCCESS);
+      formSubmitted(_customer, message, _cardToken);
     } catch (e) {
       console.error(e.message);
-      setPaymentStatus(PaymentStatuses.ERROR);
     }
   };
 
