@@ -69,7 +69,7 @@ export const CheckoutPage = (props: RouteComponentProps) => {
       .then((res) => {
         logger.log('[create payment response]:::: ', res);
         // route to success page on success
-        props.history.push('/checkout/success');
+        props.history.push('/checkout/success', { payment: res });
       })
       .catch((err) => console.error(err));
   };
