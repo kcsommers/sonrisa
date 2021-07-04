@@ -1,5 +1,11 @@
 import { Button, LoadingSpinner, SnackbarComponent } from '@components';
-import { getItemVariationId, logger, useCatalog, useSnackbar } from '@core';
+import {
+  Api,
+  getItemVariationId,
+  logger,
+  useCatalog,
+  useSnackbar,
+} from '@core';
 import {
   faCheckCircle,
   faExclamationCircle,
