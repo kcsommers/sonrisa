@@ -12,7 +12,7 @@ import {
   UpdateOrderResponse,
 } from 'square';
 import { v4 as uuidV4 } from 'uuid';
-import { getCamelcaseKeys } from '../../core/public';
+import { getCamelcaseKeys, sendEmail } from '../../core/public';
 import { environments } from '../../environments';
 import { square } from '../../square';
 
@@ -147,25 +147,51 @@ router.get(
 router.post(
   '/payments',
   async (req: Request, res: Response<CreatePaymentResponse>) => {
+    // get the request and the customer from the req body
     const _request = req.body.request as CreatePaymentRequest;
     const _customer = req.body.customer as Customer;
 
+    // if one doesn't exist send bad request status
     if (!_request || !_customer) {
       return res.status(HttpStatusCodes.BAD_REQUEST);
     }
 
     try {
+      // create the payment through square
       const _response = await square.paymentsApi.createPayment(_request);
       console.log('[create payment response]:::: ', _response.body);
 
+      // parse the response
       const _resParsed = JSON.parse(
         _response.body as string
       ) as CreatePaymentResponse;
 
+      // convert underscores to camelcase
       const _camelCasePayment = getCamelcaseKeys(_resParsed.payment) as Payment;
       if (!_camelCasePayment) {
         console.error('Error converting to camel case');
         return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      }
+
+      if (!_resParsed.errors || !_resParsed.errors.length) {
+        // no errors so far, send an email to customer
+        sendEmail(_customer)
+          .then((emailRes) => {
+            console.log('EMAIL RESPONSE:::: ', emailRes);
+            res.json({ errors: _resParsed.errors, payment: _camelCasePayment });
+          })
+          .catch((err) => {
+            // if email errors, send payment success response but include email error
+            console.error('EMAIL ERROR:::: ', err);
+
+            (_resParsed.errors || []).push({
+              category: 'EMAIL',
+              code: 'EMAIL',
+            });
+            res.json({ errors: _resParsed.errors, payment: _camelCasePayment });
+          });
+
+        return;
       }
 
       res.json({ errors: _resParsed.errors, payment: _camelCasePayment });
