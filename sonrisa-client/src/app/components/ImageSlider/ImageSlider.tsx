@@ -39,11 +39,7 @@ export const ImageSlider = ({
     getImgStyle(images[currentImageIndex + 1], 0, 100)
   );
 
-  const { toggleInterval } = useInterval(
-    () => next(currentImageIndex + 1),
-    2000,
-    true
-  );
+  useInterval(() => next(currentImageIndex + 1), 2000, true);
 
   const [isSliding, setIsSliding] = useState(false);
 

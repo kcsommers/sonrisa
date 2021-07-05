@@ -6,7 +6,7 @@ export const SET_ORDER_ID = 'SET_ORDER_ID';
 
 export const SET_ORDER_ITEMS = 'SET_ORDER_ITEMS';
 
-export const setOrder = (order: Order) =>
+export const setOrder = (order: Order | null) =>
   <const>{
     type: SET_ORDER,
     order,

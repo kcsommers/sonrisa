@@ -1,10 +1,4 @@
-import {
-  getItemName,
-  getItemPrice,
-  getItemVariationId,
-  logger,
-  useOrdering,
-} from '@core';
+import { getItemName, getItemVariationId, useOrdering } from '@core';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { CatalogObject } from 'square';

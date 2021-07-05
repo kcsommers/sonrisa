@@ -1,10 +1,10 @@
-import { Api, IContactRequest, logger } from '../../core/public';
-import { useState } from 'react';
-import { Button } from '../Button/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styles from './ContactForm.module.scss';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import { Customer } from 'square';
+import { Api, logger } from '../../core/public';
+import { Button } from '../Button/Button';
+import styles from './ContactForm.module.scss';
 
 interface IContactFormProps {
   formSubmitted: (success: boolean) => void;
