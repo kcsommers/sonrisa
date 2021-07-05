@@ -21,7 +21,7 @@ interface OrderBoxProps {
 }
 
 export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
-  const { getItemQuantity, setItemQuantity, currentOrder } = useOrdering();
+  const { getItemQuantity, currentOrder } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
 
@@ -29,23 +29,9 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
 
   const prevQuantityRef = useRef(quantity);
 
-  const updateCart = () => {
-    if (quantity === prevQuantityRef.current) {
-      return;
-    }
-
+  const orderUpdated = (success: boolean): void => {
     setOverlayOpen(false);
-
-    setItemQuantity(item, quantity)
-      .then((res) => {
-        prevQuantityRef.current = quantity;
-        onOrderUpdate(true);
-        logger.log('[setItemQuantity response]:::: ', res);
-      })
-      .catch((err) => {
-        onOrderUpdate(false);
-        logger.error(err);
-      });
+    onOrderUpdate(success);
   };
 
   // on init effect
@@ -103,7 +89,8 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
           item={item}
           quantity={quantity}
           setQuantity={setQuantity}
-          updateCart={updateCart}
+          orderUpdated={orderUpdated}
+          prevQuantityRef={prevQuantityRef}
         />
       </Overlay>
     </div>
