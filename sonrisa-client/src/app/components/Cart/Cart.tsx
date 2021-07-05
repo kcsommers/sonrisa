@@ -1,3 +1,4 @@
+import { useOrdering } from '@core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -41,6 +42,8 @@ const innerVariants = {
 };
 
 export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
+  const { currentOrder } = useOrdering();
+
   const history = useHistory();
 
   const goToCheckout = (): void => {
@@ -77,12 +80,12 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
             initial="enter"
             animate="center"
             exit="exit"
+            variants={innerVariants}
             transition={{
               duration: 0.3,
               type: 'tween',
               ease: 'circOut',
             }}
-            variants={innerVariants}
           >
             <div className={styles.cartHeader}>
               <h4>Cart</h4>
@@ -92,7 +95,9 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
             </div>
             <div className={styles.cartBody}>
               <OrderView />
-              <Button text="Checkout" onClick={goToCheckout} />
+              {currentOrder?.lineItems?.length ? (
+                <Button text="Checkout" onClick={goToCheckout} />
+              ) : null}
             </div>
           </motion.div>
         </motion.div>

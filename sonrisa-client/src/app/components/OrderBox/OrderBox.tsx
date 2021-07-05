@@ -108,19 +108,8 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
       </div>
       <div className={styles.orderBoxBottom}>
         <div className={styles.nameWrap}>
-          <button onClick={() => setQuantity(Math.max(quantity - 1, 0))}>
-            <FontAwesomeIcon icon={faMinus} />
-          </button>
           <span>{getItemName(item)}</span>
-          <button onClick={() => setQuantity(quantity + 1)}>
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
         </div>
-        <Button
-          text={`Update Cart ${getMoneyString(calculateCost(price, quantity))}`}
-          size="sm"
-          onClick={updateCart}
-        />
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay

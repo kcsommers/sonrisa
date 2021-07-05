@@ -1,10 +1,13 @@
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
+import { useInterval } from '@core';
 import styles from './ImageSlider.module.scss';
 
 type ImageSliderProps = {
   images: string[];
+
+  autoSlide?: boolean;
 };
 
 enum SlideDirections {
@@ -22,7 +25,10 @@ const getImgStyle = (
   transform: `translateX(${x}%)`,
 });
 
-export const ImageSlider = ({ images }: ImageSliderProps) => {
+export const ImageSlider = ({
+  images,
+  autoSlide = false,
+}: ImageSliderProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const [currentSlideStyle, setCurrentSlideStyle] = useState(
@@ -31,6 +37,12 @@ export const ImageSlider = ({ images }: ImageSliderProps) => {
 
   const [nextSlideStyle, setNextSlideStyle] = useState(
     getImgStyle(images[currentImageIndex + 1], 0, 100)
+  );
+
+  const { toggleInterval } = useInterval(
+    () => next(currentImageIndex + 1),
+    3000,
+    true
   );
 
   const [isSliding, setIsSliding] = useState(false);
@@ -59,6 +71,8 @@ export const ImageSlider = ({ images }: ImageSliderProps) => {
   const handleSlideEnd = () => {
     setIsSliding(false);
   };
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (!isSliding) {
@@ -97,22 +111,24 @@ export const ImageSlider = ({ images }: ImageSliderProps) => {
           onTransitionEnd={handleSlideEnd}
         ></div>
 
-        <div className={styles.imgArrowsWrap}>
-          <button
-            onClick={() => {
-              next(currentImageIndex - 1);
-            }}
-          >
-            <FontAwesomeIcon icon={faAngleLeft} />
-          </button>
-          <button
-            onClick={() => {
-              next(currentImageIndex + 1);
-            }}
-          >
-            <FontAwesomeIcon icon={faAngleRight} />
-          </button>
-        </div>
+        {!autoSlide && (
+          <div className={styles.imgArrowsWrap}>
+            <button
+              onClick={() => {
+                next(currentImageIndex - 1);
+              }}
+            >
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </button>
+            <button
+              onClick={() => {
+                next(currentImageIndex + 1);
+              }}
+            >
+              <FontAwesomeIcon icon={faAngleRight} />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

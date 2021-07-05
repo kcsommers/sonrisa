@@ -1,19 +1,14 @@
 import { Button, LoadingSpinner, SnackbarComponent } from '@components';
-import {
-  Api,
-  getItemVariationId,
-  logger,
-  useCatalog,
-  useSnackbar,
-} from '@core';
+import { getItemVariationId, useCatalog, useSnackbar } from '@core';
 import {
   faCheckCircle,
   faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 
