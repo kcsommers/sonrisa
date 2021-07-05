@@ -17,5 +17,7 @@ declare namespace NodeJS {
     GMAIL_OAUTH_REDIRECT_URI: string;
 
     GMAIL_OAUTH_REFRESH_TOKEN: string;
+
+    SONRISA_EMAIL: string;
   }
 }
