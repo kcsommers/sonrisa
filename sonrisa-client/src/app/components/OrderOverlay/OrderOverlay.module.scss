@@ -4,7 +4,7 @@ div.templateWrap {
   flex: 1;
   background-color: #fff;
   box-shadow: $box-shadow;
-  width: 50%;
+  width: 60%;
   margin: 0 auto;
   max-height: 75vh;
   display: flex;
@@ -21,8 +21,8 @@ div.overlayFooter {
   flex: 1;
   padding: 2rem;
   background-color: $offwhite;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
 }
 
 div.descriptionWrap {
@@ -59,4 +59,8 @@ button.quantityBtn {
     background-color: $dark;
     color: #fff;
   }
+}
+
+div.imgSliderWrap {
+  padding: 1rem;
 }

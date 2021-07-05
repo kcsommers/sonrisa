@@ -37,7 +37,8 @@ export const OrderOverlay = ({
       <div className={styles.overlayBody}>
         <div className={styles.imgSliderWrap}>
           <ImageSlider
-            images={catalogImageMap[getItemVariationId(item) || ''] || []}
+            images={(catalogImageMap[getItemVariationId(item)] || []).slice(1)}
+            autoSlide={true}
           />
         </div>
 
