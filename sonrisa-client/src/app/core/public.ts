@@ -5,6 +5,7 @@ export { logger } from './logger';
 export { useOrdering } from './hooks/use-ordering';
 export { useCatalog } from './hooks/use-catalog';
 export { useStorage } from './hooks/use-storage';
+export { useInterval } from './hooks/use-interval';
 export type { OrderStates } from './orders/OrderStates';
 export type { ISnackbarConfig } from './models/SnackbarConfig';
 export { ColorTypes } from './models/ColorTypes';
