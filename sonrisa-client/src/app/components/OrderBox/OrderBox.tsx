@@ -1,18 +1,13 @@
 import {
-  calculateCost,
   getItemName,
   getItemPrice,
   getItemVariationId,
-  getMoneyString,
   logger,
   useOrdering,
 } from '@core';
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { CatalogObject } from 'square';
-import { Button } from '../Button/Button';
 import { OrderOverlay } from '../OrderOverlay/OrderOverlay';
 import { Overlay } from '../Overlay/Overlay';
 import styles from './OrderBox.module.scss';
@@ -30,8 +25,6 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
 
   const [quantity, setQuantity] = useState(0);
 
-  const [price, setPrice] = useState('0');
-
   const [overlayOpen, setOverlayOpen] = useState(false);
 
   const prevQuantityRef = useRef(quantity);
@@ -40,6 +33,8 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
     if (quantity === prevQuantityRef.current) {
       return;
     }
+
+    setOverlayOpen(false);
 
     setItemQuantity(item, quantity)
       .then((res) => {
@@ -52,11 +47,6 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
         logger.error(err);
       });
   };
-
-  useEffect(() => {
-    setPrice(getItemPrice(item));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // on init effect
   // updates local quantity and price if order id changes
@@ -71,14 +61,13 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
     prevQuantityRef.current = _quantity;
     orderIdRef.current = currentOrder?.id as string;
     setQuantity(_quantity);
-    setPrice(getItemPrice(item));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder?.id]);
 
   return (
     <div className={styles.orderBox}>
       <AnimatePresence>
-        {quantity && (
+        {prevQuantityRef.current && (
           <motion.span
             className={`${styles.quantityWrap}`}
             initial={{
@@ -98,7 +87,7 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
               bounce: 0.25,
             }}
           >
-            <span>{quantity}</span>
+            <span>{prevQuantityRef.current}</span>
           </motion.span>
         )}
       </AnimatePresence>
@@ -106,10 +95,8 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
         <div className={styles.imgHoverBg}></div>
         <img src={imageUrl} alt={getItemName(item)} />
       </div>
-      <div className={styles.orderBoxBottom}>
-        <div className={styles.nameWrap}>
-          <span>{getItemName(item)}</span>
-        </div>
+      <div className={styles.nameWrap}>
+        <span>{getItemName(item)}</span>
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay

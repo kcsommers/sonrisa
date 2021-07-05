@@ -41,24 +41,28 @@ export const CheckoutForm = ({ formSubmitted }: ICheckoutFormProps) => {
 
     if (!givenName) {
       setGivenNameError('Please enter a first name');
+      isValid = false;
     } else {
       setGivenNameError('');
     }
 
-    if (!givenName) {
+    if (!familyName) {
       setFamilyNameError('Please enter a last name');
+      isValid = false;
     } else {
       setFamilyNameError('');
     }
 
     if (!emailAddress) {
-      setEmailAddressError('Please enter a valid email');
+      setEmailAddressError('Please enter a valid email address');
+      isValid = false;
     } else {
       setEmailAddressError('');
     }
 
     if (!phoneNumber) {
       setPhoneNumberError('Please enter a valid phone number');
+      isValid = false;
     } else {
       setPhoneNumberError('');
     }

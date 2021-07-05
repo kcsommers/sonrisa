@@ -9,5 +9,7 @@ export { useInterval } from './hooks/use-interval';
 export type { OrderStates } from './orders/OrderStates';
 export type { ISnackbarConfig } from './models/SnackbarConfig';
 export { ColorTypes } from './models/ColorTypes';
+export type { IContactRequest } from './api/interfaces/IContactRequest';
+export type { IContactResponse } from './api/interfaces/IContactResponse';
 export * from './api/api';
 export * from './utils';

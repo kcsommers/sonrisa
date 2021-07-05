@@ -1,4 +1,9 @@
-import { Button, LoadingSpinner, SnackbarComponent } from '@components';
+import {
+  Button,
+  ContactForm,
+  LoadingSpinner,
+  SnackbarComponent,
+} from '@components';
 import { getItemVariationId, useCatalog, useSnackbar } from '@core';
 import {
   faCheckCircle,
@@ -6,9 +11,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
+import { useRef } from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 
@@ -20,6 +25,26 @@ export const HomePage = (props: HomePageProps) => {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
 
   const { catalogItems, catalogImageMap } = useCatalog();
+
+  const orderSectionRef = useRef<HTMLElement | null>();
+
+  const contactFormSubmitted = (success: boolean) => {
+    setSnackbarVisible(
+      success
+        ? {
+            message: 'Your message has been sent!',
+            icon: faCheckCircle,
+            iconColor: 'success',
+            duration: 4000,
+          }
+        : {
+            message: 'Error sending message. Please try again.',
+            icon: faExclamationCircle,
+            iconColor: 'error',
+            duration: 4000,
+          }
+    );
+  };
 
   const onOrderUpdate = (success: boolean) => {
     setSnackbarVisible(
@@ -49,13 +74,21 @@ export const HomePage = (props: HomePageProps) => {
               Handmade Brioche Donuts. Fresh and Local Ingredients. Made in
               Seattle, WA.
             </h3>
-            <Button text="Place an Order Online" isFullWidth={false} />
+            <Button
+              text="Place an Order Online"
+              isFullWidth={false}
+              onClick={() => {
+                orderSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            />
           </div>
           <img src={doughnutHalves} alt="Doughnut Half" />
         </div>
       </section>
-
-      <section className={`${styles.menuSection} responsive-container`}>
+      <section
+        className={`${styles.menuSection} responsive-container`}
+        ref={(el) => (orderSectionRef.current = el)}
+      >
         <p className={`${styles.menuSectionText}`}>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
           architecto ipsam placeat fuga animi aperiam.
@@ -124,14 +157,7 @@ export const HomePage = (props: HomePageProps) => {
 
       <section className={`${styles.contactSection} responsive-container`}>
         <div className="max-1280">
-          <h3>Get in Touch</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          <div className={styles.contactFormWrap}>
-            <input type="text" placeholder="Full Name" />
-            <input type="text" placeholder="Email Address" />
-            <textarea placeholder="Message" />
-            <Button text="Submit" size="md" isFullWidth={false} />
-          </div>
+          <ContactForm formSubmitted={contactFormSubmitted} />
         </div>
       </section>
       <SnackbarComponent isVisible={snackbarVisible} config={snackbarConfig} />

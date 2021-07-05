@@ -26,7 +26,7 @@ div.overlayFooter {
 }
 
 div.descriptionWrap {
-  padding: 2rem;
+  padding: 1rem 2rem;
   > p {
     margin-top: 0.5rem;
   }
@@ -42,15 +42,15 @@ div.quantityWrap {
 span.quantity {
   font-size: 2rem;
   display: inline-block;
-  margin: 0 2rem;
+  margin: 0 1rem;
 }
 
 button.quantityBtn {
   box-shadow: none;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 100%;
-  border: 2px solid $dark;
+  border: 1px solid $dark;
   color: $dark;
   transition: all 0.2s ease;
   background-color: none;
