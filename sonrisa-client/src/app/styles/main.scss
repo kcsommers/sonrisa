@@ -28,8 +28,8 @@ span,
 button,
 p {
   color: $dark;
-  font-family: 'Square Market', sans-serif;
-  font-size: 16px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
 }
 
 p {
@@ -70,8 +70,8 @@ textarea {
   border: 1px solid #d9d9d9;
   padding: 0.5rem;
   transition: all 0.3s ease;
-  font-family: 'Square Market';
-  font-size: 16px;
+  font-size: 18px;
+  font-family: 'Source Sans Pro', sans-serif;
 
   &:focus {
     border-color: $yellow;

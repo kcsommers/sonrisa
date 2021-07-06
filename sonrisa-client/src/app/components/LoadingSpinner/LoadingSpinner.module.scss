@@ -17,6 +17,12 @@
   border-width: 3px;
 }
 
+.loadingSpinnerXSmall {
+  width: 30px;
+  height: 30px;
+  border-width: 3px;
+}
+
 @keyframes spin {
   to {
     -webkit-transform: rotate(360deg);

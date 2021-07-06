@@ -1,21 +1,28 @@
-import { logger } from '@core';
+import {
+  getOrderTip,
+  getOrderTotal,
+  getPickupTime,
+  logger,
+  OrderFullfillmentScheduleTypes,
+  OrderFullfillmentTypes,
+  useOrdering,
+} from '@core';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { Customer } from 'square';
+import { CreatePaymentRequest, Customer, Payment } from 'square';
 import { environments } from '../../../environments';
 import { Button } from './../Button/Button';
+import { v4 as uuidV4 } from 'uuid';
 import styles from './CheckoutForm.module.scss';
 
 interface ICheckoutFormProps {
-  formSubmitted: (
-    customer: Customer,
-    message: string,
-    cardToken: string
-  ) => void;
+  onCheckout: (success: boolean, payment?: Payment) => void;
 }
 
-export const CheckoutForm = ({ formSubmitted }: ICheckoutFormProps) => {
+export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
+  const { currentOrder, updateOrder, createPayment } = useOrdering();
+
   const [givenName, setGivenName] = useState('');
 
   const [givenNameError, setGivenNameError] = useState('');
@@ -36,29 +43,35 @@ export const CheckoutForm = ({ formSubmitted }: ICheckoutFormProps) => {
 
   const [message, setMessage] = useState('');
 
+  const [submittingForm, setSubmittingForm] = useState(false);
+
   const validateForm = (): boolean => {
     let isValid = true;
 
     if (!givenName) {
       setGivenNameError('Please enter a first name');
+      isValid = false;
     } else {
       setGivenNameError('');
     }
 
-    if (!givenName) {
+    if (!familyName) {
       setFamilyNameError('Please enter a last name');
+      isValid = false;
     } else {
       setFamilyNameError('');
     }
 
     if (!emailAddress) {
-      setEmailAddressError('Please enter a valid email');
+      setEmailAddressError('Please enter a valid email address');
+      isValid = false;
     } else {
       setEmailAddressError('');
     }
 
     if (!phoneNumber) {
       setPhoneNumberError('Please enter a valid phone number');
+      isValid = false;
     } else {
       setPhoneNumberError('');
     }
@@ -67,9 +80,11 @@ export const CheckoutForm = ({ formSubmitted }: ICheckoutFormProps) => {
   };
 
   const submit = async () => {
-    if (!validateForm() || !paymentMethod) {
+    if (!validateForm() || !paymentMethod || !currentOrder) {
       return;
     }
+
+    setSubmittingForm(true);
 
     const _tokenizeCard = async () => {
       const tokenResult = await (paymentMethod as any).tokenize();
@@ -96,8 +111,62 @@ export const CheckoutForm = ({ formSubmitted }: ICheckoutFormProps) => {
         phoneNumber,
       };
 
-      formSubmitted(_customer, message, _cardToken);
+      // first update the order with fulfillments and customer info
+      const _fulfillments = [
+        {
+          type: OrderFullfillmentTypes.PICKUP,
+          pickupDetails: {
+            scheduleType: OrderFullfillmentScheduleTypes.SCHEDULED,
+            pickupAt: getPickupTime(),
+            note: message,
+            recipient: {
+              displayName: `${_customer.givenName} ${_customer.familyName}`,
+              emailAddress: _customer.emailAddress,
+              phoneNumber: _customer.phoneNumber,
+            },
+          },
+        },
+      ];
+
+      updateOrder({ fulfillments: _fulfillments })
+        .then((res) => {
+          // then create the payment request
+          const _totalMoney = getOrderTotal(currentOrder);
+          const _tipMoney = getOrderTip(currentOrder);
+          const request: CreatePaymentRequest = {
+            idempotencyKey: uuidV4(),
+            sourceId: _cardToken,
+            orderId: currentOrder?.id,
+            amountMoney: {
+              currency: 'USD',
+              amount: String(_totalMoney - _tipMoney),
+            },
+            tipMoney: {
+              currency: 'USD',
+              amount: String(_tipMoney),
+            },
+          };
+
+          // create the payment
+          createPayment(request, _customer)
+            .then((res) => {
+              logger.log('[create payment response]:::: ', res);
+              setSubmittingForm(false);
+              onCheckout(true, res);
+            })
+            .catch((err) => {
+              logger.error(err);
+              setSubmittingForm(false);
+              onCheckout(false);
+            });
+        })
+        .catch((err) => {
+          logger.error(err);
+          setSubmittingForm(false);
+          onCheckout(false);
+        });
     } catch (e) {
+      setSubmittingForm(false);
       console.error(e.message);
     }
   };
@@ -194,7 +263,11 @@ export const CheckoutForm = ({ formSubmitted }: ICheckoutFormProps) => {
       <div id="card-container"></div>
 
       <div className={styles.inputWrap}>
-        <Button text="Submit Payment" onClick={submit} />
+        <Button
+          text="Submit Payment"
+          onClick={submit}
+          showSpinner={submittingForm}
+        />
       </div>
     </div>
   );

@@ -25,6 +25,8 @@ export interface IOrderingHook {
 
   updateOrder: (data: any) => Promise<Order>;
 
+  clearOrder: () => void;
+
   createPayment: (
     request: CreatePaymentRequest,
     customer: Customer
@@ -130,6 +132,11 @@ export const useOrdering = (): IOrderingHook => {
     }
   };
 
+  const clearOrder = () => {
+    dispatch(setOrder(null));
+    setSessionItem(storageKeys.ORDER_NUMBER, '');
+  };
+
   const createPayment = async (
     request: CreatePaymentRequest,
     customer: Customer
@@ -152,6 +159,7 @@ export const useOrdering = (): IOrderingHook => {
     getItemQuantity,
     setItemQuantity,
     updateOrder,
+    clearOrder,
     createPayment,
   };
 };

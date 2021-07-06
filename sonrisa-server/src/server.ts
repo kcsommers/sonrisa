@@ -6,6 +6,7 @@ import order from './routes/api/order';
 import profile from './routes/api/profile';
 import user from './routes/api/user';
 import catalog from './routes/api/catalog';
+import contact from './routes/api/contact';
 
 const app = express();
 
@@ -95,6 +96,7 @@ app.use('/api/user', user);
 app.use('/api/profile', profile);
 app.use('/api/order', order);
 app.use('/api/catalog', catalog);
+app.use('/api/contact', contact);
 
 const port = app.get('port');
 const server = app.listen(port, () =>

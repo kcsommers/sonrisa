@@ -9,7 +9,7 @@
   font-size: 1rem;
   text-transform: uppercase;
   display: inline-block;
-  padding: 1rem 3rem;
+  padding: 0rem 3rem;
   font-family: 'Roboto', sans-serif;
   background-color: #fff;
   transition: all 0.2s ease;
@@ -25,12 +25,13 @@
 
 .btn-md {
   font-size: 1rem;
-  padding: 1rem 3rem;
+  padding: 0rem 3rem;
+  height: 50px;
 }
 
 .btn-sm {
   font-size: 0.85rem;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
 }
 
 .btnFullWidth {

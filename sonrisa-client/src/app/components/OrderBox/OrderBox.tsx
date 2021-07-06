@@ -1,18 +1,7 @@
-import {
-  calculateCost,
-  getItemName,
-  getItemPrice,
-  getItemVariationId,
-  getMoneyString,
-  logger,
-  useOrdering,
-} from '@core';
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getItemName, getItemVariationId, useOrdering } from '@core';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { CatalogObject } from 'square';
-import { Button } from '../Button/Button';
 import { OrderOverlay } from '../OrderOverlay/OrderOverlay';
 import { Overlay } from '../Overlay/Overlay';
 import styles from './OrderBox.module.scss';
@@ -26,37 +15,18 @@ interface OrderBoxProps {
 }
 
 export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
-  const { getItemQuantity, setItemQuantity, currentOrder } = useOrdering();
+  const { getItemQuantity, currentOrder } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
-
-  const [price, setPrice] = useState('0');
 
   const [overlayOpen, setOverlayOpen] = useState(false);
 
   const prevQuantityRef = useRef(quantity);
 
-  const updateCart = () => {
-    if (quantity === prevQuantityRef.current) {
-      return;
-    }
-
-    setItemQuantity(item, quantity)
-      .then((res) => {
-        prevQuantityRef.current = quantity;
-        onOrderUpdate(true);
-        logger.log('[setItemQuantity response]:::: ', res);
-      })
-      .catch((err) => {
-        onOrderUpdate(false);
-        logger.error(err);
-      });
+  const orderUpdated = (success: boolean): void => {
+    setOverlayOpen(false);
+    onOrderUpdate(success);
   };
-
-  useEffect(() => {
-    setPrice(getItemPrice(item));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // on init effect
   // updates local quantity and price if order id changes
@@ -71,14 +41,13 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
     prevQuantityRef.current = _quantity;
     orderIdRef.current = currentOrder?.id as string;
     setQuantity(_quantity);
-    setPrice(getItemPrice(item));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder?.id]);
 
   return (
     <div className={styles.orderBox}>
       <AnimatePresence>
-        {quantity && (
+        {prevQuantityRef.current && (
           <motion.span
             className={`${styles.quantityWrap}`}
             initial={{
@@ -98,7 +67,7 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
               bounce: 0.25,
             }}
           >
-            <span>{quantity}</span>
+            <span>{prevQuantityRef.current}</span>
           </motion.span>
         )}
       </AnimatePresence>
@@ -106,28 +75,16 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
         <div className={styles.imgHoverBg}></div>
         <img src={imageUrl} alt={getItemName(item)} />
       </div>
-      <div className={styles.orderBoxBottom}>
-        <div className={styles.nameWrap}>
-          <button onClick={() => setQuantity(Math.max(quantity - 1, 0))}>
-            <FontAwesomeIcon icon={faMinus} />
-          </button>
-          <span>{getItemName(item)}</span>
-          <button onClick={() => setQuantity(quantity + 1)}>
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
-        </div>
-        <Button
-          text={`Update Cart ${getMoneyString(calculateCost(price, quantity))}`}
-          size="sm"
-          onClick={updateCart}
-        />
+      <div className={styles.nameWrap}>
+        <span>{getItemName(item)}</span>
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay
           item={item}
           quantity={quantity}
           setQuantity={setQuantity}
-          updateCart={updateCart}
+          orderUpdated={orderUpdated}
+          prevQuantityRef={prevQuantityRef}
         />
       </Overlay>
     </div>

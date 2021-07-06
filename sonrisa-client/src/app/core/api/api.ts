@@ -9,6 +9,8 @@ import {
   UpdateOrderResponse,
 } from 'square';
 import { environments } from '../../../environments';
+import { IContactRequest } from './interfaces/IContactRequest';
+import { IContactResponse } from './interfaces/IContactResponse';
 import { IGetCatalogResponse } from './interfaces/IGetCatalogResponse';
 
 let myInterceptor;
@@ -66,6 +68,12 @@ export const Api = {
 
   getCatalog: (): Promise<AxiosResponse<IGetCatalogResponse>> => {
     return axios.get(`${getBaseUrl()}/catalog`);
+  },
+
+  contact: async (
+    request: IContactRequest
+  ): Promise<AxiosResponse<IContactResponse>> => {
+    return axios.post(`${getBaseUrl()}/contact`, request);
   },
 };
 

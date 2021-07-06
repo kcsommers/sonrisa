@@ -175,7 +175,12 @@ router.post(
 
       if (!_resParsed.errors || !_resParsed.errors.length) {
         // no errors so far, send an email to customer
-        sendEmail(_customer)
+        sendEmail(
+          _customer.emailAddress,
+          'Thank you for your order!',
+          'Your order has been placed successfully',
+          '<h1>Your order has been placed successfully</h1>'
+        )
           .then((emailRes) => {
             console.log('EMAIL RESPONSE:::: ', emailRes);
             res.json({ errors: _resParsed.errors, payment: _camelCasePayment });

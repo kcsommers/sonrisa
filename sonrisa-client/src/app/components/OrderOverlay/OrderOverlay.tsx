@@ -5,10 +5,13 @@ import {
   getItemPrice,
   getItemVariationId,
   getMoneyString,
+  logger,
   useCatalog,
+  useOrdering,
 } from '@core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import { CatalogObject } from 'square';
 import { Button } from '../Button/Button';
 import { ImageSlider } from './../ImageSlider/ImageSlider';
@@ -19,25 +22,52 @@ interface OrderOverlayProps {
 
   quantity: number;
 
+  prevQuantityRef: React.MutableRefObject<number>;
+
   setQuantity: (quantity: number) => void;
 
-  updateCart: () => void;
+  orderUpdated: (success: boolean) => void;
 }
 
 export const OrderOverlay = ({
   item,
   quantity,
   setQuantity,
-  updateCart,
+  orderUpdated,
+  prevQuantityRef,
 }: OrderOverlayProps) => {
+  const { setItemQuantity } = useOrdering();
+
   const { catalogImageMap } = useCatalog();
+
+  const [updatingOrder, setUpdatingOrder] = useState(false);
+
+  const updateOrder = () => {
+    if (quantity === prevQuantityRef.current) {
+      return;
+    }
+
+    setUpdatingOrder(true);
+
+    setItemQuantity(item, quantity)
+      .then((res) => {
+        prevQuantityRef.current = quantity;
+        orderUpdated(true);
+        logger.log('[setItemQuantity response]:::: ', res);
+      })
+      .catch((err) => {
+        orderUpdated(false);
+        logger.error(err);
+      });
+  };
 
   return (
     <div className={`${styles.templateWrap}`}>
       <div className={styles.overlayBody}>
         <div className={styles.imgSliderWrap}>
           <ImageSlider
-            images={catalogImageMap[getItemVariationId(item) || ''] || []}
+            images={(catalogImageMap[getItemVariationId(item)] || []).slice(1)}
+            autoSlide={true}
           />
         </div>
 
@@ -70,7 +100,8 @@ export const OrderOverlay = ({
           )}`}
           size="md"
           isFullWidth={true}
-          onClick={updateCart}
+          onClick={updateOrder}
+          showSpinner={updatingOrder}
         />
       </div>
     </div>

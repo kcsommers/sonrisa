@@ -60,16 +60,13 @@ div.imgHoverBg {
   transform: translate(-100%, -100%);
 }
 
-div.orderBoxBottom {
-  padding: 0 1rem 1rem 1rem;
-}
-
 div.nameWrap {
   text-align: center;
-  margin: 0.5rem 0 1rem 0;
   position: relative;
   > span {
     display: inline-block;
     margin: 0 1rem;
+    // font-family: 'Playfair Display';
+    transform: translateY(-115%);
   }
 }

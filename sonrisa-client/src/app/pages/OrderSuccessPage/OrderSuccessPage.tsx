@@ -1,4 +1,6 @@
-import { RouteComponentProps, useLocation } from 'react-router';
+import { useOrdering } from '@core';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { Payment } from 'square';
 import styles from './OrderSuccessPage.module.scss';
 
@@ -7,7 +9,21 @@ interface ISuccessPageLocationState {
 }
 
 export const OrderSuccessPage = () => {
+  const { clearOrder } = useOrdering();
+
   const { state } = useLocation<ISuccessPageLocationState>();
+
+  useEffect(() => {
+    if (state.payment) {
+      clearOrder();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // scroll to top
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>

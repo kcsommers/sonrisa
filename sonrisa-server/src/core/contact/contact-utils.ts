@@ -1,6 +1,6 @@
 import { google } from 'googleapis';
 import nodemailer from 'nodemailer';
-import { Customer } from 'square';
+import { MailOptions } from 'nodemailer/lib/json-transport';
 import { environments } from '../../environments';
 
 const oAuth2Client = new google.auth.OAuth2(
@@ -13,7 +13,13 @@ oAuth2Client.setCredentials({
   refresh_token: environments[process.env.NODE_ENV].GMAIL_OAUTH_REFRESH_TOKEN,
 });
 
-export const sendEmail = async (customer: Customer) => {
+export const sendEmail = async (
+  to: string,
+  subject: string,
+  message: string,
+  html: string,
+  replyTo?: string
+) => {
   try {
     const _accessToken = await oAuth2Client.getAccessToken();
 
@@ -21,7 +27,7 @@ export const sendEmail = async (customer: Customer) => {
       service: 'gmail',
       auth: {
         type: 'OAuth2',
-        user: 'kacysommers@gmail.com',
+        user: environments[process.env.NODE_ENV].SONRISA_EMAIL,
         clientId: environments[process.env.NODE_ENV].GMAIL_CLIENT_ID,
         clientSecret: environments[process.env.NODE_ENV].GMAIL_CLIENT_SECRET,
         refreshToken:
@@ -30,12 +36,15 @@ export const sendEmail = async (customer: Customer) => {
       },
     });
 
-    const _mailOptions = {
-      from: 'Sonrisa Donuts <kacysommers@gmail.com>',
-      to: customer.emailAddress,
-      subject: 'Thank you for your order!',
-      text: 'Your order has been placed.',
-      html: '<h1>Your order has been placed.</h1>',
+    const _mailOptions: MailOptions = {
+      from: `Sonrisa Donuts <${
+        environments[process.env.NODE_ENV].SONRISA_EMAIL
+      }>`,
+      to,
+      subject,
+      html,
+      text: message,
+      replyTo: replyTo || '',
     };
 
     const _result = await _transport.sendMail(_mailOptions);

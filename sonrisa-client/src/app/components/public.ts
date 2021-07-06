@@ -1,3 +1,4 @@
+export { ContactForm } from './ContactForm/ContactForm';
 export { SnackbarComponent } from './Snackbar/SnackbarComponent';
 export { OrderView } from './OrderView/OrderView';
 export { LoadingSpinner } from './LoadingSpinner/LoadingSpinner';
