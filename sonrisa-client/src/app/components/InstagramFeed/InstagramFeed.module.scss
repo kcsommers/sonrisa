@@ -1,0 +1,33 @@
+@import '../../styles/variables.scss';
+
+div.instagramFeedWrap {
+  padding: 1rem;
+}
+
+div.instagramFeedInner {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: left;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+div.spinnerWrap {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+a.instagramImgTag {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+  margin: 0.5rem 0.25rem;
+  border-radius: $border-radius;
+}
+
+span.instagramImgInner {
+  height: 0;
+  padding-bottom: 100%;
+  display: inline-block;
+}

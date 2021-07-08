@@ -7,6 +7,7 @@ import profile from './routes/api/profile';
 import user from './routes/api/user';
 import catalog from './routes/api/catalog';
 import contact from './routes/api/contact';
+import instagram from './routes/api/instagram';
 
 const app = express();
 
@@ -25,78 +26,13 @@ app.get('/', (_req, res) => {
   res.send('API Running');
 });
 
-app.get('/api/seed', async (req, res) => {
-  // const items = await OrderableItem.insertMany([
-  //   {
-  //     name: 'Vanilla Custard',
-  //     description: 'Vanilla beans with Local WA Dairy',
-  //     price: 425,
-  //     outOfStock: false,
-  //     images: [
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520110/Sonrisa/vanilla-transparent.png',
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520109/Sonrisa/vanilla-1.jpg',
-  //     ],
-  //   },
-  //   {
-  //     name: 'Mulberry Matcha',
-  //     description: 'Mulberry green tea latte',
-  //     price: 425,
-  //     outOfStock: false,
-  //     images: [
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520110/Sonrisa/vanilla-transparent.png',
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520109/Sonrisa/vanilla-1.jpg',
-  //     ],
-  //   },
-  //   {
-  //     name: 'Mulberry Matcha',
-  //     description: 'Mulberry green tea latte',
-  //     price: 425,
-  //     outOfStock: false,
-  //     images: [
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520105/Sonrisa/matcha-transparent.png',
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520103/Sonrisa/matcha-1.jpg',
-  //     ],
-  //   },
-  //   {
-  //     name: "Fran's Nutella",
-  //     description: "Fran's Chocolate made in Seattle with Nutella",
-  //     price: 425,
-  //     outOfStock: false,
-  //     images: [
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520102/Sonrisa/nutella-transparent.png',
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520101/Sonrisa/nutella-1.jpg',
-  //     ],
-  //   },
-  //   {
-  //     name: 'Thai Milk Tea',
-  //     description: 'Original Thai milk tea blended with Ceylon tea',
-  //     price: 425,
-  //     outOfStock: false,
-  //     images: [
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520107/Sonrisa/thai-transparent.png',
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520107/Sonrisa/thai-1.jpg',
-  //     ],
-  //   },
-  //   {
-  //     name: 'Strawberry Cream Cheese',
-  //     description: 'Housemade strawberry jam',
-  //     price: 425,
-  //     outOfStock: false,
-  //     images: [
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520104/Sonrisa/strawberry-transparent.png',
-  //       'https://res.cloudinary.com/kcsommers/image/upload/v1623520102/Sonrisa/strawberry-1.jpg',
-  //     ],
-  //   },
-  // ]);
-  res.send(':::: SEEDING ::::');
-});
-
 app.use('/api/auth', auth);
 app.use('/api/user', user);
 app.use('/api/profile', profile);
 app.use('/api/order', order);
 app.use('/api/catalog', catalog);
 app.use('/api/contact', contact);
+app.use('/api/instagram', instagram);
 
 const port = app.get('port');
 const server = app.listen(port, () =>

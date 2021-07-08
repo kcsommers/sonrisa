@@ -12,6 +12,7 @@ import { environments } from '../../../environments';
 import { IContactRequest } from './interfaces/IContactRequest';
 import { IContactResponse } from './interfaces/IContactResponse';
 import { IGetCatalogResponse } from './interfaces/IGetCatalogResponse';
+import { IInstagramResponse } from './interfaces/IInstagramResponse';
 
 let myInterceptor;
 if (!myInterceptor) {
@@ -74,6 +75,10 @@ export const Api = {
     request: IContactRequest
   ): Promise<AxiosResponse<IContactResponse>> => {
     return axios.post(`${getBaseUrl()}/contact`, request);
+  },
+
+  getInstagramFeed: async (): Promise<AxiosResponse<IInstagramResponse>> => {
+    return axios.get(`${getBaseUrl()}/instagram`);
   },
 };
 

@@ -19,5 +19,7 @@ declare namespace NodeJS {
     GMAIL_OAUTH_REFRESH_TOKEN: string;
 
     SONRISA_EMAIL: string;
+
+    INSTAGRAM_TOKEN: string;
   }
 }
