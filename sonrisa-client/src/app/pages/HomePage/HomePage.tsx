@@ -7,11 +7,6 @@ import {
 } from '@components';
 import { getItemVariationId, useCatalog, useSnackbar } from '@core';
 import {
-  faInstagram,
-  faInstagramSquare,
-} from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
   faCheckCircle,
   faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons';
@@ -168,17 +163,6 @@ export const HomePage = (props: HomePageProps) => {
       </section>
 
       <section className={styles.instagramFeedSection}>
-        <div className={styles.followTextWrap}>
-          <a
-            className={styles.followText}
-            href="https://www.instagram.com/sonrisa.donuts/"
-          >
-            Follow us on Instagram!
-            <span className={styles.instagramIconWrap}>
-              <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
-            </span>
-          </a>
-        </div>
         <div className={styles.instagramFeedSectionInner}>
           <InstagramFeed />
         </div>

@@ -115,32 +115,6 @@ section.instagramFeedSection {
   position: relative;
 }
 
-div.followTextWrap {
-  text-align: right;
-  padding: 1rem 0;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  transform: translateY(100%);
-}
-
-a.followText {
-  font-size: 1.25rem;
-  display: inline-flex;
-  align-items: center;
-  padding: 0.5rem;
-  border-radius: $border-radius;
-  background-color: $offwhite;
-}
-
-span.instagramIconWrap {
-  font-size: 1.75rem;
-  margin-left: 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
 div.instagramFeedSectionInner {
   background-color: $offwhite;
   border: 2px solid $dark;

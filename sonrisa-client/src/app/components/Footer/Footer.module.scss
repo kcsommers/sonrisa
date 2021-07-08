@@ -8,6 +8,7 @@ div.footerInner {
   height: 200px;
   display: flex;
   align-items: center;
+  position: relative;
   justify-content: center;
 }
 
@@ -22,4 +23,45 @@ div.footerLogoWrap {
     height: 100%;
     width: auto;
   }
+}
+
+div.copyrightWrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem;
+  font-size: 0.75rem;
+  > span {
+    display: block;
+  }
+  > span,
+  > span > a {
+    font-size: 1rem;
+  }
+}
+
+div.followTextWrap {
+  text-align: right;
+  padding: 1rem 0;
+  position: absolute;
+  right: 0;
+  top: 1rem;
+}
+
+a.followText {
+  font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: $border-radius;
+  background-color: $offwhite;
+}
+
+span.instagramIconWrap {
+  font-size: 1.75rem;
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
