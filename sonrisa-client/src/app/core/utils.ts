@@ -33,10 +33,13 @@ export const getItemDescription = (item: CatalogObject): string => {
   return item.itemData?.description || '';
 };
 
-export const getColor = (colorType: string): string => {
+export const getColor = (colorType: string, rgb = false): string => {
   const _colorMap: any = {
     success: '#22bc33',
     error: '#cc0023',
+    yellow: rgb ? '248, 248, 186' : '#f8f8ba',
+    offwhite: rgb ? '241, 241, 241' : '#f1f1f1',
+    dark: rgb ? '87, 63, 8' : '#573f08',
   };
 
   return _colorMap[colorType] || colorType;

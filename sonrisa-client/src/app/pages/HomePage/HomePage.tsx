@@ -1,10 +1,16 @@
 import {
   Button,
   ContactForm,
+  InstagramFeed,
   LoadingSpinner,
   SnackbarComponent,
 } from '@components';
 import { getItemVariationId, useCatalog, useSnackbar } from '@core';
+import {
+  faInstagram,
+  faInstagramSquare,
+} from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCheckCircle,
   faExclamationCircle,
@@ -158,6 +164,23 @@ export const HomePage = (props: HomePageProps) => {
       <section className={`${styles.contactSection} responsive-container`}>
         <div className="max-1280">
           <ContactForm formSubmitted={contactFormSubmitted} />
+        </div>
+      </section>
+
+      <section className={styles.instagramFeedSection}>
+        <div className={styles.followTextWrap}>
+          <a
+            className={styles.followText}
+            href="https://www.instagram.com/sonrisa.donuts/"
+          >
+            Follow us on Instagram!
+            <span className={styles.instagramIconWrap}>
+              <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
+            </span>
+          </a>
+        </div>
+        <div className={styles.instagramFeedSectionInner}>
+          <InstagramFeed />
         </div>
       </section>
       <SnackbarComponent isVisible={snackbarVisible} config={snackbarConfig} />
