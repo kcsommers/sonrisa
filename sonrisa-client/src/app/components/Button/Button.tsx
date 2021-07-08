@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import styles from './Button.module.scss';
 
@@ -21,24 +21,24 @@ export const Button = ({
   showSpinner = false,
   onClick,
 }: ButtonProps) => {
-  const [buttonEl, setButtonEl] = useState<HTMLButtonElement>();
+  const buttonEl = useRef<HTMLButtonElement>();
 
   const clicked = (event: React.MouseEvent) => {
-    if (!onClick || !buttonEl || showSpinner) {
+    if (!onClick || !buttonEl.current || showSpinner) {
       return;
     }
 
-    buttonEl.blur();
+    buttonEl.current.blur();
     onClick();
   };
 
   useEffect(() => {
-    if (!buttonEl) {
+    if (!buttonEl.current) {
       return;
     }
 
-    const _btnWidth = buttonEl.getBoundingClientRect().width;
-    buttonEl.style.minWidth = `${_btnWidth}px`;
+    const _btnWidth = buttonEl.current.getBoundingClientRect().width;
+    buttonEl.current.style.minWidth = `${_btnWidth}px`;
   }, [buttonEl]);
 
   return (
@@ -47,7 +47,7 @@ export const Button = ({
         isFullWidth ? styles.btnFullWidth : ''
       }`}
       onClick={clicked}
-      ref={(el: HTMLButtonElement) => setButtonEl(el)}
+      ref={(el: HTMLButtonElement) => (buttonEl.current = el)}
     >
       {showSpinner ? <LoadingSpinner size="xs" /> : text}
     </button>
