@@ -120,11 +120,6 @@ export const HomePage = (props: HomePageProps) => {
         </div>
       </section>
 
-      <section className={`${styles.specialsSection} responsive-container`}>
-        <h3>Specials</h3>
-        <span>*Rotating specials coming soon!</span>
-      </section>
-
       <section className={`${styles.aboutSection} responsive-container`}>
         <span className={styles.aboutImgWrap}>
           <img src={jing} alt="Jing" />
