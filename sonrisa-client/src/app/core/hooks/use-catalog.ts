@@ -7,6 +7,7 @@ import {
 import { batch } from 'react-redux';
 import { CatalogObject } from 'square';
 import { Api } from '../api/api';
+import { loadImages } from '../image-loader';
 import { logger } from '../logger';
 
 export interface ICatalogHook {
@@ -40,6 +41,11 @@ export const useCatalog = (): ICatalogHook => {
         dispatch(setCatalogItems(_response.data.catalogItems));
         dispatch(setCatalogImageMap(_response.data.catalogImageMap));
       });
+
+      // preload all images
+      for (const id in _response.data.catalogImageMap) {
+        loadImages(_response.data.catalogImageMap[id]);
+      }
 
       logger.log('get catalog response:::: ', _response.data);
       return true;
