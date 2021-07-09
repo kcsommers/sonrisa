@@ -33,3 +33,4 @@ sonrisa-server/.env
 
 sonrisa-server/src/google-keys.json
 sonrisa-server/src/google-keys.ts
+.DS_Store
