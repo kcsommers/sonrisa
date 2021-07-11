@@ -9,6 +9,7 @@ import {
   UpdateOrderResponse,
 } from 'square';
 import { environments } from '../../../environments';
+import { IAcceptingOrdersResponse } from '../orders/IAcceptingOrdersResponse';
 import { IContactRequest } from './interfaces/IContactRequest';
 import { IContactResponse } from './interfaces/IContactResponse';
 import { IGetCatalogResponse } from './interfaces/IGetCatalogResponse';
@@ -79,6 +80,12 @@ export const Api = {
 
   getInstagramFeed: async (): Promise<AxiosResponse<IInstagramResponse>> => {
     return axios.get(`${getBaseUrl()}/instagram`);
+  },
+
+  acceptingOrders: async (): Promise<
+    AxiosResponse<IAcceptingOrdersResponse>
+  > => {
+    return axios.get(`${getBaseUrl()}/order/accepting`);
   },
 };
 

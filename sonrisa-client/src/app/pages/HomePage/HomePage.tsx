@@ -6,7 +6,12 @@ import {
   SnackbarComponent,
   Alert,
 } from '@components';
-import { getItemVariationId, useCatalog, useSnackbar } from '@core';
+import {
+  getItemVariationId,
+  useCatalog,
+  useOrdering,
+  useSnackbar,
+} from '@core';
 import {
   faCheckCircle,
   faExclamationCircle,
@@ -28,6 +33,8 @@ export const HomePage = (props: HomePageProps) => {
 
   const { mainCatalogItems, specialsCatalogItems, catalogImageMap } =
     useCatalog();
+
+  const { acceptingOrders } = useOrdering();
 
   const orderSectionRef = useRef<HTMLElement | null>();
 
@@ -98,14 +105,16 @@ export const HomePage = (props: HomePageProps) => {
         </p>
         <div className={`${styles.orderBoxesWrap}`}>
           <h3>Menu</h3>
-          <div className={styles.alertWrap}>
-            <Alert
-              message={
-                'We are no longer accepting orders this week. Please check back on Tuesday!'
-              }
-              type="danger"
-            />
-          </div>
+          {!acceptingOrders && (
+            <div className={styles.alertWrap}>
+              <Alert
+                type="danger"
+                message={
+                  'We are no longer accepting orders this week. Please check back on Tuesday!'
+                }
+              />
+            </div>
+          )}
           {mainCatalogItems && mainCatalogItems.length ? (
             <div className={styles.orderBoxesInner}>
               {mainCatalogItems.map((item) => (

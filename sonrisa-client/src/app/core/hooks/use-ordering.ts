@@ -3,10 +3,15 @@ import { cloneDeep } from 'lodash';
 import { CreatePaymentRequest, Customer, Order, Payment } from 'square';
 import { Api } from '../api/api';
 import { logger } from '../logger';
+import { IAcceptingOrdersResponse } from '../orders/IAcceptingOrdersResponse';
 import { useStorage } from './use-storage';
 
 export interface IOrderingHook {
   currentOrder: Order | undefined;
+
+  acceptingOrders: boolean;
+
+  notAcceptingOrdersReason: string;
 
   getOrderId: () => string;
 
@@ -20,6 +25,8 @@ export interface IOrderingHook {
 
   clearOrder: () => void;
 
+  checkAcceptingOrders: () => Promise<IAcceptingOrdersResponse>;
+
   createPayment: (
     request: CreatePaymentRequest,
     customer: Customer
@@ -27,7 +34,13 @@ export interface IOrderingHook {
 }
 
 export const useOrdering = (): IOrderingHook => {
-  const currentOrder = useAppSelector((state) => state.order);
+  const orderState = useAppSelector((state) => state.order);
+
+  const currentOrder = orderState?.order;
+
+  const acceptingOrders = orderState?.accepting as boolean;
+
+  const notAcceptingOrdersReason = orderState?.notAcceptingReason as string;
 
   const { setSessionItem, getSessionItem, storageKeys } = useStorage();
 
@@ -152,8 +165,21 @@ export const useOrdering = (): IOrderingHook => {
     }
   };
 
+  const checkAcceptingOrders = async (): Promise<IAcceptingOrdersResponse> => {
+    try {
+      const _response = await Api.acceptingOrders();
+      logger.log('[acceptingOrders response]:::: ', _response);
+      return _response.data;
+    } catch (err) {
+      logger.error(err);
+      throw new Error(err);
+    }
+  };
+
   return {
     currentOrder,
+    acceptingOrders,
+    notAcceptingOrdersReason,
     getOrderId,
     getOrderById,
     getItemQuantity,
@@ -161,5 +187,6 @@ export const useOrdering = (): IOrderingHook => {
     updateOrder,
     clearOrder,
     createPayment,
+    checkAcceptingOrders,
   };
 };

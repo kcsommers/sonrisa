@@ -42,7 +42,6 @@ export const useCatalog = (): ICatalogHook => {
     try {
       // get axios response and return the data property
       const _response = await Api.getCatalog();
-      console.log('SPECILS:::: ', _response);
       batch(() => {
         dispatch(setSpecialsCatalogItems(_response.data.specialsCatalogItems));
         dispatch(setMainCatalogItems(_response.data.mainCatalogItems));
@@ -54,7 +53,7 @@ export const useCatalog = (): ICatalogHook => {
         loadImages(_response.data.catalogImageMap[id]);
       }
 
-      logger.log('get catalog response:::: ', _response.data);
+      logger.log('[get catalog response]:::: ', _response.data);
       return true;
     } catch (err) {
       // reject the promise on error

@@ -12,11 +12,48 @@ import {
   UpdateOrderResponse,
 } from 'square';
 import { v4 as uuidV4 } from 'uuid';
-import { getCamelcaseKeys, sendEmail } from '../../core/public';
+import {
+  getCamelcaseKeys,
+  sendEmail,
+  IAcceptingOrdersResponse,
+  NotAcceptingOrdersReasons,
+} from '../../core/public';
 import { environments } from '../../environments';
 import { square } from '../../square';
 
 const router: Router = Router();
+
+/**
+ * @route  GET api/order/create
+ * @access PUBLIC
+ * @description returns a boolean indicating whether or not orders
+ * are currently being taken. Returns false if number of orders exceeds ?
+ * or if its Sunday or Monday
+ */
+router.get(
+  '/accepting',
+  (req: Request, res: Response<IAcceptingOrdersResponse>) => {
+    const _badDays = [0, 1]; // Sunday & Monday
+
+    const _date = new Date();
+
+    let _acceptingOrders = true;
+    let _reason = '';
+    // check the day
+    if (_badDays.indexOf(_date.getDay()) > -1) {
+      _acceptingOrders = false;
+      _reason = NotAcceptingOrdersReasons.INVALID_DAY;
+    }
+
+    // @TODO check how many have been ordered this week
+
+    res.json({
+      acceptingOrders: _acceptingOrders,
+      reason: _reason,
+      errors: null,
+    });
+  }
+);
 
 /**
  * @route  POST api/order/create
