@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { Reducer } from 'react';
 import { AnyAction } from 'redux';
 import { Order } from 'square';
@@ -40,7 +41,7 @@ export const orderReducer: Reducer<Order | undefined, AnyAction> = (
 ): Order => {
   switch (action.type) {
     case SET_ORDER: {
-      return action.order;
+      return cloneDeep(action.order);
     }
     default:
       return state;

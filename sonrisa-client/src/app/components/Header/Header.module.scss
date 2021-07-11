@@ -68,7 +68,7 @@ div.headerRight {
   align-items: center;
   > button {
     font-size: 1.5rem;
-    margin-left: 1rem;
+    margin-right: 1rem;
     color: $dark;
   }
 }
@@ -81,6 +81,7 @@ div.headerSm {
 
 button.cartBtn {
   position: relative;
+  margin-right: 0 !important;
 
   > span {
     position: absolute;

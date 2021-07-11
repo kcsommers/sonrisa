@@ -20,5 +20,9 @@ export const catalogImages = {
     Y5CMOCXDDJ5ENZQ7BO7GVQ6F: [
       'https://res.cloudinary.com/kcsommers/image/upload/v1625455068/Sonrisa/strawberry-2.jpg',
     ],
+    // rotating special
+    SPECIAL: [
+      'https://res.cloudinary.com/kcsommers/image/upload/v1625978476/Sonrisa/rotating-special.png',
+    ],
   },
 };

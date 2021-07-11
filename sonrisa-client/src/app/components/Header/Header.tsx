@@ -41,10 +41,6 @@ export const Header = ({
         <div className={styles.headerSidesWrap}>
           <div className={styles.headerLeft}>
             <div className={styles.headerLg}>
-              <span>
-                <p>Order by phone</p>
-                <p>(206) 459-5365</p>
-              </span>
               <button>
                 <FontAwesomeIcon icon={faFacebook} />
               </button>
@@ -71,9 +67,7 @@ export const Header = ({
                 {currentOrder &&
                 currentOrder.lineItems &&
                 currentOrder.lineItems.length ? (
-                  <span className="whatthefuck">
-                    {currentOrder.lineItems.length}
-                  </span>
+                  <span>{currentOrder.lineItems.length}</span>
                 ) : null}
               </button>
             )}

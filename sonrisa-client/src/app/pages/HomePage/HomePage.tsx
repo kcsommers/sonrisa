@@ -25,7 +25,8 @@ interface HomePageProps extends RouteComponentProps {
 export const HomePage = (props: HomePageProps) => {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
 
-  const { catalogItems, catalogImageMap } = useCatalog();
+  const { mainCatalogItems, specialsCatalogItems, catalogImageMap } =
+    useCatalog();
 
   const orderSectionRef = useRef<HTMLElement | null>();
 
@@ -91,17 +92,31 @@ export const HomePage = (props: HomePageProps) => {
         ref={(el) => (orderSectionRef.current = el)}
       >
         <p className={`${styles.menuSectionText}`}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
-          architecto ipsam placeat fuga animi aperiam.
+          Taking orders Tuesday - Saturday, or until sold out. <br /> Pick up
+          Monday between 1 and 4. Pickup instructions will be sent via email.
         </p>
         <div className={`${styles.orderBoxesWrap}`}>
           <h3>Menu</h3>
-          {catalogItems && catalogItems.length ? (
+          {mainCatalogItems && mainCatalogItems.length ? (
             <div className={styles.orderBoxesInner}>
-              {catalogItems.map((item) => (
+              {mainCatalogItems.map((item) => (
                 <div key={item.id} className={styles.orderBoxWrap}>
                   <OrderBox
                     item={item}
+                    onOrderUpdate={onOrderUpdate}
+                    imageUrl={
+                      catalogImageMap[
+                        getItemVariationId(item) as string
+                      ]?.[0] || ''
+                    }
+                  />
+                </div>
+              ))}
+              {specialsCatalogItems.map((item) => (
+                <div key={item.id} className={styles.orderBoxWrap}>
+                  <OrderBox
+                    item={item}
+                    isSpecialsItem={true}
                     onOrderUpdate={onOrderUpdate}
                     imageUrl={
                       catalogImageMap[

@@ -70,15 +70,25 @@ router.post(
       const _data = req.body.data;
       const _orderId = <string>req.body.orderId;
       const _version = <number>req.body.version;
+      console.log('[update order data]:::: ', _data);
 
       const _request = <UpdateOrderRequest>{
         idempotencyKey: uuidV4(),
         order: {
           locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
           version: _version,
-          ..._data,
         },
       };
+
+      // check for fields to clear
+      if (_data.fieldsToClear) {
+        _request.fieldsToClear = _data.fieldsToClear;
+      } else {
+        _request.order = {
+          ..._request.order,
+          ..._data,
+        };
+      }
 
       const _response = await square.ordersApi.updateOrder(_orderId, _request);
       console.log('[update order response]:::: ', _response.body);

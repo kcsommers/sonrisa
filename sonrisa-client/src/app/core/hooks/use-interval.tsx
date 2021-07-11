@@ -24,6 +24,7 @@ export const useInterval = (
   }, []);
 
   const toggleInterval = useCallback(() => {
+    console.log('[toggleInterval::::]', intervalIsRunning, immediate);
     setIntervalIsRunning(!intervalIsRunning);
   }, [intervalIsRunning]);
 
@@ -32,6 +33,7 @@ export const useInterval = (
       clear();
     }
 
+    console.log('[resetInterval]:::: ', intervalIsRunning, delay);
     if (!intervalIsRunning) {
       return;
     }
@@ -56,11 +58,13 @@ export const useInterval = (
 
   // Set up the interval
   useEffect(() => {
+    console.log('reset effect::::', intervalIsRunning);
     resetInterval();
   }, [intervalIsRunning, clear, resetInterval]);
 
   // cleanup
   useEffect(() => {
+    console.log('init::::', intervalIsRunning, immediate);
     return () => {
       window.clearInterval(intervalId.current);
     };

@@ -1,11 +1,11 @@
-export class Doughnuts {
-  public static VANILLA = 'Vanilla Custard';
+export const Doughnuts = {
+  VANILLA: 'Vanilla Custard',
 
-  public static THAI_TEA = 'Thai Milk Tea';
+  THAI_TEA: 'Thai Milk Tea',
 
-  public static NUTELLA = "Fran's Nutella";
+  NUTELLA: "Fran's Nutella",
 
-  public static MATCHA = 'Mulberry Matcha';
+  MATCHA: 'Mulberry Matcha',
 
-  public static STRAWBERRY = 'Strawberry Cream Cheese';
-}
+  STRAWBERRY: 'Strawberry Cream Cheese',
+};

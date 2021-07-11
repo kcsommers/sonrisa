@@ -49,7 +49,7 @@ export const OrderOverlay = ({
 
     setUpdatingOrder(true);
 
-    setItemQuantity(item, quantity)
+    setItemQuantity(getItemVariationId(item), quantity)
       .then((res) => {
         prevQuantityRef.current = quantity;
         orderUpdated(true);
@@ -67,7 +67,9 @@ export const OrderOverlay = ({
         <div className={styles.imgSliderWrap}>
           <ImageSlider
             images={(catalogImageMap[getItemVariationId(item)] || []).slice(1)}
-            autoSlide={true}
+            autoSlide={
+              (catalogImageMap[getItemVariationId(item)] || []).length > 1
+            }
           />
         </div>
 

@@ -26,7 +26,7 @@ export const CheckoutPage = (props: RouteComponentProps) => {
         </div>
         <div className={`${styles.orderSection} ${styles.checkoutSection}`}>
           <h4>Order</h4>
-          <OrderView />
+          <OrderView canRemoveItems={false} />
         </div>
       </div>
     </div>
