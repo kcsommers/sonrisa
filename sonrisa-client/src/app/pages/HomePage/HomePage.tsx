@@ -4,6 +4,7 @@ import {
   InstagramFeed,
   LoadingSpinner,
   SnackbarComponent,
+  Alert,
 } from '@components';
 import { getItemVariationId, useCatalog, useSnackbar } from '@core';
 import {
@@ -97,6 +98,14 @@ export const HomePage = (props: HomePageProps) => {
         </p>
         <div className={`${styles.orderBoxesWrap}`}>
           <h3>Menu</h3>
+          <div className={styles.alertWrap}>
+            <Alert
+              message={
+                'We are no longer accepting orders this week. Please check back on Tuesday!'
+              }
+              type="danger"
+            />
+          </div>
           {mainCatalogItems && mainCatalogItems.length ? (
             <div className={styles.orderBoxesInner}>
               {mainCatalogItems.map((item) => (

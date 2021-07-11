@@ -114,6 +114,10 @@ div.instagramFeedSectionInner {
   border: 2px solid $dark;
 }
 
+div.alertWrap {
+  margin: 1rem 0;
+}
+
 @media only screen and (min-width: 1000px) {
   div.orderBoxesInner {
     grid-template-columns: repeat(3, 1fr);
