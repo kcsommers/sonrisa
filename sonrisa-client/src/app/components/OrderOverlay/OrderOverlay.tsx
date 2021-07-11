@@ -36,7 +36,7 @@ export const OrderOverlay = ({
   orderUpdated,
   prevQuantityRef,
 }: OrderOverlayProps) => {
-  const { setItemQuantity } = useOrdering();
+  const { setItemQuantity, acceptingOrders } = useOrdering();
 
   const { catalogImageMap } = useCatalog();
 
@@ -78,14 +78,18 @@ export const OrderOverlay = ({
 
         <div className={styles.quantityWrap}>
           <button
-            className={styles.quantityBtn}
+            className={`${styles.quantityBtn}${
+              !acceptingOrders ? ' btn-disabled' : ''
+            }`}
             onClick={() => setQuantity(Math.max(quantity - 1, 0))}
           >
             <FontAwesomeIcon icon={faMinus} />
           </button>
           <span className={styles.quantity}>{quantity}</span>
           <button
-            className={styles.quantityBtn}
+            className={`${styles.quantityBtn}${
+              !acceptingOrders ? ' btn-disabled' : ''
+            }`}
             onClick={() => setQuantity(quantity + 1)}
           >
             <FontAwesomeIcon icon={faPlus} />
@@ -102,6 +106,7 @@ export const OrderOverlay = ({
           isFullWidth={true}
           onClick={updateOrder}
           showSpinner={updatingOrder}
+          isDisabled={!acceptingOrders}
         />
       </div>
     </div>

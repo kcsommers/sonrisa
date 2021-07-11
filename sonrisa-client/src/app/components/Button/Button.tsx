@@ -11,6 +11,8 @@ type ButtonProps = {
 
   showSpinner?: boolean;
 
+  isDisabled?: boolean;
+
   onClick?: () => void;
 };
 
@@ -20,6 +22,7 @@ export const Button = ({
   size = 'md',
   showSpinner = false,
   onClick,
+  isDisabled = false,
 }: ButtonProps) => {
   const buttonEl = useRef<HTMLButtonElement>();
 
@@ -45,7 +48,7 @@ export const Button = ({
     <button
       className={`app-btn ${styles.btn} ${styles[`btn-${size}`]} ${
         isFullWidth ? styles.btnFullWidth : ''
-      }`}
+      }${isDisabled ? ' btn-disabled' : ''}`}
       onClick={clicked}
       ref={(el: HTMLButtonElement) => (buttonEl.current = el)}
     >
