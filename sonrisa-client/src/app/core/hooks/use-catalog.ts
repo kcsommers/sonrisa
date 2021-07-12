@@ -2,7 +2,8 @@ import {
   useAppDispatch,
   useAppSelector,
   setCatalogImageMap,
-  setCatalogItems,
+  setMainCatalogItems,
+  setSpecialsCatalogItems,
 } from '@redux';
 import { batch } from 'react-redux';
 import { CatalogObject } from 'square';
@@ -13,7 +14,9 @@ import { logger } from '../logger';
 export interface ICatalogHook {
   setCatalogObjects: () => Promise<boolean>;
 
-  catalogItems: CatalogObject[];
+  mainCatalogItems: CatalogObject[];
+
+  specialsCatalogItems: CatalogObject[];
 
   catalogImageMap: { [imageId: string]: string[] }; // <imageId, imgUrl>
 }
@@ -29,16 +32,19 @@ export const useCatalog = (): ICatalogHook => {
    */
   const setCatalogObjects = async (): Promise<boolean> => {
     // check cache and resolve promise if present
-    if (catalogState?.catalogItems && catalogState.catalogItems.length) {
+    if (
+      catalogState?.mainCatalogItems &&
+      catalogState.mainCatalogItems.length
+    ) {
       return true;
     }
 
     try {
       // get axios response and return the data property
       const _response = await Api.getCatalog();
-
       batch(() => {
-        dispatch(setCatalogItems(_response.data.catalogItems));
+        dispatch(setSpecialsCatalogItems(_response.data.specialsCatalogItems));
+        dispatch(setMainCatalogItems(_response.data.mainCatalogItems));
         dispatch(setCatalogImageMap(_response.data.catalogImageMap));
       });
 
@@ -47,7 +53,7 @@ export const useCatalog = (): ICatalogHook => {
         loadImages(_response.data.catalogImageMap[id]);
       }
 
-      logger.log('get catalog response:::: ', _response.data);
+      logger.log('[get catalog response]:::: ', _response.data);
       return true;
     } catch (err) {
       // reject the promise on error
@@ -58,7 +64,8 @@ export const useCatalog = (): ICatalogHook => {
 
   return {
     setCatalogObjects,
-    catalogItems: catalogState?.catalogItems as CatalogObject[],
+    mainCatalogItems: catalogState?.mainCatalogItems as CatalogObject[],
+    specialsCatalogItems: catalogState?.specialsCatalogItems as CatalogObject[],
     catalogImageMap: catalogState?.catalogImageMap as {
       [imageId: string]: string[];
     },

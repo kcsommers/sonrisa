@@ -1,46 +1,73 @@
+import { cloneDeep } from 'lodash';
 import { Reducer } from 'react';
 import { AnyAction } from 'redux';
 import { Order } from 'square';
-import { SET_ORDER } from './order.actions';
+import { SET_ORDER, SET_ACCEPTING_ORDERS } from './order.actions';
 
-const initialState: Order = {
-  id: '',
+interface IOrderState {
+  order: Order;
 
-  locationId: '',
+  accepting: boolean;
 
-  customerId: '',
+  notAcceptingReason: string;
+}
 
-  lineItems: [],
+const initialState: IOrderState = {
+  order: {
+    id: '',
 
-  state: '',
+    locationId: '',
 
-  fulfillments: [],
+    customerId: '',
 
-  totalMoney: {
-    amount: '0',
-    currency: 'USD',
+    lineItems: [],
+
+    state: '',
+
+    fulfillments: [],
+
+    totalMoney: {
+      amount: '0',
+      currency: 'USD',
+    },
+
+    totalTaxMoney: {
+      amount: '0',
+      currency: 'USD',
+    },
+
+    totalTipMoney: {
+      amount: '0',
+      currency: 'USD',
+    },
+
+    version: 0,
   },
 
-  totalTaxMoney: {
-    amount: '0',
-    currency: 'USD',
-  },
+  accepting: true,
 
-  totalTipMoney: {
-    amount: '0',
-    currency: 'USD',
-  },
-
-  version: 0,
+  notAcceptingReason: '',
 };
 
-export const orderReducer: Reducer<Order | undefined, AnyAction> = (
+export const orderReducer: Reducer<IOrderState | undefined, AnyAction> = (
   state = initialState,
   action
-): Order => {
+): IOrderState => {
   switch (action.type) {
     case SET_ORDER: {
-      return action.order;
+      const _clonedState = cloneDeep(state);
+
+      _clonedState.order = action.order;
+      return _clonedState;
+    }
+
+    case SET_ACCEPTING_ORDERS: {
+      const _clonedState = cloneDeep(state);
+
+      _clonedState.accepting = action.accepting;
+      _clonedState.notAcceptingReason = action.reason;
+
+      return _clonedState;
     }
     default:
       return state;

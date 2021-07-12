@@ -19,14 +19,18 @@ export const CheckoutPage = (props: RouteComponentProps) => {
     <div className={styles.checkoutPageWrap}>
       <div className={styles.checkoutPageInner}>
         <div className={`${styles.paymentSection} ${styles.checkoutSection}`}>
-          <h4>Payment</h4>
-          <div className={styles.checkoutFormWrap}>
-            <CheckoutForm onCheckout={onCheckout} />
+          <div className={styles.checkoutSectionInner}>
+            <h4>Payment</h4>
+            <div className={styles.checkoutFormWrap}>
+              <CheckoutForm onCheckout={onCheckout} />
+            </div>
           </div>
         </div>
         <div className={`${styles.orderSection} ${styles.checkoutSection}`}>
-          <h4>Order</h4>
-          <OrderView />
+          <div className={styles.checkoutSectionInner}>
+            <h4>Order</h4>
+            <OrderView canRemoveItems={false} />
+          </div>
         </div>
       </div>
     </div>

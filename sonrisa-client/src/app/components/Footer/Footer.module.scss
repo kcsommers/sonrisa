@@ -27,11 +27,12 @@ div.footerLogoWrap {
 
 div.copyrightWrap {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 1rem;
+  bottom: 1rem;
   padding: 1rem;
   font-size: 0.75rem;
+  // background-color: $offwhite;
+  // border-radius: $border-radius;
   > span {
     display: block;
   }
@@ -47,6 +48,7 @@ div.followTextWrap {
   position: absolute;
   right: 0;
   top: 1rem;
+  margin-right: 1rem;
 }
 
 a.followText {
@@ -56,6 +58,7 @@ a.followText {
   padding: 0.5rem;
   border-radius: $border-radius;
   background-color: $offwhite;
+  border: 2px solid $dark;
 }
 
 span.instagramIconWrap {

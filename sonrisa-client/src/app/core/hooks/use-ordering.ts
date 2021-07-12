@@ -1,19 +1,17 @@
 import { setOrder, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
-import {
-  CatalogObject,
-  CreatePaymentRequest,
-  Customer,
-  Order,
-  Payment,
-} from 'square';
+import { CreatePaymentRequest, Customer, Order, Payment } from 'square';
 import { Api } from '../api/api';
 import { logger } from '../logger';
-import { getItemVariationId } from '../utils';
+import { IAcceptingOrdersResponse } from '../orders/IAcceptingOrdersResponse';
 import { useStorage } from './use-storage';
 
 export interface IOrderingHook {
   currentOrder: Order | undefined;
+
+  acceptingOrders: boolean;
+
+  notAcceptingOrdersReason: string;
 
   getOrderId: () => string;
 
@@ -21,11 +19,13 @@ export interface IOrderingHook {
 
   getItemQuantity: (itemId: string) => number;
 
-  setItemQuantity: (item: CatalogObject, quantity: number) => Promise<Order>;
+  setItemQuantity: (itemId: string, quantity: number) => Promise<Order>;
 
   updateOrder: (data: any) => Promise<Order>;
 
   clearOrder: () => void;
+
+  checkAcceptingOrders: () => Promise<IAcceptingOrdersResponse>;
 
   createPayment: (
     request: CreatePaymentRequest,
@@ -34,7 +34,13 @@ export interface IOrderingHook {
 }
 
 export const useOrdering = (): IOrderingHook => {
-  const currentOrder = useAppSelector((state) => state.order);
+  const orderState = useAppSelector((state) => state.order);
+
+  const currentOrder = orderState?.order;
+
+  const acceptingOrders = orderState?.accepting as boolean;
+
+  const notAcceptingOrdersReason = orderState?.notAcceptingReason as string;
 
   const { setSessionItem, getSessionItem, storageKeys } = useStorage();
 
@@ -89,15 +95,22 @@ export const useOrdering = (): IOrderingHook => {
   };
 
   const setItemQuantity = async (
-    item: CatalogObject,
+    itemId: string,
     quantity: number
   ): Promise<Order> => {
     // make a copy of the current order items
     const _clonedItems = cloneDeep(currentOrder?.lineItems || []);
     // look for the item being updated
     let _lineItem = _clonedItems.find((i: any) => {
-      return i.catalogObjectId === getItemVariationId(item);
+      return i.catalogObjectId === itemId;
     });
+
+    // quantity is zero, redirect to update order with fieldsToClear array
+    if (quantity === 0) {
+      return updateOrder({
+        fieldsToClear: [`line_items[${_lineItem?.uid}]`],
+      });
+    }
 
     // if it exists just update the quantity
     if (_lineItem) {
@@ -106,7 +119,7 @@ export const useOrdering = (): IOrderingHook => {
       // otherwise create a new line item and push it into the items array
       _lineItem = {
         quantity: String(quantity),
-        catalogObjectId: getItemVariationId(item),
+        catalogObjectId: itemId,
       };
 
       _clonedItems?.push(_lineItem);
@@ -116,7 +129,7 @@ export const useOrdering = (): IOrderingHook => {
       // if theres an existing id update the order
       // otherwise create a new one
       const _response = currentOrder?.id
-        ? await Api.updateOrder(currentOrder?.id, currentOrder?.version || 0, {
+        ? await Api.updateOrder(currentOrder.id, currentOrder?.version || 0, {
             lineItems: _clonedItems,
           })
         : await Api.createOrder(_clonedItems);
@@ -152,8 +165,21 @@ export const useOrdering = (): IOrderingHook => {
     }
   };
 
+  const checkAcceptingOrders = async (): Promise<IAcceptingOrdersResponse> => {
+    try {
+      const _response = await Api.acceptingOrders();
+      logger.log('[acceptingOrders response]:::: ', _response);
+      return _response.data;
+    } catch (err) {
+      logger.error(err);
+      throw new Error(err);
+    }
+  };
+
   return {
     currentOrder,
+    acceptingOrders,
+    notAcceptingOrdersReason,
     getOrderId,
     getOrderById,
     getItemQuantity,
@@ -161,5 +187,6 @@ export const useOrdering = (): IOrderingHook => {
     updateOrder,
     clearOrder,
     createPayment,
+    checkAcceptingOrders,
   };
 };

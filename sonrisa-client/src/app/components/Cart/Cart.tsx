@@ -94,7 +94,7 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
               </button>
             </div>
             <div className={styles.cartBody}>
-              <OrderView />
+              <OrderView canRemoveItems={true} />
               {currentOrder?.lineItems?.length ? (
                 <Button text="Checkout" onClick={goToCheckout} />
               ) : null}

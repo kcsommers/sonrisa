@@ -1,3 +1,4 @@
+export { Alert } from './Alert/Alert';
 export { InstagramFeed } from './InstagramFeed/InstagramFeed';
 export { ContactForm } from './ContactForm/ContactForm';
 export { SnackbarComponent } from './Snackbar/SnackbarComponent';

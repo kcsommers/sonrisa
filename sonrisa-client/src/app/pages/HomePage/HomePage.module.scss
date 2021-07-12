@@ -53,6 +53,7 @@ section.menuSection {
 p.menuSectionText {
   background-color: $offwhite;
   padding: 1rem 2rem;
+  text-align: center;
 }
 
 div.orderBoxesWrap {
@@ -68,7 +69,7 @@ div.orderBoxesInner {
 }
 
 section.aboutSection {
-  margin: 8rem 0 4rem 0;
+  margin: 2rem 0 4rem 0;
 }
 
 span.aboutImgWrap {
@@ -111,6 +112,37 @@ section.instagramFeedSection {
 div.instagramFeedSectionInner {
   background-color: $offwhite;
   border: 2px solid $dark;
+}
+
+div.alertWrap {
+  margin: 1rem 0;
+}
+
+section.sonrisaDefSection {
+  margin-top: 8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  h3 {
+    font-family: 'Dancing Script';
+    font-size: 4rem;
+    font-style: italic;
+  }
+
+  p {
+    font-size: 20px;
+    font-style: italic;
+    position: relative;
+    margin-left: 2rem;
+    &:before {
+      content: '\2022';
+      position: absolute;
+      left: -1rem;
+      top: 0;
+      font-style: normal;
+      font-size: 2rem;
+    }
+  }
 }
 
 @media only screen and (min-width: 1000px) {

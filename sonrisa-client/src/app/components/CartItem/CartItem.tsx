@@ -1,4 +1,4 @@
-import { getMoneyString } from '@core';
+import { getMoneyString, useOrdering } from '@core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { OrderLineItem } from 'square';
@@ -8,18 +8,24 @@ type CartItemProps = {
   orderItem: OrderLineItem;
 
   imageUrl: string;
+
+  canRemove: boolean;
 };
 
-export const CartItem = ({ orderItem, imageUrl }: CartItemProps) => {
-  const removeFromCart = (item: OrderLineItem): void => {
-    // dispatch(removeItem(item));
-  };
+export const CartItem = ({ orderItem, imageUrl, canRemove }: CartItemProps) => {
+  const { setItemQuantity } = useOrdering();
 
   return (
     <div className={styles.cartItemWrap}>
-      <button onClick={() => removeFromCart(orderItem)}>
-        <FontAwesomeIcon icon={faTimes} />
-      </button>
+      {canRemove && (
+        <button
+          onClick={() =>
+            setItemQuantity(orderItem.catalogObjectId as string, 0)
+          }
+        >
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
+      )}
       <div className={styles.cartItemImgWrap}>
         <img src={imageUrl} alt={orderItem.name} />
       </div>

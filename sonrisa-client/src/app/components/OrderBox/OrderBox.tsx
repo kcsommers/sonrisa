@@ -9,12 +9,19 @@ import styles from './OrderBox.module.scss';
 interface OrderBoxProps {
   item: CatalogObject;
 
+  isSpecialsItem?: boolean;
+
   imageUrl: string;
 
   onOrderUpdate: (success: boolean) => void;
 }
 
-export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
+export const OrderBox = ({
+  item,
+  imageUrl,
+  onOrderUpdate,
+  isSpecialsItem = false,
+}: OrderBoxProps) => {
   const { getItemQuantity, currentOrder } = useOrdering();
 
   const [quantity, setQuantity] = useState(0);
@@ -32,7 +39,7 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
   // updates local quantity and price if order id changes
   const orderIdRef = useRef('');
   useEffect(() => {
-    if (!item || currentOrder?.id === orderIdRef.current) {
+    if (!item) {
       return;
     }
 
@@ -42,7 +49,7 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
     orderIdRef.current = currentOrder?.id as string;
     setQuantity(_quantity);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentOrder?.id]);
+  }, [currentOrder]);
 
   return (
     <div className={styles.orderBox}>
@@ -71,12 +78,17 @@ export const OrderBox = ({ item, imageUrl, onOrderUpdate }: OrderBoxProps) => {
           </motion.span>
         )}
       </AnimatePresence>
-      <div className={styles.imgWrap} onClick={() => setOverlayOpen(true)}>
+      <div
+        className={`${styles.imgWrap} ${
+          isSpecialsItem ? styles.specialImgWrap : ''
+        }`}
+        onClick={() => setOverlayOpen(true)}
+      >
         <div className={styles.imgHoverBg}></div>
         <img src={imageUrl} alt={getItemName(item)} />
       </div>
       <div className={styles.nameWrap}>
-        <span>{getItemName(item)}</span>
+        <span>{isSpecialsItem ? 'Rotating Special' : getItemName(item)}</span>
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay

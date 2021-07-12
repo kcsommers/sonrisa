@@ -60,11 +60,7 @@ export const useInterval = (
   }, [intervalIsRunning, clear, resetInterval]);
 
   // cleanup
-  useEffect(() => {
-    return () => {
-      window.clearInterval(intervalId.current);
-    };
-  }, []);
+  useEffect(() => clear, []);
 
   return { resetInterval, toggleInterval, intervalIsRunning };
 };

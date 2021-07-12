@@ -1,5 +1,5 @@
 import camelcaseKeys from 'camelcase-keys';
-import { CatalogObject } from 'square';
+import { CatalogObject, Order, OrderLineItem } from 'square';
 
 export const getCamelcaseKeys = <T>(data: any): T => {
   try {

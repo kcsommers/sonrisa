@@ -9,7 +9,11 @@ import {
 import { CartItem } from '../CartItem/CartItem';
 import styles from './OrderView.module.scss';
 
-export const OrderView = () => {
+interface IOrderViewProps {
+  canRemoveItems: boolean;
+}
+
+export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
   const { currentOrder } = useOrdering();
 
   const { catalogImageMap } = useCatalog();
@@ -22,6 +26,7 @@ export const OrderView = () => {
         <>
           {currentOrder.lineItems?.map((item) => (
             <CartItem
+              canRemove={canRemoveItems}
               orderItem={item}
               key={item.uid}
               imageUrl={catalogImageMap[item.catalogObjectId as string]?.[0]}

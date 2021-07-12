@@ -2,9 +2,7 @@ import { Order, OrderLineItem } from 'square';
 
 export const SET_ORDER = 'SET_ORDER';
 
-export const SET_ORDER_ID = 'SET_ORDER_ID';
-
-export const SET_ORDER_ITEMS = 'SET_ORDER_ITEMS';
+export const SET_ACCEPTING_ORDERS = 'SET_ACCEPTING_ORDERS';
 
 export const setOrder = (order: Order | null) =>
   <const>{
@@ -12,14 +10,9 @@ export const setOrder = (order: Order | null) =>
     order,
   };
 
-export const setOrderId = (id: string) =>
+export const setAcceptingOrders = (accepting: boolean, reason = '') =>
   <const>{
-    type: SET_ORDER_ID,
-    id,
-  };
-
-export const setOrderItems = (items: OrderLineItem[]) =>
-  <const>{
-    type: SET_ORDER_ITEMS,
-    items,
+    type: SET_ACCEPTING_ORDERS,
+    accepting,
+    reason,
   };

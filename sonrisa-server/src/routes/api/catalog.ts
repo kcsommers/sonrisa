@@ -1,13 +1,16 @@
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
+import JSONBig from 'json-bigint';
 import { CatalogObject } from 'square';
+import { catalogConstants } from '../../core/catalog/catalog-constants';
+import { getItemImageId, getItemVariationId } from '../../core/utils';
 import { catalogImages } from '../../data/catalog-images';
 import { square } from '../../square';
-import JSONBig from 'json-bigint';
-import { getItemImageId, getItemVariationId } from '../../core/utils';
 
 interface IGetCatalogResponse {
-  catalogItems: CatalogObject[];
+  mainCatalogItems: CatalogObject[];
+
+  specialsCatalogItems: CatalogObject[];
 
   catalogImageMap: { [imageId: string]: string[] };
 }
@@ -36,10 +39,18 @@ router.get(
 
       const _imageMapByImageId: { [imageId: string]: string[] } = {};
       const _imageMapByItemId: { [itemId: string]: string[] } = {};
-      const _items = <CatalogObject[]>_allCatalogObjects.filter(
+      const _specialsItems: CatalogObject[] = [];
+      const _mainMenuItems: CatalogObject[] = _allCatalogObjects.filter(
         (catalogObject) => {
           // if its a catalog item add it to the array
           if (catalogObject.type === CatalogObjectTypes.ITEM) {
+            if (
+              catalogObject.itemData.categoryId ===
+              catalogConstants[process.env.NODE_ENV].SPECIALS_CATEGORY_ID
+            ) {
+              _specialsItems.push(catalogObject);
+              return false;
+            }
             return true;
           }
 
@@ -60,7 +71,7 @@ router.get(
       );
 
       // create image map based on item id
-      _items.forEach((item) => {
+      _mainMenuItems.forEach((item) => {
         const _itemId = getItemVariationId(item);
         const _imageId = getItemImageId(item);
         const _images = _imageMapByImageId[_imageId];
@@ -68,10 +79,28 @@ router.get(
         _imageMapByItemId[_itemId] = _images;
       });
 
-      const _itemsParsed = JSON.parse(JSONBig.stringify(_items));
+      // specials need special image
+      _specialsItems.forEach((item) => {
+        const _itemId = getItemVariationId(item);
+        const _imageId = getItemImageId(item);
+        const _images = _imageMapByImageId[_imageId];
+
+        _imageMapByItemId[_itemId] = [
+          catalogImages[process.env.NODE_ENV].SPECIAL,
+          ..._images,
+        ];
+      });
+
+      const _mainMenuItemsParsed = JSON.parse(
+        JSONBig.stringify(_mainMenuItems)
+      );
+      const _specialsItemsParsed = JSON.parse(
+        JSONBig.stringify(_specialsItems)
+      );
 
       res.json({
-        catalogItems: _itemsParsed,
+        mainCatalogItems: _mainMenuItemsParsed,
+        specialsCatalogItems: _specialsItemsParsed,
         catalogImageMap: _imageMapByItemId,
       });
     } catch (err) {

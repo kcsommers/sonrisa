@@ -39,7 +39,11 @@ export const ImageSlider = ({
     getImgStyle(images[currentImageIndex + 1], 0, 100)
   );
 
-  useInterval(() => next(currentImageIndex + 1), 2000, true);
+  const { toggleInterval } = useInterval(
+    () => next(currentImageIndex + 1),
+    2000,
+    false
+  );
 
   const [isSliding, setIsSliding] = useState(false);
 
@@ -68,7 +72,12 @@ export const ImageSlider = ({
     setIsSliding(false);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log('efffff:::: ', autoSlide && images && images.length > 1);
+    if (autoSlide && images && images.length > 1) {
+      toggleInterval();
+    }
+  }, []);
 
   useEffect(() => {
     if (!isSliding) {
@@ -107,7 +116,7 @@ export const ImageSlider = ({
           onTransitionEnd={handleSlideEnd}
         ></div>
 
-        {!autoSlide && (
+        {!autoSlide && images && images.length > 1 && (
           <div className={styles.imgArrowsWrap}>
             <button
               onClick={() => {

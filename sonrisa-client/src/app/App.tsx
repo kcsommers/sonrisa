@@ -1,11 +1,11 @@
 import { logger, useCatalog, useOrdering } from '@core';
-import { setOrder } from '@redux';
+import { setAcceptingOrders, setOrder } from '@redux';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppRouter } from './AppRouter';
 
 export const App = () => {
-  const { getOrderId, getOrderById } = useOrdering();
+  const { getOrderId, getOrderById, checkAcceptingOrders } = useOrdering();
 
   const { setCatalogObjects } = useCatalog();
 
@@ -24,6 +24,12 @@ export const App = () => {
 
   // on init effect
   useEffect(() => {
+    // check to see if orders can be accepted
+    checkAcceptingOrders()
+      .then((res) => {
+        dispatch(setAcceptingOrders(res.acceptingOrders, res.reason));
+      })
+      .catch((err) => logger.error(err));
     // set the catalog objects
     setCatalogObjects()
       .then((res) => logger.log('[Got menu]'))

@@ -2,18 +2,26 @@ import { cloneDeep } from 'lodash';
 import { Reducer } from 'react';
 import { AnyAction } from 'redux';
 import { CatalogObject } from 'square';
-import { SET_CATALOG_IMAGE_MAP, SET_CATALOG_ITEMS } from './catalog.actions';
+import {
+  SET_CATALOG_IMAGE_MAP,
+  SET_MAIN_CATALOG_ITEMS,
+  SET_SPECIALS_CATALOG_ITEMS,
+} from './catalog.actions';
 
 interface ICatalogState {
   catalogImageMap: { [imageId: string]: string[] };
 
-  catalogItems: CatalogObject[];
+  mainCatalogItems: CatalogObject[];
+
+  specialsCatalogItems: CatalogObject[];
 }
 
 const initialState: ICatalogState = {
   catalogImageMap: {},
 
-  catalogItems: [],
+  mainCatalogItems: [],
+
+  specialsCatalogItems: [],
 };
 
 export const catalogReducer: Reducer<ICatalogState | undefined, AnyAction> = (
@@ -27,11 +35,18 @@ export const catalogReducer: Reducer<ICatalogState | undefined, AnyAction> = (
       return _clonedState;
     }
 
-    case SET_CATALOG_ITEMS: {
+    case SET_MAIN_CATALOG_ITEMS: {
       const _clonedState = cloneDeep(state);
-      _clonedState.catalogItems = action.items;
+      _clonedState.mainCatalogItems = action.items;
       return _clonedState;
     }
+
+    case SET_SPECIALS_CATALOG_ITEMS: {
+      const _clonedState = cloneDeep(state);
+      _clonedState.specialsCatalogItems = action.items;
+      return _clonedState;
+    }
+
     default:
       return state;
   }
