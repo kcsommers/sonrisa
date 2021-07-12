@@ -5,7 +5,11 @@ import {
   faInstagram,
   faTwitter,
 } from '@fortawesome/free-brands-svg-icons';
-import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBars,
+  faPhone,
+  faShoppingCart,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
@@ -41,15 +45,15 @@ export const Header = ({
         <div className={styles.headerSidesWrap}>
           <div className={styles.headerLeft}>
             <div className={styles.headerLg}>
-              <button>
+              <a>
                 <FontAwesomeIcon icon={faFacebook} />
-              </button>
-              <button>
-                <FontAwesomeIcon icon={faTwitter} />
-              </button>
-              <button>
+              </a>
+              <a href="tel:3308192592">
+                <FontAwesomeIcon icon={faPhone} />
+              </a>
+              <a href="https://www.instagram.com/sonrisa.donuts/">
                 <FontAwesomeIcon icon={faInstagram} />
-              </button>
+              </a>
             </div>
             <div className={styles.headerSm}>
               <button>

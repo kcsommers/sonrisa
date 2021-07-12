@@ -66,6 +66,7 @@ div.headerLeft > div.headerLg,
 div.headerRight {
   display: flex;
   align-items: center;
+  > a,
   > button {
     font-size: 1.5rem;
     margin-right: 1rem;

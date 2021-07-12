@@ -110,7 +110,7 @@ export const HomePage = (props: HomePageProps) => {
               <Alert
                 type="danger"
                 message={
-                  'We are no longer accepting orders this week. Please check back on Tuesday!'
+                  'Sorry we are no longer accepting orders this week. Please check back on Tuesday!'
                 }
               />
             </div>
@@ -151,6 +151,11 @@ export const HomePage = (props: HomePageProps) => {
             </div>
           )}
         </div>
+      </section>
+
+      <section className={styles.sonrisaDefSection}>
+        <h3>Sonrisa</h3>
+        <p>Smile. A gesture of joy, happiness or pleasure</p>
       </section>
 
       <section className={`${styles.aboutSection} responsive-container`}>
