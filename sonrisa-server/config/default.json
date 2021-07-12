@@ -1,5 +1,0 @@
-{
-  "mongoURI": "mongodb+srv://kcsommers:theGreat1@cluster0.puz17.mongodb.net/sonrisa?retryWrites=true",
-  "jwtSecret": "jwtSecretToken",
-  "jwtExpiration": 360000
-}
