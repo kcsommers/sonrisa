@@ -4,7 +4,7 @@ import JSONBig from 'json-bigint';
 import { CatalogObject } from 'square';
 import { catalogConstants } from '../../core/catalog/catalog-constants';
 import { getItemImageId, getItemVariationId } from '../../core/utils';
-import { catalogImages } from '../../data/catalog-images';
+import { catalogImages } from '../../core/catalog/catalog-images';
 import { square } from '../../square';
 
 interface IGetCatalogResponse {

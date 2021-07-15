@@ -4,11 +4,17 @@ declare namespace NodeJS {
   export interface ProcessEnv {
     NODE_ENV: 'development' | 'production' | 'test';
 
-    SQUARE_ACCESS_TOKEN: string;
+    SQUARE_ACCESS_TOKEN_DEV: string;
+
+    SQUARE_ACCESS_TOKEN_PROD: string;
 
     SQUARE_APP_ID_DEV: string;
 
+    SQUARE_APP_ID_PROD: string;
+
     SQUARE_LOCATION_ID_DEV: string;
+
+    SQUARE_LOCATION_ID_PROD: string;
 
     GMAIL_CLIENT_ID: string;
 

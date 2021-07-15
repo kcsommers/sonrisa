@@ -4,6 +4,7 @@ export const environments = {
   development: {
     SQUARE_APP_ID: process.env.SQUARE_APP_ID_DEV,
     SQUARE_LOCATION_ID: process.env.SQUARE_LOCATION_ID_DEV,
+    SQUARE_ACCESS_TOKEN: process.env.SQUARE_ACCESS_TOKEN_DEV,
     GMAIL_CLIENT_ID: process.env.GMAIL_CLIENT_ID,
     GMAIL_CLIENT_SECRET: process.env.GMAIL_CLIENT_SECRET,
     GMAIL_OAUTH_REDIRECT_URI: process.env.GMAIL_OAUTH_REDIRECT_URI,
@@ -12,8 +13,9 @@ export const environments = {
     INSTAGRAM_TOKEN: process.env.INSTAGRAM_TOKEN_DEV,
   },
   production: {
-    SQUARE_APP_ID: process.env.SQUARE_APP_ID_DEV,
-    SQUARE_LOCATION_ID: process.env.SQUARE_LOCATION_ID_DEV,
+    SQUARE_APP_ID: process.env.SQUARE_APP_ID_PROD,
+    SQUARE_LOCATION_ID: process.env.SQUARE_LOCATION_ID_PROD,
+    SQUARE_ACCESS_TOKEN: process.env.SQUARE_ACCESS_TOKEN_PROD,
     GMAIL_CLIENT_ID: process.env.GMAIL_CLIENT_ID,
     GMAIL_CLIENT_SECRET: process.env.GMAIL_CLIENT_SECRET,
     GMAIL_OAUTH_REDIRECT_URI: process.env.GMAIL_OAUTH_REDIRECT_URI,
@@ -24,6 +26,7 @@ export const environments = {
   test: {
     SQUARE_APP_ID: process.env.SQUARE_APP_ID_DEV,
     SQUARE_LOCATION_ID: process.env.SQUARE_LOCATION_ID_DEV,
+    SQUARE_ACCESS_TOKEN: process.env.SQUARE_ACCESS_TOKEN_DEV,
     GMAIL_CLIENT_ID: process.env.GMAIL_CLIENT_ID,
     GMAIL_CLIENT_SECRET: process.env.GMAIL_CLIENT_SECRET,
     GMAIL_OAUTH_REDIRECT_URI: process.env.GMAIL_OAUTH_REDIRECT_URI,
