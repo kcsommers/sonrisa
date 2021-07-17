@@ -21,17 +21,32 @@ type HeaderProps = {
   showCart?: boolean;
 
   setCartVisible: Dispatch<SetStateAction<boolean>>;
+
+  scrollRefs?: {
+    about: HTMLElement;
+
+    contact: HTMLElement;
+  };
 };
 
 export const Header = ({
   logoSize = 'lg',
   showCart = true,
   setCartVisible,
+  scrollRefs,
 }: HeaderProps) => {
   const { currentOrder } = useOrdering();
 
+  const scrollToRef = (refName: 'about' | 'contact') => {
+    if (!scrollRefs || !scrollRefs[refName]) {
+      return;
+    }
+
+    scrollRefs[refName].scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} responsive-container`}>
       <div className={`${styles.headerInner}`}>
         <div
           className={`${styles.headerLogoWrap} ${
@@ -62,6 +77,18 @@ export const Header = ({
             </div>
           </div>
           <div className={styles.headerRight}>
+            <button
+              className={styles.headerTextBtn}
+              onClick={() => scrollToRef('about')}
+            >
+              About
+            </button>
+            <button
+              className={styles.headerTextBtn}
+              onClick={() => scrollToRef('contact')}
+            >
+              Contact
+            </button>
             {showCart && (
               <button
                 className={styles.cartBtn}

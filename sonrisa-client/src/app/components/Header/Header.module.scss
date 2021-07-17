@@ -4,7 +4,6 @@ header.header {
   text-align: center;
   position: relative;
   z-index: 100;
-  padding: 0 4rem;
 }
 
 div.headerInner {
@@ -68,9 +67,12 @@ div.headerRight {
   align-items: center;
   > a,
   > button {
-    font-size: 1.5rem;
     margin-right: 1rem;
     color: $dark;
+
+    &:not(.headerTextBtn) {
+      font-size: 1.5rem;
+    }
   }
 }
 
@@ -101,7 +103,7 @@ button.cartBtn {
   }
 }
 
-@media only screen and (max-width: 780px) {
+@media only screen and (max-width: 767.98px) {
   div.headerLg {
     display: none !important;
   }

@@ -1,5 +1,6 @@
 @import './reset.scss';
 @import './variables.scss';
+@import './media-queries.scss';
 
 body {
   margin: 0;
@@ -88,6 +89,10 @@ textarea {
 
 *.responsive-container {
   padding: 0 4rem;
+  transition: all 0.2s ease;
+  @include for-phone-only {
+    padding: 0 1rem;
+  }
 }
 
 *.max-1280 {
@@ -110,4 +115,10 @@ button:not(.app-btn) {
 .btn-disabled {
   pointer-events: none;
   opacity: 0.5;
+}
+
+@media only screen and (max-width: 767.98px) {
+  h3 {
+    font-size: 1.75rem;
+  }
 }

@@ -38,6 +38,10 @@ export const HomePage = (props: HomePageProps) => {
 
   const orderSectionRef = useRef<HTMLElement | null>();
 
+  const aboutSectionRef = useRef<HTMLElement>();
+
+  const contactSectionRef = useRef<HTMLElement>();
+
   const contactFormSubmitted = (success: boolean) => {
     setSnackbarVisible(
       success
@@ -153,12 +157,15 @@ export const HomePage = (props: HomePageProps) => {
         </div>
       </section>
 
-      <section className={styles.sonrisaDefSection}>
+      <section className={`${styles.sonrisaDefSection} responsive-container`}>
         <h3>Sonrisa</h3>
         <p>Smile. A gesture of joy, happiness or pleasure</p>
       </section>
 
-      <section className={`${styles.aboutSection} responsive-container`}>
+      <section
+        className={`${styles.aboutSection} responsive-container`}
+        ref={(el) => (aboutSectionRef.current = el as HTMLDivElement)}
+      >
         <span className={styles.aboutImgWrap}>
           <img src={jing} alt="Jing" />
         </span>
@@ -185,11 +192,40 @@ export const HomePage = (props: HomePageProps) => {
               minima nostrum cupiditate tempore fuga eveniet aut ipsum, ex nulla
               aperiam facere blanditiis adipisci, at et!
             </p>
+            <div className={styles.bioImagesWrap}>
+              <span>
+                <img
+                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325477/Sonrisa/thai-olympics-2.jpg"
+                  alt="Thai Olympic Team 1"
+                />
+              </span>
+              <span>
+                <img
+                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-3.jpg"
+                  alt="Thai Olympic Team 1"
+                />
+              </span>
+              <span>
+                <img
+                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-1.jpg"
+                  alt="Thai Olympic Team 4"
+                />
+              </span>
+              <span>
+                <img
+                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-4.jpg"
+                  alt="Thai Olympic Team 3"
+                />
+              </span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className={`${styles.contactSection} responsive-container`}>
+      <section
+        className={`${styles.contactSection} responsive-container`}
+        ref={(el) => (contactSectionRef.current = el as HTMLDivElement)}
+      >
         <div className="max-1280">
           <ContactForm formSubmitted={contactFormSubmitted} />
         </div>
