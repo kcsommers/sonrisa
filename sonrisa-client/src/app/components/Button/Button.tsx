@@ -36,7 +36,7 @@ export const Button = ({
   };
 
   useEffect(() => {
-    if (!buttonEl.current) {
+    if (!buttonEl.current || isFullWidth) {
       return;
     }
 

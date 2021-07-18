@@ -9,7 +9,7 @@ import {
   useCatalog,
   useOrdering,
 } from '@core';
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { CatalogObject } from 'square';
@@ -27,6 +27,8 @@ interface OrderOverlayProps {
   setQuantity: (quantity: number) => void;
 
   orderUpdated: (success: boolean) => void;
+
+  closeOverlay?: (event: React.MouseEvent) => void;
 }
 
 export const OrderOverlay = ({
@@ -35,6 +37,7 @@ export const OrderOverlay = ({
   setQuantity,
   orderUpdated,
   prevQuantityRef,
+  closeOverlay,
 }: OrderOverlayProps) => {
   const { setItemQuantity, acceptingOrders } = useOrdering();
 
@@ -63,6 +66,14 @@ export const OrderOverlay = ({
 
   return (
     <div className={`${styles.templateWrap}`}>
+      <button
+        className={`${styles.closeOverlayBtn} close-overlay`}
+        onClick={(e) => {
+          closeOverlay && closeOverlay(e);
+        }}
+      >
+        <FontAwesomeIcon icon={faTimes} />
+      </button>
       <div className={styles.overlayBody}>
         <div className={styles.imgSliderWrap}>
           <ImageSlider

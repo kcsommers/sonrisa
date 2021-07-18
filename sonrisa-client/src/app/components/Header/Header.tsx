@@ -1,94 +1,83 @@
 import logo from '@assets/images/sonrisa_logo.jpg';
-import { useOrdering } from '@core';
-import {
-  faFacebook,
-  faInstagram,
-  faTwitter,
-} from '@fortawesome/free-brands-svg-icons';
+import { ScrollRefNames, useOrdering } from '@core';
+import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import {
   faBars,
   faPhone,
   faShoppingCart,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { MutableRefObject } from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
 
 type HeaderProps = {
-  logoSize?: 'sm' | 'lg';
-
   showCart?: boolean;
 
   setCartVisible: Dispatch<SetStateAction<boolean>>;
 
-  scrollRefs?: {
-    about: HTMLElement;
+  scrollRefs: {
+    ABOUT: MutableRefObject<HTMLElement>;
 
-    contact: HTMLElement;
+    CONTACT: MutableRefObject<HTMLElement>;
   };
 };
 
 export const Header = ({
-  logoSize = 'lg',
   showCart = true,
   setCartVisible,
   scrollRefs,
 }: HeaderProps) => {
   const { currentOrder } = useOrdering();
 
-  const scrollToRef = (refName: 'about' | 'contact') => {
+  const scrollToRef = (refName: 'ABOUT' | 'CONTACT') => {
     if (!scrollRefs || !scrollRefs[refName]) {
       return;
     }
 
-    scrollRefs[refName].scrollIntoView({ behavior: 'smooth' });
+    scrollRefs[refName].current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <header className={`${styles.header} responsive-container`}>
       <div className={`${styles.headerInner}`}>
-        <div
-          className={`${styles.headerLogoWrap} ${
-            styles[`headerLogo-${logoSize}`]
-          }`}
-        >
+        <div className={styles.headerLogoWrap}>
           <Link to="/" className={styles.headerLogoLink}>
             <img className={styles.logo} src={logo} alt="Sonrisa Logo" />
           </Link>
         </div>
         <div className={styles.headerSidesWrap}>
           <div className={styles.headerLeft}>
-            <div className={styles.headerLg}>
-              <a>
-                <FontAwesomeIcon icon={faFacebook} />
-              </a>
+            <span className={styles.headerContentLg}>
               <a href="tel:3308192592">
                 <FontAwesomeIcon icon={faPhone} />
               </a>
               <a href="https://www.instagram.com/sonrisa.donuts/">
                 <FontAwesomeIcon icon={faInstagram} />
               </a>
-            </div>
-            <div className={styles.headerSm}>
+            </span>
+            <span className={styles.headerContentSm}>
               <button>
                 <FontAwesomeIcon icon={faBars} />
               </button>
-            </div>
+            </span>
           </div>
           <div className={styles.headerRight}>
-            <button
-              className={styles.headerTextBtn}
-              onClick={() => scrollToRef('about')}
-            >
-              About
-            </button>
-            <button
-              className={styles.headerTextBtn}
-              onClick={() => scrollToRef('contact')}
-            >
-              Contact
-            </button>
+            <span className={styles.headerContentLg}>
+              <button
+                className={styles.headerTextBtn}
+                onClick={() => scrollToRef('ABOUT')}
+              >
+                About
+              </button>
+              <button
+                className={styles.headerTextBtn}
+                onClick={() => scrollToRef('CONTACT')}
+              >
+                Contact
+              </button>
+            </span>
             {showCart && (
               <button
                 className={styles.cartBtn}

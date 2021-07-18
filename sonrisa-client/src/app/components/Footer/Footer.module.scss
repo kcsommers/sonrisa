@@ -1,11 +1,12 @@
 @import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
 
 footer.footer {
   background-color: $yellow;
 }
 
 div.footerInner {
-  height: 200px;
+  height: 250px;
   display: flex;
   align-items: center;
   position: relative;
@@ -17,7 +18,7 @@ div.footerInfoWrap {
 }
 
 div.footerLogoWrap {
-  height: 100%;
+  height: 80%;
 
   > img {
     height: 100%;
@@ -30,13 +31,15 @@ div.copyrightWrap {
   left: 1rem;
   bottom: 1rem;
   padding: 1rem;
-  font-size: 0.75rem;
   > span {
     display: block;
   }
-  > span,
-  > span > a {
-    font-size: 1rem;
+
+  @include for-phone-only {
+    padding: 0;
+    > span {
+      font-size: 14px;
+    }
   }
 }
 
@@ -49,7 +52,6 @@ div.followTextWrap {
 }
 
 a.followText {
-  font-size: 1.25rem;
   display: inline-flex;
   align-items: center;
   padding: 0.5rem;
@@ -59,31 +61,15 @@ a.followText {
 }
 
 span.instagramIconWrap {
-  font-size: 1.75rem;
   margin-left: 0.5rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
+  > svg {
+    font-size: 22px;
 
-@media only screen and (max-width: 767.98px) {
-  a.followText {
-    font-size: 1rem;
-    padding: 0.15rem 0.25rem;
-  }
-
-  div.followTextWrap {
-    top: -0.5rem;
-    margin-right: 0.5rem;
-  }
-
-  div.copyrightWrap {
-    position: absolute;
-    left: 0.5rem;
-    bottom: 0.5rem;
-    > span,
-    > span > a {
-      font-size: 0.75rem;
+    @include for-phone-only {
+      font-size: 18px;
     }
   }
 }

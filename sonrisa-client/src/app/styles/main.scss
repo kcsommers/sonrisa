@@ -22,7 +22,6 @@ img {
   display: inline-block;
   width: 100%;
 }
-
 a,
 div,
 span,
@@ -31,6 +30,10 @@ p {
   color: $dark;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 18px;
+
+  @include for-phone-only {
+    font-size: 16px;
+  }
 }
 
 p {
@@ -54,13 +57,20 @@ button {
 
 h3 {
   font-family: 'Playfair Display';
-  font-size: 2rem;
+  font-size: 32px;
+
+  @include for-phone-only {
+    font-size: 27px;
+  }
 }
 
 h4 {
   font-family: 'Playfair Display';
-  font-size: 1.5rem;
+  font-size: 27px;
   font-weight: bold;
+  @include for-phone-only {
+    font-size: 22px;
+  }
 }
 
 input,
@@ -88,7 +98,20 @@ textarea {
 }
 
 *.responsive-container {
-  padding: 0 4rem;
+  transition: all 0.2s ease;
+  @include for-phone-only {
+    padding: 0 1rem;
+  }
+  @include for-tablet-portrait-up {
+    padding: 0 2rem;
+  }
+  @include for-tablet-landscape-up {
+    padding: 0 4rem;
+  }
+}
+
+*.responsive-container-inner {
+  padding: 0 3rem;
   transition: all 0.2s ease;
   @include for-phone-only {
     padding: 0 1rem;
@@ -117,8 +140,20 @@ button:not(.app-btn) {
   opacity: 0.5;
 }
 
-@media only screen and (max-width: 767.98px) {
-  h3 {
-    font-size: 1.75rem;
+.inner-border {
+  position: absolute;
+  border: 4px solid $yellow;
+  z-index: 0;
+  transition: all 0.2s ease;
+  left: 1rem;
+  top: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+
+  @include for-phone-only {
+    left: 0.75rem;
+    top: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
   }
 }

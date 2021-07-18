@@ -15,6 +15,7 @@ export type { IInstagramMedia } from './api/interfaces/IInstagramMedia';
 export type { IInstagramResponse } from './api/interfaces/IInstagramResponse';
 export type { IAcceptingOrdersResponse } from './orders/IAcceptingOrdersResponse';
 export { NotAcceptingOrdersReasons } from './orders/NotAcceptingOrdersReasons';
+export { ScrollRefNames } from './models/ScrollRefNames';
 export * from './image-loader';
 export * from './api/api';
 export * from './utils';

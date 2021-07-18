@@ -1,4 +1,5 @@
 @import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
 
 header.header {
   text-align: center;
@@ -17,14 +18,10 @@ div.headerLogoWrap {
   border-radius: 100%;
   overflow: hidden;
   transition: all 0.3s ease;
-}
 
-div.headerLogoWrap.headerLogo-lg {
-  height: 200%;
-}
-
-div.headerLogoWrap.headerLogo-sm {
-  height: 100%;
+  @include for-phone-only {
+    height: 175%;
+  }
 }
 
 a.headerLogoLink {
@@ -61,30 +58,13 @@ div.headerSidesWrap {
   bottom: 0;
 }
 
-div.headerLeft > div.headerLg,
-div.headerRight {
-  display: flex;
-  align-items: center;
-  > a,
-  > button {
-    margin-right: 1rem;
-    color: $dark;
-
-    &:not(.headerTextBtn) {
-      font-size: 1.5rem;
-    }
-  }
-}
-
-div.headerSm {
-  display: none;
-  align-items: center;
-  font-size: 1.5rem;
-}
-
 button.cartBtn {
   position: relative;
-  margin-right: 0 !important;
+  font-size: 22px;
+
+  @include for-phone-only {
+    font-size: 18px;
+  }
 
   > span {
     position: absolute;
@@ -95,7 +75,6 @@ button.cartBtn {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
     top: 0;
     right: 0;
     box-shadow: $box-shadow;
@@ -103,11 +82,30 @@ button.cartBtn {
   }
 }
 
-@media only screen and (max-width: 767.98px) {
-  div.headerLg {
-    display: none !important;
+.headerContentLg {
+  display: contents;
+  @include for-phone-only {
+    display: none;
   }
-  div.headerSm {
-    display: flex !important;
+}
+
+.headerContentSm {
+  display: none;
+  @include for-phone-only {
+    display: contents;
   }
+}
+
+div.headerLeft a,
+div.headerLeft button {
+  margin-right: 1rem;
+  font-size: 22px;
+
+  @include for-phone-only {
+    font-size: 18px;
+  }
+}
+
+div.headerRight button {
+  margin-left: 1rem;
 }

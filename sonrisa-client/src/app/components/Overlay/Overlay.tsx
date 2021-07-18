@@ -1,5 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { PropsWithChildren, useEffect } from 'react';
+import {
+  cloneElement,
+  PropsWithChildren,
+  ReactElement,
+  ReactNode,
+  useEffect,
+} from 'react';
 import styles from './Overlay.module.scss';
 
 type OverlayProps = PropsWithChildren<{
@@ -38,7 +44,11 @@ export const Overlay = ({
   isOpen = false,
 }: OverlayProps) => {
   const close = (event: React.MouseEvent) => {
-    if (!(event.target as Element).classList.contains(styles.overlayInner)) {
+    const _classList = (event.target as Element).classList;
+    if (
+      !_classList.contains(styles.overlayInner) &&
+      !_classList.contains('close-overlay')
+    ) {
       return;
     }
 
@@ -72,7 +82,7 @@ export const Overlay = ({
             exit="exit"
             variants={templateVariants}
           >
-            {children}
+            {cloneElement(children as ReactElement, { closeOverlay: close })}
           </motion.div>
         </motion.div>
       )}

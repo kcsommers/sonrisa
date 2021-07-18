@@ -21,7 +21,7 @@ export const Footer = () => {
             className={styles.followText}
             href="https://www.instagram.com/sonrisa.donuts/"
           >
-            Follow us on Instagram!
+            Follow us!
             <span className={styles.instagramIconWrap}>
               <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
             </span>
