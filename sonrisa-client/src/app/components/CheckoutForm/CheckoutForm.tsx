@@ -186,7 +186,6 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
     const _initPayments = async () => {
       const _appId = environments[process.env.NODE_ENV].SQUARE_APP_ID;
       const _locationId = environments[process.env.NODE_ENV].SQUARE_LOCATION_ID;
-
       const _payments = (window as any).Square.payments(_appId, _locationId);
       try {
         const _card = await _payments.card();

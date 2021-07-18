@@ -22,7 +22,6 @@ export const OrderSuccessPage = () => {
 
   // scroll to top
   useEffect(() => {
-    console.log('order success:::: ', state);
     window.scrollTo(0, 0);
   }, []);
 

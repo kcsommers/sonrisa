@@ -73,7 +73,6 @@ export const ImageSlider = ({
   };
 
   useEffect(() => {
-    console.log('efffff:::: ', autoSlide && images && images.length > 1);
     if (autoSlide && images && images.length > 1) {
       toggleInterval();
     }
