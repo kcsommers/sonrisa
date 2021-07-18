@@ -1,7 +1,11 @@
 @import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
 
 div.instagramFeedWrap {
   padding: 1rem;
+  @include for-phone-only {
+    padding: 0;
+  }
 }
 
 div.instagramFeedInner {

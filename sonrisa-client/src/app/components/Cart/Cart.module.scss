@@ -1,4 +1,5 @@
 @import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
 
 div.cartWrap {
   position: fixed;
@@ -20,10 +21,15 @@ div.cartHeader {
   justify-content: space-between;
   padding: 0 2rem;
   color: $dark;
+
+  @include for-phone-only {
+    padding: 0 1rem;
+  }
 }
 
 div.cartInner {
   width: 500px;
+  max-width: 100%;
   background-color: #fff;
   height: 100%;
   display: flex;
@@ -34,4 +40,8 @@ div.cartInner {
 div.cartBody {
   padding: 2rem;
   flex: 1;
+
+  @include for-phone-only {
+    padding: 1rem;
+  }
 }

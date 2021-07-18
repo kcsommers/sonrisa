@@ -8,6 +8,7 @@ div.snackbarWrap {
   border-radius: $border-radius;
   box-shadow: $box-shadow;
   width: 400px;
+  max-width: 90%;
   padding: 1rem;
   z-index: 10000;
   display: flex;
