@@ -1,6 +1,7 @@
 import { Cart, Footer, Header } from '@components';
-import { useState } from 'react';
+import { MutableRefObject, useRef, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ScrollRefNames } from '@core';
 import { CheckoutPage } from './pages/CheckoutPage/CheckoutPage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { OrderSuccessPage } from './pages/OrderSuccessPage/OrderSuccessPage';
@@ -8,9 +9,32 @@ import { OrderSuccessPage } from './pages/OrderSuccessPage/OrderSuccessPage';
 export const AppRouter = () => {
   const [cartVisible, setCartVisible] = useState(false);
 
+  const aboutScrollRef = useRef<HTMLElement>();
+
+  const contactScrollRef = useRef<HTMLElement>();
+
+  const setScrollRef = (elName: string, el: HTMLElement): void => {
+    switch (elName) {
+      case ScrollRefNames.ABOUT: {
+        aboutScrollRef.current = el;
+        return;
+      }
+      case ScrollRefNames.CONTACT: {
+        contactScrollRef.current = el;
+        return;
+      }
+    }
+  };
+
   return (
     <Router>
-      <Header setCartVisible={setCartVisible} />
+      <Header
+        setCartVisible={setCartVisible}
+        scrollRefs={{
+          ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
+          CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
+        }}
+      />
       <div
         style={{
           maxWidth: '1980px',
@@ -25,7 +49,7 @@ export const AppRouter = () => {
             exact
             path="/"
             render={(props) => (
-              <HomePage {...props} setCartVisible={setCartVisible} />
+              <HomePage {...props} setScrollRef={setScrollRef} />
             )}
           />
           <Route

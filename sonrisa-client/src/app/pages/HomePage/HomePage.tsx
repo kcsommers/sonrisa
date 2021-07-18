@@ -25,10 +25,10 @@ import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 
 interface HomePageProps extends RouteComponentProps {
-  setCartVisible: Dispatch<SetStateAction<boolean>>;
+  setScrollRef: (elName: string, el: HTMLElement) => void;
 }
 
-export const HomePage = (props: HomePageProps) => {
+export const HomePage = ({ setScrollRef }: HomePageProps) => {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
 
   const { mainCatalogItems, specialsCatalogItems, catalogImageMap } =
@@ -82,8 +82,8 @@ export const HomePage = (props: HomePageProps) => {
     <div className={styles.homePageWrap}>
       <section className={`${styles.landingSection} responsive-container`}>
         <div className={`${styles.landingInner}`}>
-          <div className={styles.landingInnerBorder}></div>
-          <div className={styles.landingCta}>
+          <div className="inner-border"></div>
+          <div className={`${styles.landingCta} responsive-container-inner`}>
             <h3>
               Handmade Brioche Donuts. Fresh and Local Ingredients. Made in
               Seattle, WA.
@@ -104,8 +104,8 @@ export const HomePage = (props: HomePageProps) => {
         ref={(el) => (orderSectionRef.current = el)}
       >
         <p className={`${styles.menuSectionText}`}>
-          Taking orders Tuesday - Saturday, or until sold out. <br /> Pick up
-          Monday between 1 and 4. Pickup instructions will be sent via email.
+          Taking orders Tuesday - Saturday, or until sold out. Pick up Monday
+          between 1 and 4. Pickup instructions will be sent via email.
         </p>
         <div className={`${styles.orderBoxesWrap}`}>
           <h3>Menu</h3>
@@ -157,7 +157,10 @@ export const HomePage = (props: HomePageProps) => {
         </div>
       </section>
 
-      <section className={`${styles.sonrisaDefSection} responsive-container`}>
+      <section
+        className={`${styles.sonrisaDefSection} responsive-container`}
+        ref={(el) => setScrollRef('ABOUT', el as HTMLElement)}
+      >
         <h3>Sonrisa</h3>
         <p>Smile. A gesture of joy, happiness or pleasure</p>
       </section>
@@ -171,7 +174,7 @@ export const HomePage = (props: HomePageProps) => {
         </span>
 
         <div className={`${styles.bioWrap}`}>
-          <div className={styles.bioWrapBorder}></div>
+          <div className="inner-border"></div>
           <div className="max-1280">
             <h3>Hello!</h3>
             <p>
@@ -222,11 +225,11 @@ export const HomePage = (props: HomePageProps) => {
         </div>
       </section>
 
-      <section
-        className={`${styles.contactSection} responsive-container`}
-        ref={(el) => (contactSectionRef.current = el as HTMLDivElement)}
-      >
-        <div className="max-1280">
+      <section className={`${styles.contactSection} responsive-container`}>
+        <div
+          className="max-1280"
+          ref={(el) => setScrollRef('CONTACT', el as HTMLElement)}
+        >
           <ContactForm formSubmitted={contactFormSubmitted} />
         </div>
       </section>

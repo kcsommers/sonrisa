@@ -13,6 +13,7 @@ div.landingInner {
   align-items: center;
   background-color: $offwhite;
   overflow: hidden;
+  transition: all 0.2s ease;
 
   > img {
     position: absolute;
@@ -20,30 +21,27 @@ div.landingInner {
     left: 50%;
     transform: translateX(-50%);
     width: 1280px;
+    transition: all 0.2s ease;
   }
-}
 
-div.bioWrapBorder,
-div.landingInnerBorder {
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-  border: 4px solid $yellow;
-  z-index: 0;
+  @include for-phone-only {
+    height: 575px;
+
+    > img {
+      width: 1100px;
+    }
+  }
 }
 
 div.landingCta {
   margin-top: -10rem;
   text-align: center;
   width: 700px;
-  padding: 0 3rem;
   position: relative;
   z-index: 1;
 
   > h3 {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -55,6 +53,9 @@ p.menuSectionText {
   background-color: $offwhite;
   padding: 1rem 2rem;
   text-align: center;
+  @include for-phone-only {
+    padding: 1rem;
+  }
 }
 
 div.orderBoxesWrap {
@@ -82,13 +83,22 @@ span.aboutImgWrap {
   margin: 0 auto;
   position: relative;
   z-index: 100;
+  transition: all 0.2s ease;
+  @include for-phone-only {
+    width: 250px;
+    height: 250px;
+  }
 }
 
 div.bioWrap {
   background-color: $offwhite;
   margin-top: -150px;
-  padding: 150px 4rem 4rem 4rem;
   position: relative;
+  padding: 150px 3rem 4rem 3rem;
+
+  @include for-phone-only {
+    padding: 150px 2rem 4rem 2rem;
+  }
 
   h3 {
     margin-bottom: 1rem;
@@ -145,34 +155,8 @@ div.bioImagesWrap {
   margin-top: 3rem;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 0.5rem;
-}
 
-@media only screen and (min-width: 1000px) {
-  div.orderBoxesInner {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@include for-tablet-landscape-up {
-  div.bioImagesWrap {
+  @include for-phone-only {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  div.bioWrap {
-    padding: 150px 3rem 4rem 3rem;
-  }
-
-  div.landingInner {
-    > img {
-      width: 1000px;
-    }
-  }
-
-  div.landingInner {
-    height: 550px;
-  }
-
-  div.landingCta {
-    margin-top: -7rem;
   }
 }
