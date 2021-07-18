@@ -8,6 +8,7 @@ import {
 } from '@components';
 import {
   getItemVariationId,
+  ScrollRefNames,
   useCatalog,
   useOrdering,
   useSnackbar,
@@ -18,8 +19,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
+import { useEffect } from 'react';
 import { useRef } from 'react';
-import { Dispatch, SetStateAction } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
@@ -28,7 +29,7 @@ interface HomePageProps extends RouteComponentProps {
   setScrollRef: (elName: string, el: HTMLElement) => void;
 }
 
-export const HomePage = ({ setScrollRef }: HomePageProps) => {
+export const HomePage = ({ setScrollRef, location }: HomePageProps) => {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
 
   const { mainCatalogItems, specialsCatalogItems, catalogImageMap } =
@@ -36,11 +37,11 @@ export const HomePage = ({ setScrollRef }: HomePageProps) => {
 
   const { acceptingOrders } = useOrdering();
 
+  const aboutRef = useRef<HTMLElement>();
+
+  const contactRef = useRef<HTMLElement>();
+
   const orderSectionRef = useRef<HTMLElement | null>();
-
-  const aboutSectionRef = useRef<HTMLElement>();
-
-  const contactSectionRef = useRef<HTMLElement>();
 
   const contactFormSubmitted = (success: boolean) => {
     setSnackbarVisible(
@@ -77,6 +78,26 @@ export const HomePage = ({ setScrollRef }: HomePageProps) => {
           }
     );
   };
+
+  useEffect(() => {
+    if (location.state && (location.state as any).scrollTo) {
+      switch ((location.state as any).scrollTo) {
+        case ScrollRefNames.ABOUT: {
+          if (aboutRef.current) {
+            aboutRef.current.scrollIntoView();
+          }
+          return;
+        }
+        case ScrollRefNames.CONTACT: {
+          if (contactRef.current) {
+            contactRef.current.scrollIntoView();
+          }
+          return;
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={styles.homePageWrap}>
@@ -159,16 +180,16 @@ export const HomePage = ({ setScrollRef }: HomePageProps) => {
 
       <section
         className={`${styles.sonrisaDefSection} responsive-container`}
-        ref={(el) => setScrollRef('ABOUT', el as HTMLElement)}
+        ref={(el) => {
+          aboutRef.current = el as HTMLElement;
+          setScrollRef('ABOUT', el as HTMLElement);
+        }}
       >
         <h3>Sonrisa</h3>
         <p>Smile. A gesture of joy, happiness or pleasure</p>
       </section>
 
-      <section
-        className={`${styles.aboutSection} responsive-container`}
-        ref={(el) => (aboutSectionRef.current = el as HTMLDivElement)}
-      >
+      <section className={`${styles.aboutSection} responsive-container`}>
         <span className={styles.aboutImgWrap}>
           <img src={jing} alt="Jing" />
         </span>
@@ -225,11 +246,14 @@ export const HomePage = ({ setScrollRef }: HomePageProps) => {
         </div>
       </section>
 
-      <section className={`${styles.contactSection} responsive-container`}>
-        <div
-          className="max-1280"
-          ref={(el) => setScrollRef('CONTACT', el as HTMLElement)}
-        >
+      <section
+        className={`${styles.contactSection} responsive-container`}
+        ref={(el) => {
+          contactRef.current = el as HTMLElement;
+          setScrollRef('CONTACT', el as HTMLElement);
+        }}
+      >
+        <div className="max-1280">
           <ContactForm formSubmitted={contactFormSubmitted} />
         </div>
       </section>

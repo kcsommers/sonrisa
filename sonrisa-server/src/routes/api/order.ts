@@ -248,7 +248,8 @@ router.post(
 
       res.json({ errors: _resParsed.errors, payment: _camelCasePayment });
     } catch (err) {
-      res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      console.error('PAYMENT ERROR:::: ', err);
+      res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
     }
   }
 );

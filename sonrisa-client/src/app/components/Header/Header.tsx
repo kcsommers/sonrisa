@@ -9,7 +9,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { MutableRefObject } from 'react';
 import { Dispatch, SetStateAction } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import styles from './Header.module.scss';
 
 type HeaderProps = {
@@ -31,7 +31,15 @@ export const Header = ({
 }: HeaderProps) => {
   const { currentOrder } = useOrdering();
 
+  const location = useLocation();
+
+  const history = useHistory();
+
   const scrollToRef = (refName: 'ABOUT' | 'CONTACT') => {
+    if (location.pathname !== '/') {
+      history.push('/', { scrollTo: refName });
+    }
+
     if (!scrollRefs || !scrollRefs[refName]) {
       return;
     }

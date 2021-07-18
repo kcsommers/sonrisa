@@ -1,9 +1,9 @@
 @import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
 
 div.cartItemWrap {
   display: flex;
   border-bottom: 2px solid $offwhite;
-  align-items: center;
   position: relative;
 
   > button {
@@ -24,10 +24,22 @@ div.cartItemWrap {
 
 div.cartItemImgWrap {
   flex: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.cartItemImgInner {
+  background-color: #fff;
+  border-radius: $border-radius;
+  > img {
+    border-radius: $border-radius;
+  }
 }
 
 div.itemDetailsWrap {
   flex: 1;
+  padding: 0 2rem;
 }
 
 div.itemDetailWrap {
@@ -35,6 +47,9 @@ div.itemDetailWrap {
   justify-content: space-between;
   align-items: center;
   margin: 0.5rem 0;
+  @include for-phone-only {
+    margin: 0.25rem 0;
+  }
 }
 
 p.itemName {

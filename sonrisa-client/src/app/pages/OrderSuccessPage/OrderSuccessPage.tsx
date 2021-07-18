@@ -22,24 +22,36 @@ export const OrderSuccessPage = () => {
 
   // scroll to top
   useEffect(() => {
+    console.log('order success:::: ', state);
     window.scrollTo(0, 0);
   }, []);
 
   return (
     <div>
-      <div className={styles.pageInner}>
-        <div className={`${styles.messageWrap} responsive-container`}>
-          <h4>Thank you!</h4>
-          <h3>Your order has been placed</h3>
-          <a href={state.payment.receiptUrl}>
-            Click here to view your receipt.
-          </a>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-            ratione repellat dolore soluta facilis nam molestiae? Minus eius
-            voluptatum voluptate, ipsa reprehenderit inventore laudantium quod
-            nulla aspernatur earum quae eos!
-          </p>
+      <div className={`${styles.pageInner} responsive-container`}>
+        <div className={`${styles.messageWrap}`}>
+          {state && state.payment ? (
+            <>
+              <h4>Thank you!</h4>
+              <h3>Your order has been placed</h3>
+              <a href={state.payment.receiptUrl}>
+                Click here to view your receipt.
+              </a>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
+                ratione repellat dolore soluta facilis nam molestiae? Minus eius
+                voluptatum voluptate, ipsa reprehenderit inventore laudantium
+                quod nulla aspernatur earum quae eos!
+              </p>
+            </>
+          ) : (
+            <>
+              <h4>Whoops!</h4>
+              <p>
+                There was a problem processing your order. Please try again.
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>

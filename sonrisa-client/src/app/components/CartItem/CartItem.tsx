@@ -27,7 +27,9 @@ export const CartItem = ({ orderItem, imageUrl, canRemove }: CartItemProps) => {
         </button>
       )}
       <div className={styles.cartItemImgWrap}>
-        <img src={imageUrl} alt={orderItem.name} />
+        <div className={styles.cartItemImgInner}>
+          <img src={imageUrl} alt={orderItem.name} />
+        </div>
       </div>
 
       <div className={styles.itemDetailsWrap}>

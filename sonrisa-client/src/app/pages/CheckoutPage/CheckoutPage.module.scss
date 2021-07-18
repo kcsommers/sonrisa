@@ -1,11 +1,19 @@
 @import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
 
 div.checkoutPageInner {
-  display: flex;
-  padding: 2rem 2rem 2rem 0;
-  flex-wrap: wrap;
+  display: grid;
   justify-content: stretch;
   min-height: $body-min-height;
+  grid-gap: 2rem;
+  grid-template-columns: 1fr;
+  padding: 2rem 0 4rem 0;
+  transition: all 0.2s ease;
+
+  @include for-tablet-landscape-up {
+    grid-template-columns: 1fr 45%;
+    padding: 3rem 0;
+  }
 }
 
 div.paymentSection {
@@ -17,24 +25,40 @@ div.orderSection {
 }
 
 div.checkoutSection {
-  min-width: 400px;
-  margin-left: 2rem;
-  margin-bottom: 2rem;
   padding: 1rem;
+  position: relative;
 }
 
 div.paymentSection,
 div.orderSection {
   background-color: $offwhite;
-  padding: 1rem;
   border-radius: $border-radius;
+
+  @include for-tablet-landscape-up {
+    grid-template-columns: 1fr 45%;
+  }
+}
+
+div.paymentSection {
+  order: 2;
+  @include for-tablet-landscape-up {
+    order: 0;
+  }
+}
+
+div.orderSection {
+  order: 1;
 }
 
 div.checkoutSectionInner {
-  border: 4px solid $yellow;
   padding: 2rem;
   height: 100%;
+  position: relative;
+  z-index: 1;
   > h4 {
     margin-bottom: 2rem;
+  }
+  @include for-phone-only {
+    padding: 1rem;
   }
 }

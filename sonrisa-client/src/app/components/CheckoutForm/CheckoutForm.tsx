@@ -10,7 +10,7 @@ import {
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { CreatePaymentRequest, Customer, Payment } from 'square';
+import { CreatePaymentRequest, Customer, Order, Payment } from 'square';
 import { environments } from '../../../environments';
 import { Button } from './../Button/Button';
 import { v4 as uuidV4 } from 'uuid';
@@ -100,6 +100,12 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
       }
     };
 
+    const _handleError = (err: Error) => {
+      logger.error(err);
+      setSubmittingForm(false);
+      onCheckout(false);
+    };
+
     try {
       const _cardToken = await _tokenizeCard();
       logger.log('card token:::: ', _cardToken);
@@ -111,60 +117,65 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
         phoneNumber,
       };
 
-      // first update the order with fulfillments and customer info
-      const _fulfillments = [
-        {
-          type: OrderFullfillmentTypes.PICKUP,
-          pickupDetails: {
-            scheduleType: OrderFullfillmentScheduleTypes.SCHEDULED,
-            pickupAt: getPickupTime(),
-            note: message,
-            recipient: {
-              displayName: `${_customer.givenName} ${_customer.familyName}`,
-              emailAddress: _customer.emailAddress,
-              phoneNumber: _customer.phoneNumber,
+      // create the payment request
+      const _totalMoney = getOrderTotal(currentOrder);
+      const _tipMoney = getOrderTip(currentOrder);
+      const _paymentRequest: CreatePaymentRequest = {
+        idempotencyKey: uuidV4(),
+        sourceId: _cardToken,
+        orderId: currentOrder?.id,
+        amountMoney: {
+          currency: 'USD',
+          amount: String(_totalMoney - _tipMoney),
+        },
+        tipMoney: {
+          currency: 'USD',
+          amount: String(_tipMoney),
+        },
+      };
+
+      // update the order with fulfillments and customer info
+      // if it hasn't already been done
+      if (!currentOrder.fulfillments) {
+        const _fulfillments = [
+          {
+            type: OrderFullfillmentTypes.PICKUP,
+            pickupDetails: {
+              scheduleType: OrderFullfillmentScheduleTypes.SCHEDULED,
+              pickupAt: getPickupTime(),
+              note: message,
+              recipient: {
+                displayName: `${_customer.givenName} ${_customer.familyName}`,
+                emailAddress: _customer.emailAddress,
+                phoneNumber: _customer.phoneNumber,
+              },
             },
           },
-        },
-      ];
+        ];
+        updateOrder({ fulfillments: _fulfillments })
+          .then((res) => {
+            logger.log('[update order response]:::: ', res);
 
-      updateOrder({ fulfillments: _fulfillments })
-        .then((res) => {
-          // then create the payment request
-          const _totalMoney = getOrderTotal(currentOrder);
-          const _tipMoney = getOrderTip(currentOrder);
-          const request: CreatePaymentRequest = {
-            idempotencyKey: uuidV4(),
-            sourceId: _cardToken,
-            orderId: currentOrder?.id,
-            amountMoney: {
-              currency: 'USD',
-              amount: String(_totalMoney - _tipMoney),
-            },
-            tipMoney: {
-              currency: 'USD',
-              amount: String(_tipMoney),
-            },
-          };
-
-          // create the payment
-          createPayment(request, _customer)
-            .then((res) => {
-              logger.log('[create payment response]:::: ', res);
-              setSubmittingForm(false);
-              onCheckout(true, res);
-            })
-            .catch((err) => {
-              logger.error(err);
-              setSubmittingForm(false);
-              onCheckout(false);
-            });
-        })
-        .catch((err) => {
-          logger.error(err);
-          setSubmittingForm(false);
-          onCheckout(false);
-        });
+            // create the payment
+            createPayment(_paymentRequest, _customer)
+              .then((res) => {
+                logger.log('[create payment response]:::: ', res);
+                setSubmittingForm(false);
+                onCheckout(true, res);
+              })
+              .catch(_handleError);
+          })
+          .catch(_handleError);
+      } else {
+        // if fulfillments have already been added just create the payment
+        createPayment(_paymentRequest, _customer)
+          .then((res) => {
+            logger.log('[create payment response]:::: ', res);
+            setSubmittingForm(false);
+            onCheckout(true, res);
+          })
+          .catch(_handleError);
+      }
     } catch (e) {
       setSubmittingForm(false);
       console.error(e.message);
