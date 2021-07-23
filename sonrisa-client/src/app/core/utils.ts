@@ -1,4 +1,4 @@
-import { CatalogObject, Order, OrderLineItem } from 'square';
+import { CatalogObject, Order } from 'square';
 
 export const calculateCost = (itemPrice: string, quantity: number): number => {
   return quantity * +itemPrice;

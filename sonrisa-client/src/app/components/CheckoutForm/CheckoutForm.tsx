@@ -10,7 +10,7 @@ import {
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { CreatePaymentRequest, Customer, Order, Payment } from 'square';
+import { CreatePaymentRequest, Customer, Payment } from 'square';
 import { environments } from '../../../environments';
 import { Button } from './../Button/Button';
 import { v4 as uuidV4 } from 'uuid';

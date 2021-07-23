@@ -13,7 +13,7 @@ import {
 } from 'square';
 import { v4 as uuidV4 } from 'uuid';
 import {
-  getCamelcaseKeys,
+  camelcaseKeys,
   sendEmail,
   IAcceptingOrdersResponse,
   NotAcceptingOrdersReasons,
@@ -81,7 +81,7 @@ router.post(
         _response.body as string
       ) as CreateOrderResponse;
 
-      const _camelCaseOrder = getCamelcaseKeys(_resParsed.order) as Order;
+      const _camelCaseOrder = camelcaseKeys(_resParsed.order) as Order;
       if (!_camelCaseOrder) {
         console.error('Error converting to camel case');
         return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
@@ -134,7 +134,7 @@ router.post(
         _response.body as string
       ) as UpdateOrderResponse;
 
-      const _camelCaseOrder = getCamelcaseKeys(_resParsed.order) as Order;
+      const _camelCaseOrder = camelcaseKeys(_resParsed.order) as Order;
       if (!_camelCaseOrder) {
         console.error('Error converting to camel case');
         return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
@@ -170,7 +170,7 @@ router.get(
         _response.body as string
       ) as RetrieveOrderResponse;
 
-      const _camelCaseOrder = getCamelcaseKeys(_resParsed.order) as Order;
+      const _camelCaseOrder = camelcaseKeys(_resParsed.order) as Order;
       if (!_camelCaseOrder) {
         console.error('Error converting to camel case');
         return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
@@ -214,7 +214,7 @@ router.post(
       ) as CreatePaymentResponse;
 
       // convert underscores to camelcase
-      const _camelCasePayment = getCamelcaseKeys(_resParsed.payment) as Payment;
+      const _camelCasePayment = camelcaseKeys(_resParsed.payment) as Payment;
       if (!_camelCasePayment) {
         console.error('Error converting to camel case');
         return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);

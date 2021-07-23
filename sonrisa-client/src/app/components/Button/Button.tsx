@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import styles from './Button.module.scss';
 
@@ -42,6 +42,7 @@ export const Button = ({
 
     const _btnWidth = buttonEl.current.getBoundingClientRect().width;
     buttonEl.current.style.minWidth = `${_btnWidth}px`;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buttonEl]);
 
   return (

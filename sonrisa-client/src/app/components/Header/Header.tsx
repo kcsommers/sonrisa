@@ -1,6 +1,6 @@
 import logo from '@assets/images/sonrisa_logo.jpg';
-import { ScrollRefNames, useOrdering } from '@core';
-import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { useOrdering } from '@core';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import {
   faBars,
   faPhone,

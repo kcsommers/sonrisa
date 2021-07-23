@@ -60,7 +60,11 @@ export const useInterval = (
   }, [intervalIsRunning, clear, resetInterval]);
 
   // cleanup
-  useEffect(() => clear, []);
+  useEffect(
+    () => clear,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return { resetInterval, toggleInterval, intervalIsRunning };
 };

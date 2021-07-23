@@ -3,7 +3,6 @@ import {
   cloneElement,
   PropsWithChildren,
   ReactElement,
-  ReactNode,
   useEffect,
 } from 'react';
 import styles from './Overlay.module.scss';

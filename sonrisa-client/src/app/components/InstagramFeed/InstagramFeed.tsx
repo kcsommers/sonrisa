@@ -43,6 +43,7 @@ export const InstagramFeed = () => {
   useEffect(() => {
     window.addEventListener('resize', _setIndexLimit);
     return () => document.removeEventListener('resize', _setIndexLimit);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

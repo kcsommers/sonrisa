@@ -76,6 +76,7 @@ export const ImageSlider = ({
     if (autoSlide && images && images.length > 1) {
       toggleInterval();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
