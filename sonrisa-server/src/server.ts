@@ -12,7 +12,7 @@ const app = express();
 const corsWhitelist = [
   'http://localhost',
   'https://sonrisa-server.herokuapp.com',
-  'https://60fc52f1362bb540c9742e93--wizardly-jepsen-70e852.netlify.app',
+  'https://wizardly-jepsen-70e852.netlify.app',
 ];
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
