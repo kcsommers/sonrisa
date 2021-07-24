@@ -4,8 +4,26 @@ import order from './routes/api/order';
 import catalog from './routes/api/catalog';
 import contact from './routes/api/contact';
 import instagram from './routes/api/instagram';
+import cors from 'cors';
 
 const app = express();
+
+// cors config
+const corsWhitelist = [
+  'http://localhost',
+  'https://sonrisa-server.herokuapp.com',
+];
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (corsWhitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 
 // Express configuration
 app.set('port', process.env.PORT || 5000);
