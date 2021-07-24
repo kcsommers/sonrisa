@@ -10,6 +10,7 @@ export const getMoneyString = (amount: number): string => {
 
 export const getItemPrice = (item: CatalogObject): string => {
   return (
+    // @ts-ignore
     (item.itemData?.variations?.[0].itemVariationData?.priceMoney
       ?.amount as string) || '0'
   );
@@ -46,21 +47,26 @@ export const getColor = (colorType: string, rgb = false): string => {
 };
 
 export const getOrderSubtotal = (order: Order): number => {
+  // @ts-ignore
   const _tax = +(order.totalTaxMoney?.amount as string);
+  // @ts-ignore
   const _total = +(order.totalMoney?.amount as string);
 
   return _total - _tax;
 };
 
 export const getOrderTotal = (order: Order): number => {
+  // @ts-ignore
   return +(order.totalMoney?.amount as string);
 };
 
 export const getOrderTip = (order: Order): number => {
+  // @ts-ignore
   return +(order.totalTipMoney?.amount as string);
 };
 
 export const getOrderTax = (order: Order): number => {
+  // @ts-ignore
   return +(order.totalTaxMoney?.amount as string);
 };
 

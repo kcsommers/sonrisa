@@ -41,6 +41,7 @@ export const CartItem = ({ orderItem, imageUrl, canRemove }: CartItemProps) => {
         <div className={styles.itemDetailWrap}>
           <p className={styles.itemLabel}>Total</p>
           <p className={styles.itemData}>
+            {/** @ts-ignore */}
             {getMoneyString(+(orderItem.totalMoney?.amount as string))}
           </p>
         </div>

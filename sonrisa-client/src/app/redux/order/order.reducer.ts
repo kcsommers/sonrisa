@@ -27,16 +27,19 @@ const initialState: IOrderState = {
     fulfillments: [],
 
     totalMoney: {
+      // @ts-ignore
       amount: '0',
       currency: 'USD',
     },
 
     totalTaxMoney: {
+      // @ts-ignore
       amount: '0',
       currency: 'USD',
     },
 
     totalTipMoney: {
+      // @ts-ignore
       amount: '0',
       currency: 'USD',
     },
