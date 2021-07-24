@@ -10,13 +10,13 @@ const app = express();
 
 // cors config
 const corsWhitelist = [
-  'http://localhost',
+  'http://localhost:3000',
   'https://sonrisa-server.herokuapp.com',
   'https://wizardly-jepsen-70e852.netlify.app',
 ];
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    if (corsWhitelist.indexOf(origin) !== -1) {
+    if (!origin || corsWhitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       console.log('origin error:::: ', origin);

@@ -32,11 +32,11 @@ export const catalogImages = {
     SPECIAL: images[Doughnuts.SPECIAL],
   },
   production: {
-    F5ARMOGCBXH4OAKMCFA52BGX: images[Doughnuts.VANILLA],
-    AROGK7HG7DRU2W65CEJWVAAJ: images[Doughnuts.MATCHA],
-    LJ45EWF7HREN6QLWNOQH7XE2: images[Doughnuts.NUTELLA],
-    MHNMSOME7LVP55SLKREXSQB2: images[Doughnuts.THAI_TEA],
-    BLJ7F5PTENWNIM5NFJ2PWKDH: images[Doughnuts.STRAWBERRY],
+    MJU3RB7WNNZMHGAFYYQEP5BS: images[Doughnuts.VANILLA],
+    PWZ27YDAOEEJLYXAFGZ75DS5: images[Doughnuts.MATCHA],
+    PQ3EIHBOZJ2QXMCF5RXTXHAS: images[Doughnuts.NUTELLA],
+    MDNUEK57BINWEAEEF7SAWOJS: images[Doughnuts.THAI_TEA],
+    TCLGDHYUZBTQUMWWPCE5DRAR: images[Doughnuts.STRAWBERRY],
     // rotating special
     SPECIAL: images[Doughnuts.SPECIAL],
   },
