@@ -117,7 +117,7 @@ export const OrderOverlay = ({
           isFullWidth={true}
           onClick={updateOrder}
           showSpinner={updatingOrder}
-          isDisabled={!acceptingOrders}
+          isDisabled={!acceptingOrders || prevQuantityRef.current === quantity}
         />
       </div>
     </div>
