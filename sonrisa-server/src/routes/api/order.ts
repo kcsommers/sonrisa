@@ -38,14 +38,6 @@ router.get(
     const _date = new Date(
       new Date().toLocaleString('en-us', { timeZone: 'America/Los_Angeles' })
     );
-    console.log(
-      'accepting route:::: ',
-      new Date(
-        _date.toLocaleString('en-us', { timeZone: 'America/Los_Angeles' })
-      ).getDay(),
-      _date.getDay(),
-      _badDays.indexOf(_date.getDay())
-    );
 
     let _acceptingOrders = true;
     let _reason = '';
