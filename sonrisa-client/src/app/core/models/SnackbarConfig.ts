@@ -1,4 +1,5 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import React from 'react';
 
 export interface ISnackbarConfig {
   message: string;
@@ -8,4 +9,6 @@ export interface ISnackbarConfig {
   iconColor: string;
 
   duration: number;
+
+  onClick?: (event: React.MouseEvent) => void;
 }

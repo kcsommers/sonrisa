@@ -49,7 +49,11 @@ export const AppRouter = () => {
             exact
             path="/"
             render={(props) => (
-              <HomePage {...props} setScrollRef={setScrollRef} />
+              <HomePage
+                {...props}
+                setScrollRef={setScrollRef}
+                setCartVisible={setCartVisible}
+              />
             )}
           />
           <Route

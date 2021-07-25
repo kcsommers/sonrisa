@@ -27,9 +27,15 @@ import styles from './HomePage.module.scss';
 
 interface HomePageProps extends RouteComponentProps {
   setScrollRef: (elName: string, el: HTMLElement) => void;
+
+  setCartVisible: (isVisible: boolean) => void;
 }
 
-export const HomePage = ({ setScrollRef, location }: HomePageProps) => {
+export const HomePage = ({
+  setScrollRef,
+  location,
+  setCartVisible,
+}: HomePageProps) => {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
 
   const { mainCatalogItems, specialsCatalogItems, catalogImageMap } =
@@ -69,6 +75,7 @@ export const HomePage = ({ setScrollRef, location }: HomePageProps) => {
             icon: faCheckCircle,
             iconColor: 'success',
             duration: 4000,
+            onClick: setCartVisible.bind(this, true),
           }
         : {
             message: 'Error Updating Cart',
