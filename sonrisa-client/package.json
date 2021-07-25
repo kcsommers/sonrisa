@@ -37,8 +37,8 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build && cp src/_redirects build/_redirects",
+    "start": "cp src/index.dev.html public/index.html && craco start",
+    "build": "cp src/index.prod.html public/index.html && craco build && cp src/_redirects build/_redirects",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
