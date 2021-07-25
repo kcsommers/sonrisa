@@ -36,6 +36,12 @@ router.get(
     const _badDays = [0, 1]; // Sunday & Monday
 
     const _date = new Date();
+    console.log(
+      'accepting route:::: ',
+      _date,
+      _date.getDay(),
+      _badDays.indexOf(_date.getDay())
+    );
 
     let _acceptingOrders = true;
     let _reason = '';
