@@ -168,6 +168,7 @@ export const useOrdering = (): IOrderingHook => {
   const checkAcceptingOrders = async (): Promise<IAcceptingOrdersResponse> => {
     try {
       const _response = await Api.acceptingOrders();
+      console.log('[acceptingOrders response]:::: ', _response);
       logger.log('[acceptingOrders response]:::: ', _response);
       return _response.data;
     } catch (err) {

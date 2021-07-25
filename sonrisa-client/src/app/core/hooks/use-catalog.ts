@@ -52,7 +52,6 @@ export const useCatalog = (): ICatalogHook => {
       for (const id in _response.data.catalogImageMap) {
         loadImages(_response.data.catalogImageMap[id]);
       }
-      console.log('CATALOG RES:::: ', _response.data);
       logger.log('[get catalog response]:::: ', _response.data);
       return true;
     } catch (err) {
