@@ -127,15 +127,16 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
         amountMoney: {
           currency: 'USD',
           // @ts-ignore
-          amount: String(_totalMoney - _tipMoney),
+          amount: '1' || String(_totalMoney - _tipMoney),
         },
         tipMoney: {
           currency: 'USD',
           // @ts-ignore
-          amount: String(_tipMoney),
+          amount: '0' || String(_tipMoney),
         },
       };
 
+      console.log('payment reques:::: ', _paymentRequest);
       // update the order with fulfillments and customer info
       // if it hasn't already been done
       if (!currentOrder.fulfillments) {
