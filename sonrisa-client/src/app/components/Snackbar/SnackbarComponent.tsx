@@ -7,8 +7,6 @@ type SnackbarProps = {
   config: ISnackbarConfig;
 
   isVisible: boolean;
-
-  onClick?: (event: React.MouseEvent) => void;
 };
 
 const variants = {
@@ -29,16 +27,15 @@ const variants = {
   },
 };
 
-export const SnackbarComponent = ({
-  config,
-  isVisible,
-  onClick,
-}: SnackbarProps) => {
+export const SnackbarComponent = ({ config, isVisible }: SnackbarProps) => {
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
           className={styles.snackbarWrap}
+          style={{
+            cursor: !!config.onClick ? 'pointer' : 'initial',
+          }}
           initial="enter"
           animate="center"
           transition={{
@@ -46,7 +43,7 @@ export const SnackbarComponent = ({
           }}
           exit="exit"
           variants={variants}
-          onClick={onClick}
+          onClick={config.onClick}
         >
           {!!config.icon && (
             <FontAwesomeIcon
