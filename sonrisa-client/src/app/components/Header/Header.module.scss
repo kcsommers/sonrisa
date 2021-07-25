@@ -109,3 +109,57 @@ div.headerLeft button {
 div.headerRight button {
   margin-left: 1rem;
 }
+
+div.mobileNavOverlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 0;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+}
+
+div.mobileNavWrap {
+  background-color: $yellow;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 400px;
+  z-index: 2;
+  display: flex;
+  padding: 4rem 0;
+  flex-direction: column;
+  align-items: flex-end;
+  > span:not(.closeMobileNavBtn),
+  > a {
+    font-size: 25px;
+    padding: 1rem 4rem;
+    margin: 0.5rem 0;
+    align-self: stretch;
+    text-align: right;
+    cursor: pointer;
+
+    > svg {
+      margin-right: 0.5rem;
+    }
+
+    &:hover {
+      background-color: rgba($offwhite, 0.3);
+    }
+  }
+
+  @include for-phone-only {
+    width: 100%;
+  }
+}
+
+button.closeMobileNavBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 18px;
+}

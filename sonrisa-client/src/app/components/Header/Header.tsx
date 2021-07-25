@@ -5,9 +5,11 @@ import {
   faBars,
   faPhone,
   faShoppingCart,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { MutableRefObject } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { MutableRefObject, useState } from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import styles from './Header.module.scss';
@@ -24,6 +26,33 @@ type HeaderProps = {
   };
 };
 
+const mobileNavOverlayVariants = {
+  enter: {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+  },
+  center: {
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+  },
+  exit: {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+  },
+};
+
+const mobileNavVariants = {
+  enter: {
+    x: '-100%',
+    boxShadow: '0px 0px 0px 0px #aaaaaa',
+  },
+  center: {
+    x: '0%',
+    boxShadow: '5px 0px 50px 1px #aaaaaa',
+  },
+  exit: {
+    x: '-100%',
+    boxShadow: '0px 0px 0px 0px #aaaaaa',
+  },
+};
+
 export const Header = ({
   showCart = true,
   setCartVisible,
@@ -35,7 +64,11 @@ export const Header = ({
 
   const history = useHistory();
 
+  const [mobileNavVisible, setMobileNavVisible] = useState(false);
+
   const scrollToRef = (refName: 'ABOUT' | 'CONTACT') => {
+    setMobileNavVisible(false);
+
     if (location.pathname !== '/') {
       history.push('/', { scrollTo: refName });
     }
@@ -66,7 +99,11 @@ export const Header = ({
               </a>
             </span>
             <span className={styles.headerContentSm}>
-              <button>
+              <button
+                onClick={() => {
+                  setMobileNavVisible(true);
+                }}
+              >
                 <FontAwesomeIcon icon={faBars} />
               </button>
             </span>
@@ -102,6 +139,56 @@ export const Header = ({
           </div>
         </div>
       </div>
+      <AnimatePresence>
+        {mobileNavVisible && (
+          <motion.div
+            className={styles.mobileNavOverlay}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            variants={mobileNavOverlayVariants}
+            onClick={(e) => {
+              if (
+                (e.target as Element).classList.contains(
+                  styles.mobileNavOverlay
+                )
+              ) {
+                setMobileNavVisible(false);
+              }
+            }}
+          >
+            <motion.div
+              className={styles.mobileNavWrap}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              variants={mobileNavVariants}
+              transition={{
+                duration: 0.3,
+                type: 'tween',
+                ease: 'circOut',
+              }}
+            >
+              <button
+                className={styles.closeMobileNavBtn}
+                onClick={() => setMobileNavVisible(false)}
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+              <span onClick={() => scrollToRef('ABOUT')}>About</span>
+              <span onClick={() => scrollToRef('CONTACT')}>Contact</span>
+              <a href="https://www.instagram.com/sonrisa.donuts/">
+                <FontAwesomeIcon icon={faInstagram} />
+                Instagram
+              </a>
+              <a href="tel:3308192592">
+                <FontAwesomeIcon icon={faPhone} />
+                (330) 819-2592
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
