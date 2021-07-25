@@ -35,10 +35,14 @@ router.get(
   (req: Request, res: Response<IAcceptingOrdersResponse>) => {
     const _badDays = [0, 1]; // Sunday & Monday
 
-    const _date = new Date();
+    const _date = new Date(
+      new Date().toLocaleString('en-us', { timeZone: 'America/Los_Angeles' })
+    );
     console.log(
       'accepting route:::: ',
-      _date,
+      new Date(
+        _date.toLocaleString('en-us', { timeZone: 'America/Los_Angeles' })
+      ).getDay(),
       _date.getDay(),
       _badDays.indexOf(_date.getDay())
     );
