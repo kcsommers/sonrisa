@@ -50,7 +50,7 @@ router.get(
     // @TODO check how many have been ordered this week
 
     res.json({
-      acceptingOrders: _acceptingOrders,
+      acceptingOrders: true,
       reason: _reason,
       errors: null,
     });
