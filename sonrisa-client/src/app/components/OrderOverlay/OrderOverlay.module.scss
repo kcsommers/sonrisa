@@ -81,14 +81,11 @@ button.quantityBtn {
   width: 40px;
   height: 40px;
   border-radius: 100%;
-  border: 1px solid $dark;
   color: $dark;
   transition: all 0.2s ease;
   background-color: none;
   &:hover {
     box-shadow: $box-shadow;
-    background-color: $dark;
-    color: #fff;
   }
 }
 
