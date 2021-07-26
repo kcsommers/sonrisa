@@ -127,12 +127,12 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
         amountMoney: {
           currency: 'USD',
           // @ts-ignore
-          amount: '1' || String(_totalMoney - _tipMoney),
+          amount: String(_totalMoney - _tipMoney),
         },
         tipMoney: {
           currency: 'USD',
           // @ts-ignore
-          amount: '0' || String(_tipMoney),
+          amount: String(_tipMoney),
         },
       };
 

@@ -129,6 +129,7 @@ div.mobileNavWrap {
   bottom: 0;
   left: 0;
   width: 400px;
+  max-width: 100%;
   z-index: 2;
   display: flex;
   padding: 4rem 0;
@@ -150,10 +151,6 @@ div.mobileNavWrap {
     &:hover {
       background-color: rgba($offwhite, 0.3);
     }
-  }
-
-  @include for-phone-only {
-    width: 100%;
   }
 }
 
