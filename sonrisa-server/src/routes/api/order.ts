@@ -214,6 +214,11 @@ router.post(
       const _resParsed = JSON.parse(
         _response.body as string
       ) as CreatePaymentResponse;
+      console.log(
+        '[create receipt]:::: ',
+        _resParsed,
+        _resParsed.payment.receiptUrl
+      );
 
       // convert underscores to camelcase
       const _camelCasePayment = camelcaseKeys(_resParsed.payment) as Payment;
@@ -232,28 +237,15 @@ router.post(
             <div
               style="
                 position: relative;
-                padding: 0rem 4rem 0rem 4rem;
-                margin-top: 100px;
               ">
                 <div
                   style="
-                    border: 4px solid #ffd65c;
-                    position: absolute;
-                    left: 0.75rem;
-                    right: 0.75rem;
-                    bottom: 0.75rem;
-                    top: 0.75rem;
-                    z-index: 0;
-                  "
-                ></div>
-                <div
-                  style="
-                    top: -70px;
                     position: relative;
                     z-index: 1;
                     font-family: sans-serif;
                     color: #573f08;
                     line-height: calc(100% + 10px);
+                    font-size: 16px;
                   "
                 >
                   <div style="text-align: center;">
@@ -262,14 +254,13 @@ router.post(
                       src="https://res.cloudinary.com/kcsommers/image/upload/v1627269079/Sonrisa/sonrisa_yellow_circle.png"
                     />
                   </div>
-                  <h3 style="font-family: sans-serif">
-                    Your order has been placed successfully.
+                  <h3 style="font-family: sans-serif; font-size: initial">
+                    Your order has been placed successfully. Your order number is ${_camelCasePayment.orderId}
                   </h3>
-                  <a href="${_resParsed.payment.receiptUrl}" style="color: inherit"> Click here to view your receipt</a>
+                  <a href="${_camelCasePayment.receiptUrl}" style="color: inherit"> Click here to view your receipt</a>
                   <p
                     style="
                       font-family: sans-serif;
-                      font-size: 16px;
                     "
                   >
                     Thank you for your order! You've made me smile! I hope my sonrisa

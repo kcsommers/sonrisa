@@ -6,6 +6,7 @@ div.cartItemWrap {
   grid-template-columns: 1fr 75%;
   position: relative;
   margin-bottom: 1rem;
+  // align-items: center;
 
   > button {
     position: absolute;
@@ -20,7 +21,7 @@ p.itemName {
 }
 
 div.itemDetailsWrap {
-  padding: 0.5rem 2rem 0.5rem 1rem;
+  padding: 0rem 2rem 0.5rem 1rem;
 }
 
 div.itemDetailWrap {
@@ -29,7 +30,7 @@ div.itemDetailWrap {
   align-items: center;
 }
 
-div.cartItemImgWrap {
+div.cartItemImgInner {
   background-color: #fff;
   border-radius: $border-radius;
   border: 1px solid $offwhite;
