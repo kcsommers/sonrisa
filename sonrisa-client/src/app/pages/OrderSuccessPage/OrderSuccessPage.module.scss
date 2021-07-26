@@ -15,6 +15,14 @@ div.messageWrap {
     margin: 0.5rem 0 1rem 0;
   }
 
+  > a {
+    text-decoration: underline;
+  }
+
+  > p {
+    margin-top: 1rem;
+  }
+
   @include for-tablet-landscape-up {
     padding: 4rem;
   }

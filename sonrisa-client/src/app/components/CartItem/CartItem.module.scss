@@ -2,56 +2,35 @@
 @import '../../styles/media-queries.scss';
 
 div.cartItemWrap {
-  display: flex;
-  border-bottom: 2px solid $offwhite;
+  display: grid;
+  grid-template-columns: 1fr 75%;
   position: relative;
+  margin-bottom: 1rem;
 
   > button {
     position: absolute;
-    width: 25px;
-    height: 25px;
-    border-radius: 100%;
-    background-color: $offwhite;
-    box-shadow: $box-shadow;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 0.5rem;
-    right: 0rem;
+    top: 0.25rem;
+    right: 0.5rem;
     color: $red;
   }
 }
 
-div.cartItemImgWrap {
-  flex: 0.5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-div.cartItemImgInner {
-  background-color: #fff;
-  border-radius: $border-radius;
-  > img {
-    border-radius: $border-radius;
-  }
+p.itemName {
+  font-weight: bold;
 }
 
 div.itemDetailsWrap {
-  flex: 1;
-  padding: 0 2rem;
+  padding: 0.5rem 2rem 0.5rem 1rem;
 }
 
 div.itemDetailWrap {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.5rem 0;
-  @include for-phone-only {
-    margin: 0.25rem 0;
-  }
 }
 
-p.itemName {
-  font-weight: bold;
+div.cartItemImgWrap {
+  background-color: #fff;
+  border-radius: $border-radius;
+  border: 1px solid $offwhite;
 }

@@ -13,6 +13,8 @@ export const AppRouter = () => {
 
   const contactScrollRef = useRef<HTMLElement>();
 
+  const orderScrollRef = useRef<HTMLElement>();
+
   const setScrollRef = (elName: string, el: HTMLElement): void => {
     switch (elName) {
       case ScrollRefNames.ABOUT: {
@@ -21,6 +23,10 @@ export const AppRouter = () => {
       }
       case ScrollRefNames.CONTACT: {
         contactScrollRef.current = el;
+        return;
+      }
+      case ScrollRefNames.ORDER: {
+        orderScrollRef.current = el;
         return;
       }
     }
@@ -33,6 +39,7 @@ export const AppRouter = () => {
         scrollRefs={{
           ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
           CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
+          ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
         }}
       />
       <div
@@ -61,7 +68,7 @@ export const AppRouter = () => {
             path="/checkout"
             render={(props) => <CheckoutPage {...props} />}
           />
-          <Route exact path="/checkout/success" component={OrderSuccessPage} />
+          <Route exact path="/checkout/complete" component={OrderSuccessPage} />
         </Switch>
       </div>
       <Footer />

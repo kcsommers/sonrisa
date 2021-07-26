@@ -83,16 +83,16 @@ button.cartBtn {
 }
 
 .headerContentLg {
-  display: contents;
-  @include for-phone-only {
-    display: none;
+  display: none;
+  @include for-tablet-landscape-up {
+    display: contents;
   }
 }
 
 .headerContentSm {
-  display: none;
-  @include for-phone-only {
-    display: contents;
+  display: contents;
+  @include for-tablet-landscape-up {
+    display: none;
   }
 }
 
@@ -135,6 +135,7 @@ div.mobileNavWrap {
   padding: 4rem 0;
   flex-direction: column;
   align-items: flex-end;
+  overflow: auto;
   > span:not(.closeMobileNavBtn),
   > a {
     font-size: 25px;

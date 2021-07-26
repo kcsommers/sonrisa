@@ -9,7 +9,7 @@ export const CheckoutPage = (props: RouteComponentProps) => {
   const onCheckout = (success: boolean, payment?: Payment): void => {
     // route to success page on success
     logger.log('[onCheckout]:::: ', success, payment);
-    props.history.push('/checkout/success', { payment });
+    props.history.push('/checkout/complete', { payment });
   };
 
   // scroll to top

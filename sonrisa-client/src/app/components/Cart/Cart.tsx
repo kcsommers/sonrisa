@@ -29,15 +29,15 @@ const containerVariants = {
 const innerVariants = {
   enter: {
     x: '100%',
-    boxShadow: '0px 0px 0px 0px #aaaaaa',
+    boxShadow: '0px 0px 0px 0px rgba(0, 0, 0, 0.24)',
   },
   center: {
     x: '0%',
-    boxShadow: '-5px 0px 50px 1px #aaaaaa',
+    boxShadow: '-5px 0px 50px 1px rgba(0, 0, 0, 0.24)',
   },
   exit: {
     x: '100%',
-    boxShadow: '0px 0px 0px 0px #aaaaaa',
+    boxShadow: '0px 0px 0px 0px rgba(0, 0, 0, 0.24)',
   },
 };
 

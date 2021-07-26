@@ -14,6 +14,10 @@ export const OrderSuccessPage = () => {
   const { state } = useLocation<ISuccessPageLocationState>();
 
   useEffect(() => {
+    if (!state) {
+      return;
+    }
+
     if (state.payment) {
       clearOrder();
     }
@@ -34,13 +38,14 @@ export const OrderSuccessPage = () => {
               <h4>Thank you!</h4>
               <h3>Your order has been placed</h3>
               <a href={state.payment.receiptUrl}>
-                Click here to view your receipt.
+                Click here to view your receipt
               </a>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-                ratione repellat dolore soluta facilis nam molestiae? Minus eius
-                voluptatum voluptate, ipsa reprehenderit inventore laudantium
-                quod nulla aspernatur earum quae eos!
+                Thank you for your order! You've made me smile! I hope my
+                sonrisa brings you sonrisa &#9786;. Your order will be available
+                for pickup in Capitol Hill, Seattle, on Monday between 1pm and
+                4pm. You should receive an email shortly with these
+                instructions, as well as the pickup location.
               </p>
             </>
           ) : (

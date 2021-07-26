@@ -228,7 +228,75 @@ router.post(
           _customer.emailAddress,
           'Thank you for your order!',
           'Your order has been placed successfully',
-          '<h1>Your order has been placed successfully</h1>'
+          `
+            <div
+              style="
+                position: relative;
+                padding: 0rem 4rem 0rem 4rem;
+                margin-top: 100px;
+              ">
+                <div
+                  style="
+                    border: 4px solid #ffd65c;
+                    position: absolute;
+                    left: 0.75rem;
+                    right: 0.75rem;
+                    bottom: 0.75rem;
+                    top: 0.75rem;
+                    z-index: 0;
+                  "
+                ></div>
+                <div
+                  style="
+                    top: -70px;
+                    position: relative;
+                    z-index: 1;
+                    font-family: sans-serif;
+                    color: #573f08;
+                    line-height: calc(100% + 10px);
+                  "
+                >
+                  <div style="text-align: center;">
+                    <img
+                      style="width: 150px;"
+                      src="https://res.cloudinary.com/kcsommers/image/upload/v1627269079/Sonrisa/sonrisa_yellow_circle.png"
+                    />
+                  </div>
+                  <h3 style="font-family: sans-serif">
+                    Your order has been placed successfully.
+                  </h3>
+                  <a href="${_resParsed.payment.receiptUrl}" style="color: inherit"> Click here to view your receipt</a>
+                  <p
+                    style="
+                      font-family: sans-serif;
+                      font-size: 16px;
+                    "
+                  >
+                    Thank you for your order! You've made me smile! I hope my sonrisa
+                    brings you sonrisa &#9786;. Your order will be available for pickup in
+                    Capitol Hill, Seattle, on Monday between 1pm and 4pm. Pickup location
+                    is the following address:
+                    <div style="
+                      margin: 1rem 0;
+                      font-family: sans-serif;
+                      font-size: 16px;
+                    ">
+                      120 10th Ave E <br />
+                      Seattle, WA 98102
+                    </div>
+                    If you have any additional questions or would like to make a change to your order, please feel free to contact us here:
+                    <div style="
+                      margin: 1rem 0;
+                      font-family: sans-serif;
+                      font-size: 16px;
+                    ">
+                      (253) 459-5365
+                    </div>
+                    Thanks again, see you on Monday!
+                  </p>
+                </div>
+            </div>
+          `
         )
           .then((emailRes) => {
             console.log('EMAIL RESPONSE:::: ', emailRes);

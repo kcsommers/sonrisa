@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MutableRefObject, useState } from 'react';
+import { MutableRefObject, useEffect, useState } from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import styles from './Header.module.scss';
@@ -23,6 +23,8 @@ type HeaderProps = {
     ABOUT: MutableRefObject<HTMLElement>;
 
     CONTACT: MutableRefObject<HTMLElement>;
+
+    ORDER: MutableRefObject<HTMLElement>;
   };
 };
 
@@ -41,15 +43,15 @@ const mobileNavOverlayVariants = {
 const mobileNavVariants = {
   enter: {
     x: '-100%',
-    boxShadow: '0px 0px 0px 0px #aaaaaa',
+    boxShadow: '0px 0px 0px 0px rgba(0, 0, 0, 0.24)',
   },
   center: {
     x: '0%',
-    boxShadow: '5px 0px 50px 1px #aaaaaa',
+    boxShadow: '5px 0px 50px 1px rgba(0, 0, 0, 0.24)',
   },
   exit: {
     x: '-100%',
-    boxShadow: '0px 0px 0px 0px #aaaaaa',
+    boxShadow: '0px 0px 0px 0px rgba(0, 0, 0, 0.24)',
   },
 };
 
@@ -66,19 +68,28 @@ export const Header = ({
 
   const [mobileNavVisible, setMobileNavVisible] = useState(false);
 
-  const scrollToRef = (refName: 'ABOUT' | 'CONTACT') => {
+  const scrollToRef = (refName: 'ABOUT' | 'CONTACT' | 'ORDER') => {
     setMobileNavVisible(false);
 
     if (location.pathname !== '/') {
       history.push('/', { scrollTo: refName });
     }
 
-    if (!scrollRefs || !scrollRefs[refName]) {
+    if (!scrollRefs || !scrollRefs[refName] || !scrollRefs[refName].current) {
       return;
     }
 
     scrollRefs[refName].current.scrollIntoView({ behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    const body = document.querySelector('body');
+    if (!body) {
+      return;
+    }
+
+    body.style.overflow = mobileNavVisible ? 'hidden' : 'auto';
+  }, [mobileNavVisible]);
 
   return (
     <header className={`${styles.header} responsive-container`}>
@@ -110,6 +121,12 @@ export const Header = ({
           </div>
           <div className={styles.headerRight}>
             <span className={styles.headerContentLg}>
+              <button
+                className={styles.headerTextBtn}
+                onClick={() => scrollToRef('ORDER')}
+              >
+                Order
+              </button>
               <button
                 className={styles.headerTextBtn}
                 onClick={() => scrollToRef('ABOUT')}
@@ -175,6 +192,7 @@ export const Header = ({
               >
                 <FontAwesomeIcon icon={faTimes} />
               </button>
+              <span onClick={() => scrollToRef('ORDER')}>Order</span>
               <span onClick={() => scrollToRef('ABOUT')}>About</span>
               <span onClick={() => scrollToRef('CONTACT')}>Contact</span>
               <a href="https://www.instagram.com/sonrisa.donuts/">

@@ -101,6 +101,12 @@ export const HomePage = ({
           }
           return;
         }
+        case ScrollRefNames.ORDER: {
+          if (orderSectionRef.current) {
+            orderSectionRef.current.scrollIntoView();
+          }
+          return;
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -129,7 +135,10 @@ export const HomePage = ({
       </section>
       <section
         className={`${styles.menuSection} responsive-container`}
-        ref={(el) => (orderSectionRef.current = el)}
+        ref={(el) => {
+          orderSectionRef.current = el as HTMLElement;
+          setScrollRef('ORDER', el as HTMLElement);
+        }}
       >
         <p className={`${styles.menuSectionText}`}>
           Taking orders Tuesday - Saturday, or until sold out. Pick up Monday
