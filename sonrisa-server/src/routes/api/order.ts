@@ -50,7 +50,7 @@ router.get(
     // @TODO check how many have been ordered this week
 
     res.json({
-      acceptingOrders: true,
+      acceptingOrders: _acceptingOrders,
       reason: _reason,
       errors: null,
     });
@@ -263,10 +263,8 @@ router.post(
                       font-family: sans-serif;
                     "
                   >
-                    Thank you for your order! You've made me smile! I hope my sonrisa
-                    brings you sonrisa &#9786;. Your order will be available for pickup in
-                    Capitol Hill, Seattle, on Monday between 1pm and 4pm. Pickup location
-                    is the following address:
+                    Thank you for your order! You've made me smile. I hope my sonrisa
+                    brings you sonrisa. &#9786;<br />Your order will be available for pickup on Monday between 1pm and 4pm in Capitol Hill, Seattle. Location:
                     <div style="
                       margin: 1rem 0;
                       font-family: sans-serif;
