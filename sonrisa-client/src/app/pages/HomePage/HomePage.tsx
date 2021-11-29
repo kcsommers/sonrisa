@@ -195,25 +195,22 @@ export const HomePage = ({
       </section>
 
       <section
-        className={`${styles.sonrisaDefSection} responsive-container`}
+        className={`${styles.aboutSection} responsive-container`}
         ref={(el) => {
           aboutRef.current = el as HTMLElement;
           setScrollRef('ABOUT', el as HTMLElement);
         }}
       >
-        <h3>Sonrisa</h3>
-        <p>Smile. A gesture of joy, happiness or pleasure</p>
-      </section>
-
-      <section className={`${styles.aboutSection} responsive-container`}>
         <span className={styles.aboutImgWrap}>
           <img src={jing} alt="Jing" />
         </span>
-
         <div className={`${styles.bioWrap}`}>
           <div className="inner-border"></div>
           <div className="max-1280">
-            <h3>Hello!</h3>
+            <div className={`${styles.taglineWrap}`}>
+              <h3>Sonrisa</h3>
+              <p>Smile. A gesture of joy, happiness or pleasure</p>
+            </div>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
               molestiae voluptatem est corrupti cumque minima nostrum cupiditate
