@@ -54,7 +54,7 @@ export const useCatalog = (): ICatalogHook => {
       }
       logger.log('[get catalog response]:::: ', _response.data);
       return true;
-    } catch (err) {
+    } catch (err: any) {
       // reject the promise on error
       logger.error(err);
       throw new Error(err);

@@ -19,11 +19,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
-import { useEffect } from 'react';
-import { useRef } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
+import { useEffect, useRef } from 'react';
 
 interface HomePageProps extends RouteComponentProps {
   setScrollRef: (elName: string, el: HTMLElement) => void;

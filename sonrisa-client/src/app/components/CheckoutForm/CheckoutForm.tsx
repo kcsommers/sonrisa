@@ -179,7 +179,7 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
           })
           .catch(_handleError);
       }
-    } catch (e) {
+    } catch (e: any) {
       setSubmittingForm(false);
       console.error(e.message);
     }

@@ -88,7 +88,7 @@ export const useOrdering = (): IOrderingHook => {
       setSessionItem(storageKeys.ORDER_NUMBER, _order.id);
       dispatch(setOrder(_order));
       return _order;
-    } catch (err) {
+    } catch (err: any) {
       logger.error(err);
       throw new Error(err);
     }
@@ -139,7 +139,7 @@ export const useOrdering = (): IOrderingHook => {
       setSessionItem(storageKeys.ORDER_NUMBER, _order.id);
       dispatch(setOrder(_order));
       return _order;
-    } catch (err) {
+    } catch (err: any) {
       logger.error(err);
       throw new Error(err);
     }
@@ -159,7 +159,7 @@ export const useOrdering = (): IOrderingHook => {
       const _payment = _response.data.payment as Payment;
 
       return _payment;
-    } catch (err) {
+    } catch (err: any) {
       logger.error(err);
       throw new Error(err);
     }
@@ -170,7 +170,7 @@ export const useOrdering = (): IOrderingHook => {
       const _response = await Api.acceptingOrders();
       logger.log('[acceptingOrders response]:::: ', _response);
       return _response.data;
-    } catch (err) {
+    } catch (err: any) {
       logger.error(err);
       throw new Error(err);
     }
