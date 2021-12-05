@@ -24,9 +24,5 @@ export const catalogImages = {
       'https://res.cloudinary.com/kcsommers/image/upload/v1625455067/Sonrisa/thai-3.jpg',
       'https://res.cloudinary.com/kcsommers/image/upload/v1625455067/Sonrisa/thai-4.jpg',
     ],
-    // strawberry
-    Y5CMOCXDDJ5ENZQ7BO7GVQ6F: [
-      'https://res.cloudinary.com/kcsommers/image/upload/v1625455068/Sonrisa/strawberry-2.jpg',
-    ],
   },
 };

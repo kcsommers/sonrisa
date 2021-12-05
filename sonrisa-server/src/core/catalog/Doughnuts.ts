@@ -7,7 +7,5 @@ export const Doughnuts = {
 
   MATCHA: 'Mulberry Matcha',
 
-  STRAWBERRY: 'Strawberry Cream Cheese',
-
   SPECIAL: 'Special',
 };

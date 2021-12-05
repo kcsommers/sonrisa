@@ -6,6 +6,4 @@ export class Doughnuts {
   public static NUTELLA = "Fran's Nutella";
 
   public static MATCHA = 'Mulberry Matcha';
-
-  public static STRAWBERRY = 'Strawberry Cream Cheese';
 }
