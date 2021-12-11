@@ -25,6 +25,8 @@ type HeaderProps = {
     CONTACT: MutableRefObject<HTMLElement>;
 
     ORDER: MutableRefObject<HTMLElement>;
+
+    PHOTOS: MutableRefObject<HTMLElement>;
   };
 };
 
@@ -68,7 +70,7 @@ export const Header = ({
 
   const [mobileNavVisible, setMobileNavVisible] = useState(false);
 
-  const scrollToRef = (refName: 'ABOUT' | 'CONTACT' | 'ORDER') => {
+  const scrollToRef = (refName: 'ABOUT' | 'CONTACT' | 'ORDER' | 'PHOTOS') => {
     setMobileNavVisible(false);
 
     if (location.pathname !== '/') {
@@ -139,6 +141,12 @@ export const Header = ({
               >
                 Contact
               </button>
+              <button
+                className={styles.headerTextBtn}
+                onClick={() => scrollToRef('PHOTOS')}
+              >
+                Photos
+              </button>
             </span>
             {showCart && (
               <button
@@ -195,6 +203,7 @@ export const Header = ({
               <span onClick={() => scrollToRef('ORDER')}>Order</span>
               <span onClick={() => scrollToRef('ABOUT')}>About</span>
               <span onClick={() => scrollToRef('CONTACT')}>Contact</span>
+              <span onClick={() => scrollToRef('PHOTOS')}>Photos</span>
               <a href="https://www.instagram.com/sonrisa.donuts/">
                 <FontAwesomeIcon icon={faInstagram} />
                 Instagram

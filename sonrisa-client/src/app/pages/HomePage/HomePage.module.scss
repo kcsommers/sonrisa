@@ -46,12 +46,18 @@ div.landingCta {
 }
 
 section.menuSection {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 p.menuSectionText {
   background-color: $offwhite;
+  margin: 1rem 0;
   padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  > svg {
+    margin-right: 0.5rem;
+  }
   @include for-phone-only {
     padding: 1rem;
   }
@@ -95,7 +101,7 @@ span.aboutImgWrap {
 div.bioWrap {
   background-color: #fff;
   position: relative;
-  padding: 150px 4rem 4rem 4rem;
+  padding: 120px 4rem 4rem 4rem;
   margin-top: -180px;
 
   @include for-phone-only {
@@ -148,5 +154,23 @@ div.bioImagesWrap {
 
   @include for-phone-only {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+section.introSection {
+  margin-top: 1rem;
+}
+
+div.introSectionInner {
+  padding: 1rem 0rem;
+  background-color: $yellow;
+  padding: 2rem;
+  > p {
+    align-items: center;
+    font-size: 1.25;
+    > span {
+      font-size: 2rem;
+      font-style: italic;
+    }
   }
 }

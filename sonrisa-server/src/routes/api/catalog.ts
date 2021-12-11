@@ -35,7 +35,6 @@ router.get(
   async (req: Request, res: Response<IGetCatalogResponse | Error>) => {
     try {
       const _res = await square.catalogApi.listCatalog('', 'image,item');
-      console.log('res:::::::::', _res);
       const _allCatalogObjects = _res.result.objects;
 
       const _imageMapByImageId: { [imageId: string]: string[] } = {};

@@ -103,7 +103,6 @@ export const ContactForm = ({ formSubmitted }: IContactFormProps) => {
   return (
     <>
       <h3>Get in Touch</h3>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
       <div className={styles.contactFormWrap}>
         <div className={styles.inputWrap}>
           <input

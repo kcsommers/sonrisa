@@ -78,8 +78,11 @@ export const Api = {
     return axios.post(`${getBaseUrl()}/contact`, request);
   },
 
-  getInstagramFeed: async (): Promise<AxiosResponse<IInstagramResponse>> => {
-    return axios.get(`${getBaseUrl()}/instagram`);
+  getInstagramFeed: async (
+    _nextUrl?: string
+  ): Promise<AxiosResponse<IInstagramResponse>> => {
+    let _url: string = `${getBaseUrl()}/instagram`;
+    return axios.get(_nextUrl || _url);
   },
 
   acceptingOrders: async (): Promise<

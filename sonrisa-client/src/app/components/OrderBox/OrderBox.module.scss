@@ -5,6 +5,11 @@ div.orderBox {
   border-radius: $border-radius;
   position: relative;
   overflow: hidden;
+  &:hover {
+    > div.imgHoverBg {
+      transform: translate(0%, 0%);
+    }
+  }
 }
 
 span.quantityWrap {
@@ -39,9 +44,6 @@ div.imgWrap {
     transition: all 1s ease;
   }
   &:hover {
-    > div.imgHoverBg {
-      transform: translate(0%, 0%);
-    }
     > img {
       transform: scale(1.2);
     }
@@ -68,10 +70,12 @@ div.nameWrap {
   text-align: center;
   position: relative;
   > span {
-    display: inline-block;
+    display: block;
     margin: 0 1rem;
-    // font-family: 'Playfair Display';
     transform: translateY(-115%);
+  }
+  > span:first-child {
+    font-weight: bold;
   }
 }
 

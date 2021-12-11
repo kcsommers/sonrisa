@@ -21,6 +21,7 @@ div.cartHeader {
   justify-content: space-between;
   padding: 0 2rem;
   color: $dark;
+  background-color: #fff;
 
   @include for-phone-only {
     padding: 0 1rem;
@@ -30,11 +31,11 @@ div.cartHeader {
 div.cartInner {
   width: 500px;
   max-width: 100%;
-  background-color: #fff;
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: auto;
+  background-color: $yellow;
 }
 
 div.cartBody {

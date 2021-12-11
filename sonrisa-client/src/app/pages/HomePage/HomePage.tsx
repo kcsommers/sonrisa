@@ -16,6 +16,7 @@ import {
 import {
   faCheckCircle,
   faExclamationCircle,
+  faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
@@ -23,6 +24,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { OrderBox } from '../../components/OrderBox/OrderBox';
 import styles from './HomePage.module.scss';
 import { useEffect, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface HomePageProps extends RouteComponentProps {
   setScrollRef: (elName: string, el: HTMLElement) => void;
@@ -47,6 +49,8 @@ export const HomePage = ({
   const contactRef = useRef<HTMLElement>();
 
   const orderSectionRef = useRef<HTMLElement | null>();
+
+  const photosSectionRef = useRef<HTMLElement | null>();
 
   const contactFormSubmitted = (success: boolean) => {
     setSnackbarVisible(
@@ -106,6 +110,12 @@ export const HomePage = ({
           }
           return;
         }
+        case ScrollRefNames.PHOTOS: {
+          if (photosSectionRef.current) {
+            photosSectionRef.current.scrollIntoView();
+          }
+          return;
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,6 +142,16 @@ export const HomePage = ({
           <img src={doughnutHalves} alt="Doughnut Half" />
         </div>
       </section>
+      <section className={`${styles.introSection} responsive-container`}>
+        <div className={styles.introSectionInner}>
+          <p>
+            <span>Sonrisa donuts</span>&nbsp; are always made fresh to order
+            using the highest quality organic ingredients- including sunflower
+            oil, hand rolled brioche dough and a variety of unique, delicious
+            filings.
+          </p>
+        </div>
+      </section>
       <section
         className={`${styles.menuSection} responsive-container`}
         ref={(el) => {
@@ -139,12 +159,13 @@ export const HomePage = ({
           setScrollRef('ORDER', el as HTMLElement);
         }}
       >
-        <p className={`${styles.menuSectionText}`}>
-          Taking orders Tuesday - Saturday, or until sold out. Pick up Monday
-          between 1 and 4. Pickup instructions will be sent via email.
-        </p>
         <div className={`${styles.orderBoxesWrap}`}>
           <h3>Menu</h3>
+          <p className={`${styles.menuSectionText}`}>
+            <FontAwesomeIcon icon={faInfoCircle} />
+            Taking orders Tuesday - Saturday, or until sold out. Pick up Monday
+            between 1 and 4. Pickup instructions will be sent via email.
+          </p>
           {!acceptingOrders && (
             <div className={styles.alertWrap}>
               <Alert
@@ -205,28 +226,32 @@ export const HomePage = ({
         </span>
         <div className={`${styles.bioWrap}`}>
           <div className="inner-border"></div>
-          <div className="max-1280">
+          <div className={`${styles.bioInner} max-1280`}>
             <div className={`${styles.taglineWrap}`}>
               <h3>Sonrisa</h3>
               <p>Smile. A gesture of joy, happiness or pleasure</p>
             </div>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
-              molestiae voluptatem est corrupti cumque minima nostrum cupiditate
-              tempore fuga eveniet aut ipsum, ex nulla aperiam facere blanditiis
-              adipisci, at et! Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Officia molestiae voluptatem est corrupti cumque
-              minima nostrum cupiditate tempore fuga eveniet aut ipsum, ex nulla
-              aperiam facere blanditiis adipisci, at et!
+              Hello! Welcome to Sonrisa! Sonrisa is the Spanish word for smile,
+              and for me represents the smiles that constantly fill my kitchen,
+              as well as the ones on the faces of people who have my food.
+              Especially my donuts! My name is Jing, I am a chef from Thailand.
+              I moved to Seattle in 2018 with the hopes of joining the culinary
+              scene, and in 2020 during the height of the pandemic, decided to
+              start my own venture. I have always loved eating doughnuts, and
+              felt very inspired to create and perfect my own recipes using
+              organic, local ingredients from here in Washington.
               <br />
               <br />
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
-              molestiae voluptatem est corrupti cumque minima nostrum cupiditate
-              tempore fuga eveniet aut ipsum, ex nulla aperiam facere blanditiis
-              adipisci, at et! Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Officia molestiae voluptatem est corrupti cumque
-              minima nostrum cupiditate tempore fuga eveniet aut ipsum, ex nulla
-              aperiam facere blanditiis adipisci, at et!
+              Growing up in Thailand I learned to cook with my grandmother and
+              my mom, and since then have been curious and passionate about
+              everything involving food. I received a 4 year Bachelors degree in
+              Kitchen and Restaurant Management, while competing in culinary
+              competitions. In 2012 I had the opportunity to compete as a member
+              of the Thailand Team in the IKA Culinary Olympics in Erfurt
+              Germany. It was a life changing experience! And when I’m not
+              cooking, I’m usually watching cooking shows or taking more cooking
+              classes.
             </p>
             <div className={styles.bioImagesWrap}>
               <span>
@@ -270,7 +295,13 @@ export const HomePage = ({
         </div>
       </section>
 
-      <section className={styles.instagramFeedSection}>
+      <section
+        className={styles.instagramFeedSection}
+        ref={(el) => {
+          photosSectionRef.current = el as HTMLElement;
+          setScrollRef('PHOTOS', el as HTMLElement);
+        }}
+      >
         <div className={styles.instagramFeedSectionInner}>
           <InstagramFeed />
         </div>

@@ -2,17 +2,18 @@
 @import '../../styles/media-queries.scss';
 
 div.checkoutPageInner {
+  background-color: $offwhite;
   display: grid;
   justify-content: stretch;
   min-height: $body-min-height;
-  grid-gap: 2rem;
+  grid-gap: 1rem;
   grid-template-columns: 1fr;
-  padding: 2rem 0 4rem 0;
+  padding: 2rem 1rem;
   transition: all 0.2s ease;
+  margin-bottom: 4rem;
 
   @include for-tablet-landscape-up {
     grid-template-columns: 1fr 45%;
-    padding: 3rem 0;
   }
 }
 
@@ -31,7 +32,7 @@ div.checkoutSection {
 
 div.paymentSection,
 div.orderSection {
-  background-color: $offwhite;
+  background-color: #fff;
   border-radius: $border-radius;
 
   @include for-tablet-landscape-up {
@@ -47,11 +48,12 @@ div.paymentSection {
 }
 
 div.orderSection {
+  background-color: $yellow;
   order: 1;
 }
 
 div.checkoutSectionInner {
-  padding: 2rem;
+  padding: 1rem;
   height: 100%;
   position: relative;
   z-index: 1;

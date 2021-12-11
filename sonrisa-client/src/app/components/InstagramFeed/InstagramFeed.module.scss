@@ -2,19 +2,21 @@
 @import '../../styles/media-queries.scss';
 
 div.instagramFeedWrap {
-  padding: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  text-align: center;
   @include for-phone-only {
     padding: 0;
   }
 }
 
 div.instagramFeedInner {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: left;
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   width: 100%;
-  overflow: hidden;
   position: relative;
+  margin-bottom: 1rem;
 }
 
 div.spinnerWrap {

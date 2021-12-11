@@ -1,6 +1,4 @@
 import logo from '@assets/images/sonrisa_logo_transparent.png';
-import { faInstagram } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Footer.module.scss';
 
 export const Footer = () => {

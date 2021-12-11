@@ -15,6 +15,8 @@ export const AppRouter = () => {
 
   const orderScrollRef = useRef<HTMLElement>();
 
+  const photosScrollRef = useRef<HTMLElement>();
+
   const setScrollRef = (elName: string, el: HTMLElement): void => {
     switch (elName) {
       case ScrollRefNames.ABOUT: {
@@ -29,6 +31,10 @@ export const AppRouter = () => {
         orderScrollRef.current = el;
         return;
       }
+      case ScrollRefNames.PHOTOS: {
+        photosScrollRef.current = el;
+        return;
+      }
     }
   };
 
@@ -40,6 +46,7 @@ export const AppRouter = () => {
           ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
           CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
           ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
+          PHOTOS: photosScrollRef as MutableRefObject<HTMLElement>,
         }}
       />
       <div

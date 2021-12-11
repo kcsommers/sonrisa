@@ -15,5 +15,6 @@
     },
     "skipLibCheck": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["instagram_token.json"]
 }

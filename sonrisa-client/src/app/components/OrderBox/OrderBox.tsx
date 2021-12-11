@@ -1,4 +1,10 @@
-import { getItemName, getItemVariationId, useOrdering } from '@core';
+import {
+  getItemName,
+  getItemPrice,
+  getItemVariationId,
+  getMoneyString,
+  useOrdering,
+} from '@core';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { CatalogObject } from 'square';
@@ -53,6 +59,7 @@ export const OrderBox = ({
 
   return (
     <div className={styles.orderBox}>
+      <div className={styles.imgHoverBg}></div>
       <AnimatePresence>
         {prevQuantityRef.current && (
           <motion.span
@@ -84,11 +91,11 @@ export const OrderBox = ({
         }`}
         onClick={() => setOverlayOpen(true)}
       >
-        <div className={styles.imgHoverBg}></div>
         <img src={imageUrl} alt={getItemName(item)} />
       </div>
       <div className={styles.nameWrap}>
         <span>{isSpecialsItem ? 'Rotating Special' : getItemName(item)}</span>
+        <span>{getMoneyString(+getItemPrice(item))}</span>
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay

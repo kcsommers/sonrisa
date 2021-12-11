@@ -4,4 +4,6 @@ export const ScrollRefNames = {
   CONTACT: 'CONTACT',
 
   ORDER: 'ORDER',
+
+  PHOTOS: 'PHOTOS',
 };
