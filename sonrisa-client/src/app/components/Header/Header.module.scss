@@ -106,8 +106,11 @@ div.headerLeft button {
   }
 }
 
-div.headerRight button {
-  margin-left: 1rem;
+div.headerRight {
+  z-index: 1000;
+  > button {
+    margin-left: 1rem;
+  }
 }
 
 div.mobileNavOverlay {
