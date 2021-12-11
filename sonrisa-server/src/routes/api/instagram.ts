@@ -16,7 +16,7 @@ const router = Router();
 const apiBaseUrl = 'https://graph.instagram.com';
 
 router.get('/', (req: Request, res: Response<IInstagramResponse>): void => {
-  const instagramToken = require('../../../instagram_token.json');
+  const instagramToken = process.env.INSTAGRAM_TOKEN;
   const _getMedia = (_token: string) => {
     axios
       .get(
@@ -33,28 +33,16 @@ router.get('/', (req: Request, res: Response<IInstagramResponse>): void => {
         res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json(err);
       });
   };
-  if (Date.now() - instagramToken.expires > 3600 * 1000 * 24) {
-    axios
-      .get<IRefreshTokenResponse>(
-        `${apiBaseUrl}/refresh_access_token?grant_type=ig_refresh_token&access_token=${instagramToken.token}`
-      )
-      .then((response) => {
-        const _token = {
-          token: response.data.access_token,
-          expires: Date.now() + response.data.expires_in * 1000,
-        };
-        fs.writeFileSync(
-          path.join(__dirname, '../../../instagram_token.json'),
-          JSON.stringify(_token)
-        );
-        _getMedia(_token.token);
-      })
-      .catch((err) => {
-        res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json(err);
-      });
-  } else {
-    _getMedia(instagramToken.token);
-  }
+  axios
+    .get<IRefreshTokenResponse>(
+      `${apiBaseUrl}/refresh_access_token?grant_type=ig_refresh_token&access_token=${instagramToken}`
+    )
+    .then((response) => {
+      _getMedia(response.data.access_token);
+    })
+    .catch((err) => {
+      res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json(err);
+    });
 });
 
 export default router;

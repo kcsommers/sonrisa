@@ -10,7 +10,7 @@ export const environments = {
     GMAIL_OAUTH_REDIRECT_URI: process.env.GMAIL_OAUTH_REDIRECT_URI,
     GMAIL_OAUTH_REFRESH_TOKEN: process.env.GMAIL_OAUTH_REFRESH_TOKEN_DEV,
     SONRISA_EMAIL: process.env.SONRISA_EMAIL_DEV,
-    INSTAGRAM_TOKEN: process.env.INSTAGRAM_TOKEN_DEV,
+    INSTAGRAM_TOKEN: process.env.INSTAGRAM_TOKEN,
   },
   production: {
     SQUARE_APP_ID: process.env.SQUARE_APP_ID_PROD,
@@ -21,7 +21,7 @@ export const environments = {
     GMAIL_OAUTH_REDIRECT_URI: process.env.GMAIL_OAUTH_REDIRECT_URI,
     GMAIL_OAUTH_REFRESH_TOKEN: process.env.GMAIL_OAUTH_REFRESH_TOKEN_PROD,
     SONRISA_EMAIL: process.env.SONRISA_EMAIL_PROD,
-    INSTAGRAM_TOKEN: process.env.INSTAGRAM_TOKEN_DEV,
+    INSTAGRAM_TOKEN: process.env.INSTAGRAM_TOKEN,
   },
   test: {
     SQUARE_APP_ID: process.env.SQUARE_APP_ID_DEV,
@@ -32,6 +32,6 @@ export const environments = {
     GMAIL_OAUTH_REDIRECT_URI: process.env.GMAIL_OAUTH_REDIRECT_URI,
     GMAIL_OAUTH_REFRESH_TOKEN: process.env.GMAIL_OAUTH_REFRESH_TOKEN_DEV,
     SONRISA_EMAIL: process.env.SONRISA_EMAIL_DEV,
-    INSTAGRAM_TOKEN: process.env.INSTAGRAM_TOKEN_DEV,
+    INSTAGRAM_TOKEN: process.env.INSTAGRAM_TOKEN,
   },
 };

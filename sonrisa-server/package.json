@@ -11,7 +11,7 @@
     "watch-deploy": "NODE_ENV=development nodemon dist/server.js",
     "server": "concurrently \"npm run watch-tsc\" \"npm run watch-deploy\"",
     "start": "npm run deploy",
-    "heroku-postbuild": "npm run tsc && cp instagram_token.json dist/instagram_token.json",
+    "heroku-postbuild": "npm run tsc",
     "email": "node dist/src/email.js"
   },
   "dependencies": {
