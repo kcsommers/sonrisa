@@ -14,6 +14,7 @@ const corsWhitelist = [
   'https://sonrisa-server.herokuapp.com',
   'https://wizardly-jepsen-70e852.netlify.app',
   'https://sonrisadonuts.com',
+  'https://www.sonrisadonuts.com',
 ];
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
