@@ -232,26 +232,30 @@ export const HomePage = ({
               <p>Smile. A gesture of joy, happiness or pleasure</p>
             </div>
             <p>
-              Hello! Welcome to Sonrisa! Sonrisa is the Spanish word for smile,
-              and for me represents the smiles that constantly fill my kitchen,
-              as well as the ones on the faces of people who have my food.
-              Especially my donuts! My name is Jing, I am a chef from Thailand.
-              I moved to Seattle in 2018 with the hopes of joining the culinary
-              scene, and in 2020 during the height of the pandemic, decided to
-              start my own venture. I have always loved eating doughnuts, and
-              felt very inspired to create and perfect my own recipes using
-              organic, local ingredients from here in Washington.
+              Hello! Welcome to Sonrisa Donuts! My name is Jing, I am a chef
+              from Thailand. I moved to Seattle in 2018 with the hopes of
+              joining the culinary scene, and started Sonrisa during the height
+              of the 2020 pandemic. I have always loved eating donuts, and
+              during that time it brought me joy to create and perfect my own
+              recipes using organic, local ingredients from Washington. Sonrisa
+              is the Spanish word for smile, and represents the joy that
+              constantly fills my kitchen. I love seeing smiles on the faces of
+              people who have my food. Especially my donuts!
               <br />
               <br />
               Growing up in Thailand I learned to cook with my grandmother and
-              my mom, and since then have been curious and passionate about
-              everything involving food. I received a 4 year Bachelors degree in
-              Kitchen and Restaurant Management, while competing in culinary
-              competitions. In 2012 I had the opportunity to compete as a member
-              of the Thailand Team in the IKA Culinary Olympics in Erfurt
-              Germany. It was a life changing experience! And when I’m not
-              cooking, I’m usually watching cooking shows or taking more cooking
-              classes.
+              my mom, and have been curious about anything involving food ever
+              since. I was a student of Kitchen and Restaurant Management for 4
+              years, receiving a Bachelor's degree while competing in culinary
+              competitions. In 2012 I even had the opportunity to compete as a
+              member of the Thailand Team in the IKA Culinary Olympics in
+              Erfurt, Germany, which was a life changing experience! When I’m
+              not cooking, I’m usually watching cooking shows or taking more
+              cooking classes.
+              <br />
+              <br />
+              Thank you so much for stopping by and shopping local! I hope my
+              sonrisa brings you sonrisa!
             </p>
             <div className={styles.bioImagesWrap}>
               <span>
