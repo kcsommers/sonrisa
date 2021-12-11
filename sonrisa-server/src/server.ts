@@ -13,7 +13,7 @@ const corsWhitelist = [
   'http://localhost:3000',
   'https://sonrisa-server.herokuapp.com',
   'https://wizardly-jepsen-70e852.netlify.app',
-  'https://sonrisa-donuts.com',
+  'https://sonrisadonuts.com',
 ];
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
