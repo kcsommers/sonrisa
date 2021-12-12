@@ -104,7 +104,7 @@ export const Header = ({
         <div className={styles.headerSidesWrap}>
           <div className={styles.headerLeft}>
             <span className={styles.headerContentLg}>
-              <a href="tel:3308192592">
+              <a href="tel:2534595365">
                 <FontAwesomeIcon icon={faPhone} />
               </a>
               <a href="https://www.instagram.com/sonrisa.donuts/">
@@ -210,7 +210,7 @@ export const Header = ({
               </a>
               <a href="tel:3308192592">
                 <FontAwesomeIcon icon={faPhone} />
-                (330) 819-2592
+                (253) 459-5365
               </a>
             </motion.div>
           </motion.div>
