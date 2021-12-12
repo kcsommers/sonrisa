@@ -5,9 +5,6 @@ div.instagramFeedWrap {
   padding-top: 2rem;
   padding-bottom: 2rem;
   text-align: center;
-  @include for-phone-only {
-    padding: 0;
-  }
 }
 
 div.instagramFeedInner {

@@ -208,7 +208,7 @@ export const Header = ({
                 <FontAwesomeIcon icon={faInstagram} />
                 Instagram
               </a>
-              <a href="tel:3308192592">
+              <a href="tel:2534595365">
                 <FontAwesomeIcon icon={faPhone} />
                 (253) 459-5365
               </a>
