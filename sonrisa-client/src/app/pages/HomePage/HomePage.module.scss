@@ -56,7 +56,7 @@ p.menuSectionText {
   display: flex;
   align-items: center;
   > svg {
-    margin-right: 0.5rem;
+    margin-right: 1rem;
   }
   @include for-phone-only {
     padding: 1rem;
@@ -162,9 +162,8 @@ section.introSection {
 }
 
 div.introSectionInner {
-  padding: 1rem 0rem;
   background-color: $yellow;
-  padding: 4rem 2rem;
+  padding: 3rem 2rem;
   > p {
     align-items: center;
     font-size: 1.25;

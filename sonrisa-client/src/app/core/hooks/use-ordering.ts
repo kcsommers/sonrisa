@@ -1,5 +1,6 @@
 import { setOrder, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
+import { useState } from 'react';
 import { CreatePaymentRequest, Customer, Order, Payment } from 'square';
 import { Api } from '../api/api';
 import { logger } from '../logger';
@@ -25,6 +26,10 @@ export interface IOrderingHook {
 
   clearOrder: () => void;
 
+  tip: number | undefined;
+
+  setTip: (tipAmount: number) => void;
+
   checkAcceptingOrders: () => Promise<IAcceptingOrdersResponse>;
 
   createPayment: (
@@ -43,6 +48,8 @@ export const useOrdering = (): IOrderingHook => {
   const notAcceptingOrdersReason = orderState?.notAcceptingReason as string;
 
   const { setSessionItem, getSessionItem, storageKeys } = useStorage();
+
+  const [tip, setTip] = useState<number>();
 
   const dispatch = useAppDispatch();
 
@@ -188,5 +195,7 @@ export const useOrdering = (): IOrderingHook => {
     clearOrder,
     createPayment,
     checkAcceptingOrders,
+    tip,
+    setTip,
   };
 };

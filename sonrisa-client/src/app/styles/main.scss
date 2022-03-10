@@ -78,7 +78,7 @@ textarea {
   height: 48px;
   display: block;
   width: 100%;
-  border-radius: 6px;
+  border-radius: $border-radius;
   outline: none;
   background-color: #fff;
   margin-bottom: 1rem;
@@ -90,6 +90,10 @@ textarea {
 
   &:focus {
     border-color: $yellow;
+  }
+
+  &::placeholder {
+    font-size: 14px;
   }
 }
 
