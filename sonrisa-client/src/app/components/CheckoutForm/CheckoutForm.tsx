@@ -1,4 +1,5 @@
 import {
+  getOrderSubtotal,
   getOrderTip,
   getOrderTotal,
   getPickupTime,
@@ -15,13 +16,15 @@ import { environments } from '../../../environments';
 import { Button } from './../Button/Button';
 import { v4 as uuidV4 } from 'uuid';
 import styles from './CheckoutForm.module.scss';
+import { TipBox } from '../TipBox/TipBox';
 
 interface ICheckoutFormProps {
   onCheckout: (success: boolean, payment?: Payment) => void;
 }
 
 export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
-  const { currentOrder, updateOrder, createPayment } = useOrdering();
+  const { currentOrder, updateOrder, createPayment, setTip, tip } =
+    useOrdering();
 
   const [givenName, setGivenName] = useState('');
 
@@ -107,6 +110,10 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
     };
 
     try {
+      if (tip) {
+        await updateOrder({ totalTipAmount: tip, currency: 'USD' });
+      }
+
       const _cardToken = await _tokenizeCard();
       logger.log('card token:::: ', _cardToken);
 
@@ -120,65 +127,66 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
       // create the payment request
       const _totalMoney = getOrderTotal(currentOrder);
       const _tipMoney = getOrderTip(currentOrder);
-      const _paymentRequest: CreatePaymentRequest = {
-        idempotencyKey: uuidV4(),
-        sourceId: _cardToken,
-        orderId: currentOrder?.id,
-        amountMoney: {
-          currency: 'USD',
-          // @ts-ignore
-          amount: String(_totalMoney - _tipMoney),
-        },
-        tipMoney: {
-          currency: 'USD',
-          // @ts-ignore
-          amount: String(_tipMoney),
-        },
-      };
+      console.log('tip omeny::::', _tipMoney, currentOrder);
+      // const _paymentRequest: CreatePaymentRequest = {
+      //   idempotencyKey: uuidV4(),
+      //   sourceId: _cardToken,
+      //   orderId: currentOrder?.id,
+      //   amountMoney: {
+      //     currency: 'USD',
+      //     // @ts-ignore
+      //     amount: String(_totalMoney - _tipMoney),
+      //   },
+      //   tipMoney: {
+      //     currency: 'USD',
+      //     // @ts-ignore
+      //     amount: String(_tipMoney),
+      //   },
+      // };
 
-      console.log('payment reques:::: ', _paymentRequest);
-      // update the order with fulfillments and customer info
-      // if it hasn't already been done
-      if (!currentOrder.fulfillments) {
-        const _fulfillments = [
-          {
-            type: OrderFullfillmentTypes.PICKUP,
-            pickupDetails: {
-              scheduleType: OrderFullfillmentScheduleTypes.SCHEDULED,
-              pickupAt: getPickupTime(),
-              note: message,
-              recipient: {
-                displayName: `${_customer.givenName} ${_customer.familyName}`,
-                emailAddress: _customer.emailAddress,
-                phoneNumber: _customer.phoneNumber,
-              },
-            },
-          },
-        ];
-        updateOrder({ fulfillments: _fulfillments })
-          .then((res) => {
-            logger.log('[update order response]:::: ', res);
+      // console.log('payment reques:::: ', _paymentRequest);
+      // // update the order with fulfillments and customer info
+      // // if it hasn't already been done
+      // if (!currentOrder.fulfillments) {
+      //   const _fulfillments = [
+      //     {
+      //       type: OrderFullfillmentTypes.PICKUP,
+      //       pickupDetails: {
+      //         scheduleType: OrderFullfillmentScheduleTypes.SCHEDULED,
+      //         pickupAt: getPickupTime(),
+      //         note: message,
+      //         recipient: {
+      //           displayName: `${_customer.givenName} ${_customer.familyName}`,
+      //           emailAddress: _customer.emailAddress,
+      //           phoneNumber: _customer.phoneNumber,
+      //         },
+      //       },
+      //     },
+      //   ];
+      //   updateOrder({ fulfillments: _fulfillments })
+      //     .then((res) => {
+      //       logger.log('[update order response]:::: ', res);
 
-            // create the payment
-            createPayment(_paymentRequest, _customer)
-              .then((res) => {
-                logger.log('[create payment response]:::: ', res);
-                setSubmittingForm(false);
-                onCheckout(true, res);
-              })
-              .catch(_handleError);
-          })
-          .catch(_handleError);
-      } else {
-        // if fulfillments have already been added just create the payment
-        createPayment(_paymentRequest, _customer)
-          .then((res) => {
-            logger.log('[create payment response]:::: ', res);
-            setSubmittingForm(false);
-            onCheckout(true, res);
-          })
-          .catch(_handleError);
-      }
+      //       // create the payment
+      //       createPayment(_paymentRequest, _customer)
+      //         .then((res) => {
+      //           logger.log('[create payment response]:::: ', res);
+      //           setSubmittingForm(false);
+      //           onCheckout(true, res);
+      //         })
+      //         .catch(_handleError);
+      //     })
+      //     .catch(_handleError);
+      // } else {
+      //   // if fulfillments have already been added just create the payment
+      //   createPayment(_paymentRequest, _customer)
+      //     .then((res) => {
+      //       logger.log('[create payment response]:::: ', res);
+      //       setSubmittingForm(false);
+      //       onCheckout(true, res);
+      //     })
+      //     .catch(_handleError);
+      // }
     } catch (e: any) {
       setSubmittingForm(false);
       console.error(e.message);
@@ -265,7 +273,6 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
           </p>
         )}
       </div>
-
       <div className={styles.inputWrap}>
         <textarea
           placeholder="Optional Message"
@@ -273,8 +280,16 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
           onChange={(e) => setMessage(e.target.value)}
         />
       </div>
+      <div className={styles.tipBoxWrap}>
+        <label className={styles.label} htmlFor="tipbox">
+          Tip
+        </label>
+        <TipBox
+          subTotal={getOrderSubtotal(currentOrder!)}
+          tipChanged={setTip}
+        />
+      </div>
       <div id="card-container"></div>
-
       <div className={styles.inputWrap}>
         <Button
           text="Submit Payment"

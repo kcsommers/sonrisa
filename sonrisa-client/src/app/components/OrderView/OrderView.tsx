@@ -2,6 +2,7 @@ import {
   getMoneyString,
   getOrderSubtotal,
   getOrderTax,
+  getOrderTip,
   getOrderTotal,
   useCatalog,
   useOrdering,
@@ -14,9 +15,11 @@ interface IOrderViewProps {
 }
 
 export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
-  const { currentOrder } = useOrdering();
+  const { currentOrder, tip } = useOrdering();
 
   const { catalogImageMap } = useCatalog();
+
+  console.log(tip);
 
   return (
     <div>
@@ -43,6 +46,12 @@ export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
               <p className={styles.checkoutItemLabel}>Tax</p>
               <p className={styles.checkoutItemTotal}>
                 {getMoneyString(getOrderTax(currentOrder))}
+              </p>
+            </div>
+            <div className={styles.checkoutItemWrap}>
+              <p className={styles.checkoutItemLabel}>Tip</p>
+              <p className={styles.checkoutItemTotal}>
+                {getMoneyString(tip || 0)}
               </p>
             </div>
             <div className={styles.checkoutItemWrap}>

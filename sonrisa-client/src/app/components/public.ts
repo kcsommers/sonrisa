@@ -14,3 +14,4 @@ export { Footer } from './Footer/Footer';
 export { Header } from './Header/Header';
 export { OrderBox } from './OrderBox/OrderBox';
 export { OrderOverlay } from './OrderOverlay/OrderOverlay';
+export { TipBox } from './TipBox/TipBox';

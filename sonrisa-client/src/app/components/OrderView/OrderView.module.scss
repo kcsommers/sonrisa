@@ -7,7 +7,7 @@ div.checkoutItemWrap {
   justify-content: space-between;
 
   &:not(:last-child) {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   @include for-phone-only {
@@ -25,6 +25,6 @@ div.checkoutWrap {
   border: 2px solid $dark;
   border-radius: $border-radius;
   padding: 1rem 2rem;
-  margin: 2rem 0;
+  margin: 2rem 0 1rem 0;
   background-color: $offwhite;
 }

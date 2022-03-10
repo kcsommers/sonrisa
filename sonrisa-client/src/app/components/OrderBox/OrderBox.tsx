@@ -59,43 +59,49 @@ export const OrderBox = ({
 
   return (
     <div className={styles.orderBox}>
-      <div className={styles.imgHoverBg}></div>
-      <AnimatePresence>
-        {prevQuantityRef.current && (
-          <motion.span
-            className={`${styles.quantityWrap}`}
-            initial={{
-              transform: 'translate(-100%, -100%)',
-              opacity: 0,
-            }}
-            animate={{
-              transform: 'translate(0%, 0%)',
-              opacity: 1,
-            }}
-            exit={{
-              transform: 'translate(-100%, -100%)',
-              opacity: 0,
-            }}
-            transition={{
-              type: 'spring',
-              bounce: 0.25,
-            }}
-          >
-            <span>{prevQuantityRef.current}</span>
-          </motion.span>
-        )}
-      </AnimatePresence>
       <div
-        className={`${styles.imgWrap} ${
-          isSpecialsItem ? styles.specialImgWrap : ''
-        }`}
+        className={styles.orderBoxInner}
         onClick={() => setOverlayOpen(true)}
       >
-        <img src={imageUrl} alt={getItemName(item)} />
-      </div>
-      <div className={styles.nameWrap}>
-        <span>{isSpecialsItem ? 'Rotating Special' : getItemName(item)}</span>
-        <span>{getMoneyString(+getItemPrice(item))}</span>
+        <div className={styles.imgHoverBg}></div>
+        <AnimatePresence>
+          {prevQuantityRef.current && (
+            <motion.span
+              className={`${styles.quantityWrap}`}
+              initial={{
+                transform: 'translate(-100%, -100%)',
+                opacity: 0,
+              }}
+              animate={{
+                transform: 'translate(0%, 0%)',
+                opacity: 1,
+              }}
+              exit={{
+                transform: 'translate(-100%, -100%)',
+                opacity: 0,
+              }}
+              transition={{
+                type: 'spring',
+                bounce: 0.25,
+              }}
+            >
+              <span>{prevQuantityRef.current}</span>
+            </motion.span>
+          )}
+        </AnimatePresence>
+        {imageUrl && (
+          <div
+            className={`${styles.imgWrap} ${
+              isSpecialsItem ? styles.specialImgWrap : ''
+            }`}
+          >
+            <img src={imageUrl} alt={getItemName(item)} />
+          </div>
+        )}
+        <div className={styles.nameWrap}>
+          <span>{isSpecialsItem ? 'Rotating Special' : getItemName(item)}</span>
+          <span>{getMoneyString(+getItemPrice(item))}</span>
+        </div>
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay
