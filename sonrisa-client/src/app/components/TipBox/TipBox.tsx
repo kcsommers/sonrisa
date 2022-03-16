@@ -25,6 +25,14 @@ export const TipBox = ({ subTotal }: ITipBoxProps) => {
     setCustomTipAmount(undefined);
   };
 
+  const customTipChanged = (e: any) => {
+    setTipMoney({
+      currency: 'USD',
+      amount: +e.target.value.replace('.', ''),
+    } as any);
+    setCustomTipAmount(+e.target.value);
+  };
+
   return (
     <>
       <div className={styles.tipBoxWrap}>
@@ -71,10 +79,7 @@ export const TipBox = ({ subTotal }: ITipBoxProps) => {
           min="0"
           placeholder="Custom Tip Amount"
           value={customTipAmount || ''}
-          onChange={(e) => {
-            setTipMoney({ currency: 'USD', amount: +e.target.value } as any);
-            setCustomTipAmount(+e.target.value);
-          }}
+          onChange={customTipChanged}
         />
       </div>
     </>
