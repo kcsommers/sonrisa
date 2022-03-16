@@ -33,6 +33,12 @@ const router: Router = Router();
 router.get(
   '/accepting',
   (req: Request, res: Response<IAcceptingOrdersResponse>) => {
+    res.json({
+      acceptingOrders: false,
+      reason: NotAcceptingOrdersReasons.SOLD_OUT,
+      errors: null,
+    });
+
     const _badDays = [0, 1]; // Sunday & Monday
 
     const _date = new Date(

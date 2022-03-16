@@ -42,7 +42,7 @@ export const HomePage = ({
   const { mainCatalogItems, specialsCatalogItems, catalogImageMap } =
     useCatalog();
 
-  const { acceptingOrders } = useOrdering();
+  const { acceptingOrders, notAcceptingOrdersReason } = useOrdering();
 
   const aboutRef = useRef<HTMLElement>();
 
@@ -168,12 +168,7 @@ export const HomePage = ({
           </p>
           {!acceptingOrders && (
             <div className={styles.alertWrap}>
-              <Alert
-                type="danger"
-                message={
-                  'Sorry we are no longer accepting orders this week. Please check back on Tuesday!'
-                }
-              />
+              <Alert type="danger" message={notAcceptingOrdersReason} />
             </div>
           )}
           {mainCatalogItems && mainCatalogItems.length ? (
