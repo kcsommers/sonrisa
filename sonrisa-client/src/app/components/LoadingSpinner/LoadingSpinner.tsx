@@ -3,7 +3,6 @@ import styles from './LoadingSpinner.module.scss';
 
 interface LoadingSpinnerProps {
   size?: 'xs' | 'sm' | 'lg';
-
   color?: string;
 }
 

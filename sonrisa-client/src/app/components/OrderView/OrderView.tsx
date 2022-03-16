@@ -6,6 +6,7 @@ import {
   useCatalog,
   useOrdering,
 } from '@core';
+import { useOrder } from '../../context';
 import { CartItem } from '../CartItem/CartItem';
 import styles from './OrderView.module.scss';
 
@@ -15,6 +16,8 @@ interface IOrderViewProps {
 
 export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
   const { currentOrder } = useOrdering();
+
+  const { tipMoney } = useOrder();
 
   const { catalogImageMap } = useCatalog();
 
@@ -43,6 +46,15 @@ export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
               <p className={styles.checkoutItemLabel}>Tax</p>
               <p className={styles.checkoutItemTotal}>
                 {getMoneyString(getOrderTax(currentOrder))}
+              </p>
+            </div>
+            <div className={styles.checkoutItemWrap}>
+              <p className={styles.checkoutItemLabel}>Tip</p>
+              <p className={styles.checkoutItemTotal}>
+                {
+                  //@ts-ignore
+                  getMoneyString(tipMoney.amount)
+                }
               </p>
             </div>
             <div className={styles.checkoutItemWrap}>

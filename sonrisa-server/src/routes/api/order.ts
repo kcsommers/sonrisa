@@ -70,6 +70,10 @@ router.post(
     const _orderData: Order = {
       locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
       lineItems: _lineItems,
+      pricingOptions: {
+        autoApplyDiscounts: true,
+        autoApplyTaxes: true,
+      },
     };
 
     try {
@@ -199,6 +203,8 @@ router.post(
     // get the request and the customer from the req body
     const _request = req.body.request as CreatePaymentRequest;
     const _customer = req.body.customer as Customer;
+
+    console.log('req:::: ', _request);
 
     // if one doesn't exist send bad request status
     if (!_request || !_customer) {

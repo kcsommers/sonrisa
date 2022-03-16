@@ -1,4 +1,5 @@
 import {
+  getOrderSubtotal,
   getOrderTip,
   getOrderTotal,
   getPickupTime,
@@ -15,6 +16,8 @@ import { environments } from '../../../environments';
 import { Button } from './../Button/Button';
 import { v4 as uuidV4 } from 'uuid';
 import styles from './CheckoutForm.module.scss';
+import { TipBox } from '../TipBox/TipBox';
+import { useOrder } from '../../context';
 
 interface ICheckoutFormProps {
   onCheckout: (success: boolean, payment?: Payment) => void;
@@ -22,6 +25,8 @@ interface ICheckoutFormProps {
 
 export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
   const { currentOrder, updateOrder, createPayment } = useOrdering();
+
+  const { tipMoney } = useOrder();
 
   const [givenName, setGivenName] = useState('');
 
@@ -43,7 +48,7 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
 
   const [message, setMessage] = useState('');
 
-  const [submittingForm, setSubmittingForm] = useState(false);
+  const [submittingForm, setSubmittingForm] = useState<boolean>(false);
 
   const validateForm = (): boolean => {
     let isValid = true;
@@ -119,7 +124,6 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
 
       // create the payment request
       const _totalMoney = getOrderTotal(currentOrder);
-      const _tipMoney = getOrderTip(currentOrder);
       const _paymentRequest: CreatePaymentRequest = {
         idempotencyKey: uuidV4(),
         sourceId: _cardToken,
@@ -127,16 +131,13 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
         amountMoney: {
           currency: 'USD',
           // @ts-ignore
-          amount: String(_totalMoney - _tipMoney),
+          amount: String(_totalMoney),
         },
-        tipMoney: {
-          currency: 'USD',
-          // @ts-ignore
-          amount: String(_tipMoney),
-        },
+        tipMoney,
       };
 
-      console.log('payment reques:::: ', _paymentRequest);
+      console.log('request:::: ', _paymentRequest);
+
       // update the order with fulfillments and customer info
       // if it hasn't already been done
       if (!currentOrder.fulfillments) {
@@ -265,7 +266,6 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
           </p>
         )}
       </div>
-
       <div className={styles.inputWrap}>
         <textarea
           placeholder="Optional Message"
@@ -273,8 +273,13 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
           onChange={(e) => setMessage(e.target.value)}
         />
       </div>
+      <div className={styles.tipBoxWrap}>
+        <label className={styles.label} htmlFor="tipbox">
+          Tip
+        </label>
+        <TipBox subTotal={getOrderSubtotal(currentOrder!)} />
+      </div>
       <div id="card-container"></div>
-
       <div className={styles.inputWrap}>
         <Button
           text="Submit Payment"

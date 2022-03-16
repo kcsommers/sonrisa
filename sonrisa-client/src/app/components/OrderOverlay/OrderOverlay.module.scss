@@ -84,8 +84,9 @@ button.quantityBtn {
   color: $dark;
   transition: all 0.2s ease;
   background-color: none;
+  box-shadow: $box-shadow;
   &:hover {
-    box-shadow: $box-shadow;
+    transform: scale(1.2);
   }
 }
 

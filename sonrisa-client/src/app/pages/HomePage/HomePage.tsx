@@ -132,7 +132,7 @@ export const HomePage = ({
               Seattle, WA.
             </h3>
             <Button
-              text="Place an Order Online"
+              text="Order Now"
               isFullWidth={false}
               onClick={() => {
                 orderSectionRef.current?.scrollIntoView({ behavior: 'smooth' });

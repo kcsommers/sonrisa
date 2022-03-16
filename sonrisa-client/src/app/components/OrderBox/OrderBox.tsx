@@ -8,6 +8,7 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { CatalogObject } from 'square';
+import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import { OrderOverlay } from '../OrderOverlay/OrderOverlay';
 import { Overlay } from '../Overlay/Overlay';
 import styles from './OrderBox.module.scss';
@@ -36,6 +37,8 @@ export const OrderBox = ({
 
   const prevQuantityRef = useRef(quantity);
 
+  const [loadedSrc, setLoadedSrc] = useState<string>();
+
   const orderUpdated = (success: boolean): void => {
     setOverlayOpen(false);
     onOrderUpdate(success);
@@ -57,45 +60,64 @@ export const OrderBox = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder]);
 
+  useEffect(() => {
+    if (!imageUrl) {
+      return;
+    }
+    const img = new Image();
+    img.onload = () => setLoadedSrc(imageUrl);
+    img.src = imageUrl;
+  }, []);
+
   return (
     <div className={styles.orderBox}>
-      <div className={styles.imgHoverBg}></div>
-      <AnimatePresence>
-        {prevQuantityRef.current && (
-          <motion.span
-            className={`${styles.quantityWrap}`}
-            initial={{
-              transform: 'translate(-100%, -100%)',
-              opacity: 0,
-            }}
-            animate={{
-              transform: 'translate(0%, 0%)',
-              opacity: 1,
-            }}
-            exit={{
-              transform: 'translate(-100%, -100%)',
-              opacity: 0,
-            }}
-            transition={{
-              type: 'spring',
-              bounce: 0.25,
-            }}
-          >
-            <span>{prevQuantityRef.current}</span>
-          </motion.span>
-        )}
-      </AnimatePresence>
       <div
-        className={`${styles.imgWrap} ${
-          isSpecialsItem ? styles.specialImgWrap : ''
-        }`}
+        className={styles.orderBoxInner}
         onClick={() => setOverlayOpen(true)}
       >
-        <img src={imageUrl} alt={getItemName(item)} />
-      </div>
-      <div className={styles.nameWrap}>
-        <span>{isSpecialsItem ? 'Rotating Special' : getItemName(item)}</span>
-        <span>{getMoneyString(+getItemPrice(item))}</span>
+        <div className={styles.imgHoverBg}></div>
+        <AnimatePresence>
+          {prevQuantityRef.current && (
+            <motion.span
+              className={`${styles.quantityWrap}`}
+              initial={{
+                transform: 'translate(-100%, -100%)',
+                opacity: 0,
+              }}
+              animate={{
+                transform: 'translate(0%, 0%)',
+                opacity: 1,
+              }}
+              exit={{
+                transform: 'translate(-100%, -100%)',
+                opacity: 0,
+              }}
+              transition={{
+                type: 'spring',
+                bounce: 0.25,
+              }}
+            >
+              <span>{prevQuantityRef.current}</span>
+            </motion.span>
+          )}
+        </AnimatePresence>
+        {imageUrl && (
+          <div
+            className={`${styles.imgWrap} ${
+              isSpecialsItem ? styles.specialImgWrap : ''
+            }`}
+          >
+            {loadedSrc ? (
+              <img src={loadedSrc} alt={getItemName(item)} />
+            ) : (
+              <LoadingSpinner size="sm" color="dark" />
+            )}
+          </div>
+        )}
+        <div className={styles.nameWrap}>
+          <span>{isSpecialsItem ? 'Rotating Special' : getItemName(item)}</span>
+          <span>{getMoneyString(+getItemPrice(item))}</span>
+        </div>
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay

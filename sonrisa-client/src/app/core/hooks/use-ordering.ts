@@ -1,6 +1,7 @@
 import { setOrder, useAppDispatch, useAppSelector } from '@redux';
 import { cloneDeep } from 'lodash';
-import { CreatePaymentRequest, Customer, Order, Payment } from 'square';
+import { useState } from 'react';
+import { CreatePaymentRequest, Customer, Money, Order, Payment } from 'square';
 import { Api } from '../api/api';
 import { logger } from '../logger';
 import { IAcceptingOrdersResponse } from '../orders/IAcceptingOrdersResponse';

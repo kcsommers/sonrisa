@@ -11,7 +11,7 @@ import {
 } from '@core';
 import { faMinus, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CatalogObject } from 'square';
 import { Button } from '../Button/Button';
 import { ImageSlider } from './../ImageSlider/ImageSlider';
@@ -45,6 +45,12 @@ export const OrderOverlay = ({
 
   const [updatingOrder, setUpdatingOrder] = useState(false);
 
+  const images = useMemo(() => {
+    const imageMap = catalogImageMap[getItemVariationId(item)] || [];
+    const hasBuiltInImages = imageMap.length > 1;
+    return hasBuiltInImages ? imageMap.slice(1) : imageMap;
+  }, []);
+
   const updateOrder = () => {
     if (quantity === prevQuantityRef.current) {
       return;
@@ -75,18 +81,15 @@ export const OrderOverlay = ({
         <FontAwesomeIcon icon={faTimes} />
       </button>
       <div className={styles.overlayBody}>
-        <div className={styles.imgSliderWrap}>
-          <ImageSlider
-            images={(catalogImageMap[getItemVariationId(item)] || []).slice(1)}
-            autoSlide={true}
-          />
-        </div>
-
+        {images.length ? (
+          <div className={styles.imgSliderWrap}>
+            <ImageSlider images={images} autoSlide={true} />
+          </div>
+        ) : null}
         <div className={styles.descriptionWrap}>
           <h3>{getItemName(item)}</h3>
           <p>{getItemDescription(item)}</p>
         </div>
-
         <div className={styles.quantityWrap}>
           <button
             className={`${styles.quantityBtn}${

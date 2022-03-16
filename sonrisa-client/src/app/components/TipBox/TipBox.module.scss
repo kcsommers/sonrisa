@@ -1,0 +1,43 @@
+@import '../../styles/variables.scss';
+
+div.tipBoxWrap {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  column-gap: 0.5rem;
+}
+
+div.tipOptionWrap {
+  border-radius: $border-radius;
+  background-color: #fff;
+  border: 2px solid #d9d9d9;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  font-size: 18px;
+  font-family: 'Source Sans Pro', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &.selected {
+    border-color: $yellow;
+  }
+}
+
+span.tipPct {
+  font-size: 20px;
+  margin-bottom: 0.25rem;
+}
+
+span.totalTip {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+div.inputWrap {
+  margin-top: 0.5rem;
+}
+
+div.disabled {
+  pointer-events: none;
+}
