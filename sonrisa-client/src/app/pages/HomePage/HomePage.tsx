@@ -233,14 +233,14 @@ export const HomePage = ({
             </div>
             <p>
               Hello! Welcome to Sonrisa Donuts! My name is Jing, I am a chef
-              from Thailand. I moved to Seattle in 2018 with the hopes of
-              joining the culinary scene, and started Sonrisa during the height
-              of the 2020 pandemic. I have always loved eating donuts, and
-              during that time it brought me joy to create and perfect my own
-              recipes using organic, local ingredients from Washington. Sonrisa
-              is the Spanish word for smile, and represents the joy that
-              constantly fills my kitchen. I love seeing smiles on the faces of
-              people who have my food. Especially my donuts!
+              from Thailand. I moved to Seattle in 2018 to join the city's
+              culinary scene, and started Sonrisa during the height of the 2020
+              pandemic. I have always loved eating donuts, and during that time
+              it brought me joy to create and perfect my own recipes using
+              organic, local ingredients from Washington. Sonrisa is the Spanish
+              word for smile, and represents the joy that constantly fills my
+              kitchen. I love seeing smiles on the faces of people who have my
+              food. Especially my donuts!
               <br />
               <br />
               Growing up in Thailand I learned to cook with my grandmother and
