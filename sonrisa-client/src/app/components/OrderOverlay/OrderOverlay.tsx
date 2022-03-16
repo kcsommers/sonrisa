@@ -102,7 +102,7 @@ export const OrderOverlay = ({
           <span className={styles.quantity}>{quantity}</span>
           <button
             className={`${styles.quantityBtn}${
-              acceptingOrders ? ' btn-disabled' : ''
+              !acceptingOrders ? ' btn-disabled' : ''
             }`}
             onClick={() => setQuantity(quantity + 1)}
           >
@@ -120,7 +120,7 @@ export const OrderOverlay = ({
           isFullWidth={true}
           onClick={updateOrder}
           showSpinner={updatingOrder}
-          isDisabled={acceptingOrders || prevQuantityRef.current === quantity}
+          isDisabled={!acceptingOrders || prevQuantityRef.current === quantity}
         />
       </div>
     </div>

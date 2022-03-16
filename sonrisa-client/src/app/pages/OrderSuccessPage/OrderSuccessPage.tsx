@@ -1,6 +1,7 @@
+import { Button } from '@components';
 import { useOrdering } from '@core';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { Payment } from 'square';
 import styles from './OrderSuccessPage.module.scss';
 
@@ -12,6 +13,8 @@ export const OrderSuccessPage = () => {
   const { clearOrder } = useOrdering();
 
   const { state } = useLocation<ISuccessPageLocationState>();
+
+  const history = useHistory();
 
   useEffect(() => {
     if (!state) {
@@ -51,9 +54,14 @@ export const OrderSuccessPage = () => {
           ) : (
             <>
               <h4>Whoops!</h4>
-              <p>
+              <p style={{ marginBottom: '1rem' }}>
                 There was a problem processing your order. Please try again.
               </p>
+              <Button
+                onClick={() => history.push('/checkout')}
+                isFullWidth={false}
+                text="Back to Checkout"
+              />
             </>
           )}
         </div>

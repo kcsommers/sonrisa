@@ -49,8 +49,12 @@ div.imgWrap {
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 1;
   background: linear-gradient(to top left, #fff, $offwhite);
+  min-height: 262px;
   > img {
     transition: all 1s ease;
     width: 100%;

@@ -2,11 +2,11 @@ import {
   getMoneyString,
   getOrderSubtotal,
   getOrderTax,
-  getOrderTip,
   getOrderTotal,
   useCatalog,
   useOrdering,
 } from '@core';
+import { useOrder } from '../../context';
 import { CartItem } from '../CartItem/CartItem';
 import styles from './OrderView.module.scss';
 
@@ -15,11 +15,11 @@ interface IOrderViewProps {
 }
 
 export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
-  const { currentOrder, tip } = useOrdering();
+  const { currentOrder } = useOrdering();
+
+  const { tipMoney } = useOrder();
 
   const { catalogImageMap } = useCatalog();
-
-  console.log(tip);
 
   return (
     <div>
@@ -51,7 +51,10 @@ export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
             <div className={styles.checkoutItemWrap}>
               <p className={styles.checkoutItemLabel}>Tip</p>
               <p className={styles.checkoutItemTotal}>
-                {getMoneyString(tip || 0)}
+                {
+                  //@ts-ignore
+                  getMoneyString(tipMoney.amount)
+                }
               </p>
             </div>
             <div className={styles.checkoutItemWrap}>

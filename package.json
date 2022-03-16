@@ -6,8 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node server.js",
-    "client": "node start-client.js",
+    "start:windows": "concurrently \"npm run server:windows\" \"npm run client\"",
+    "server": "cd sonrisa-server && npm run server",
+    "server:windows": "cd sonrisa-server && npm run server:windows",
+    "client": "cd sonrisa-client && npm start",
     "heroku:push": "git subtree push --prefix sonrisa-server heroku master"
   },
   "repository": {

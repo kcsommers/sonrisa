@@ -1,29 +1,28 @@
-import { getMoneyString } from '@core';
+import { getMoneyString, getOrderTip, useOrdering } from '@core';
+import { useOrder } from '../../context';
 import { useMemo, useState } from 'react';
-import { consoleTestResultsHandler } from 'tslint/lib/test';
 import styles from './TipBox.module.scss';
 
 interface ITipBoxProps {
   subTotal: number;
-  tipChanged: (tipAmount: number) => void;
 }
 
-export const TipBox = ({ subTotal, tipChanged }: ITipBoxProps) => {
+export const TipBox = ({ subTotal }: ITipBoxProps) => {
   const [customTipAmount, setCustomTipAmount] = useState<number>();
-  const [tip, setTip] = useState<number>();
   const tipOptions = useMemo(
     () => ({
-      15: subTotal * 0.15,
-      18: subTotal * 0.18,
-      20: subTotal * 0.2,
+      18: Math.round(subTotal * 0.18),
+      20: Math.round(subTotal * 0.2),
+      25: Math.round(subTotal * 0.25),
     }),
     [subTotal]
   );
 
-  const tipOptionSelected = (amount: number) => {
-    setTip(amount);
+  const { setTipMoney, tipMoney } = useOrder();
+
+  const tipOptionSelected = (tipAmount: number) => {
+    setTipMoney({ currency: 'USD', amount: tipAmount } as any);
     setCustomTipAmount(undefined);
-    tipChanged(amount);
   };
 
   return (
@@ -31,18 +30,8 @@ export const TipBox = ({ subTotal, tipChanged }: ITipBoxProps) => {
       <div className={styles.tipBoxWrap}>
         <div
           className={`${styles.tipOptionWrap}${
-            tip === tipOptions[15] ? ` ${styles.selected}` : ''
-          }`}
-          onClick={() => tipOptionSelected(tipOptions[15])}
-        >
-          <span className={styles.tipPct}>15%</span>
-          <span className={styles.totalTip}>
-            {getMoneyString(tipOptions[15])}
-          </span>
-        </div>
-        <div
-          className={`${styles.tipOptionWrap}${
-            tip === tipOptions[18] ? ` ${styles.selected}` : ''
+            //@ts-ignore
+            tipMoney.amount === tipOptions[18] ? ` ${styles.selected}` : ''
           }`}
           onClick={() => tipOptionSelected(tipOptions[18])}
         >
@@ -53,13 +42,26 @@ export const TipBox = ({ subTotal, tipChanged }: ITipBoxProps) => {
         </div>
         <div
           className={`${styles.tipOptionWrap}${
-            tip === tipOptions[20] ? ` ${styles.selected}` : ''
+            //@ts-ignore
+            tipMoney.amount === tipOptions[20] ? ` ${styles.selected}` : ''
           }`}
           onClick={() => tipOptionSelected(tipOptions[20])}
         >
           <span className={styles.tipPct}>20%</span>
           <span className={styles.totalTip}>
             {getMoneyString(tipOptions[20])}
+          </span>
+        </div>
+        <div
+          className={`${styles.tipOptionWrap}${
+            //@ts-ignore
+            tipMoney.amount === tipOptions[25] ? ` ${styles.selected}` : ''
+          }`}
+          onClick={() => tipOptionSelected(tipOptions[25])}
+        >
+          <span className={styles.tipPct}>25%</span>
+          <span className={styles.totalTip}>
+            {getMoneyString(tipOptions[25])}
           </span>
         </div>
       </div>
@@ -70,9 +72,8 @@ export const TipBox = ({ subTotal, tipChanged }: ITipBoxProps) => {
           placeholder="Custom Tip Amount"
           value={customTipAmount || ''}
           onChange={(e) => {
-            setTip(+e.target.value);
+            setTipMoney({ currency: 'USD', amount: +e.target.value } as any);
             setCustomTipAmount(+e.target.value);
-            tipChanged(+e.target.value);
           }}
         />
       </div>

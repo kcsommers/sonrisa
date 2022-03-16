@@ -5,6 +5,7 @@ import { ScrollRefNames } from '@core';
 import { CheckoutPage } from './pages/CheckoutPage/CheckoutPage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { OrderSuccessPage } from './pages/OrderSuccessPage/OrderSuccessPage';
+import { OrderContextProvider } from './context';
 
 export const AppRouter = () => {
   const [cartVisible, setCartVisible] = useState(false);
@@ -40,46 +41,52 @@ export const AppRouter = () => {
 
   return (
     <Router>
-      <Header
-        setCartVisible={setCartVisible}
-        scrollRefs={{
-          ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
-          CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
-          ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
-          PHOTOS: photosScrollRef as MutableRefObject<HTMLElement>,
-        }}
-      />
-      <div
-        style={{
-          maxWidth: '1980px',
-          margin: '0 auto',
-          position: 'relative',
-          zIndex: 1,
-          backgroundColor: '#fff',
-        }}
-      >
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={(props) => (
-              <HomePage
-                {...props}
-                setScrollRef={setScrollRef}
-                setCartVisible={setCartVisible}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/checkout"
-            render={(props) => <CheckoutPage {...props} />}
-          />
-          <Route exact path="/checkout/complete" component={OrderSuccessPage} />
-        </Switch>
-      </div>
-      <Footer />
-      <Cart isVisible={cartVisible} setIsVisible={setCartVisible} />
+      <OrderContextProvider>
+        <Header
+          setCartVisible={setCartVisible}
+          scrollRefs={{
+            ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
+            CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
+            ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
+            PHOTOS: photosScrollRef as MutableRefObject<HTMLElement>,
+          }}
+        />
+        <div
+          style={{
+            maxWidth: '1980px',
+            margin: '0 auto',
+            position: 'relative',
+            zIndex: 1,
+            backgroundColor: '#fff',
+          }}
+        >
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={(props) => (
+                <HomePage
+                  {...props}
+                  setScrollRef={setScrollRef}
+                  setCartVisible={setCartVisible}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/checkout"
+              render={(props) => <CheckoutPage {...props} />}
+            />
+            <Route
+              exact
+              path="/checkout/complete"
+              component={OrderSuccessPage}
+            />
+          </Switch>
+        </div>
+        <Footer />
+        <Cart isVisible={cartVisible} setIsVisible={setCartVisible} />
+      </OrderContextProvider>
     </Router>
   );
 };

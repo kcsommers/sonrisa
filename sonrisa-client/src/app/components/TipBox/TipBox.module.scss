@@ -37,3 +37,7 @@ span.totalTip {
 div.inputWrap {
   margin-top: 0.5rem;
 }
+
+div.disabled {
+  pointer-events: none;
+}

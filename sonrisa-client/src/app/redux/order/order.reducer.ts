@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash';
 import { Reducer } from 'react';
 import { AnyAction } from 'redux';
 import { Order } from 'square';
-import { SET_ORDER, SET_ACCEPTING_ORDERS } from './order.actions';
+import { SET_ACCEPTING_ORDERS, SET_ORDER } from './order.actions';
 
 interface IOrderState {
   order: Order;
@@ -72,6 +72,7 @@ export const orderReducer: Reducer<IOrderState | undefined, AnyAction> = (
 
       return _clonedState;
     }
+
     default:
       return state;
   }

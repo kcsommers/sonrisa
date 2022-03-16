@@ -9,7 +9,11 @@
     "watch-tsc": "NODE_ENV=devolopment tsc -w",
     "deploy": "NODE_ENV=production node dist/server.js",
     "watch-deploy": "NODE_ENV=development nodemon dist/server.js",
+    "watch-tsc:windows": "SET NODE_ENV=devolopment&& tsc -w",
+    "deploy:windows": "SET NODE_ENV=production&& node dist/server.js",
+    "watch-deploy:windows": "SET NODE_ENV=development&& nodemon dist/server.js",
     "server": "concurrently \"npm run watch-tsc\" \"npm run watch-deploy\"",
+    "server:windows": "concurrently \"npm run watch-tsc:windows\" \"npm run watch-deploy:windows\"",
     "start": "npm run deploy",
     "heroku-postbuild": "npm run tsc",
     "email": "node dist/src/email.js"

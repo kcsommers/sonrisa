@@ -8,6 +8,7 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { CatalogObject } from 'square';
+import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import { OrderOverlay } from '../OrderOverlay/OrderOverlay';
 import { Overlay } from '../Overlay/Overlay';
 import styles from './OrderBox.module.scss';
@@ -36,6 +37,8 @@ export const OrderBox = ({
 
   const prevQuantityRef = useRef(quantity);
 
+  const [loadedSrc, setLoadedSrc] = useState<string>();
+
   const orderUpdated = (success: boolean): void => {
     setOverlayOpen(false);
     onOrderUpdate(success);
@@ -56,6 +59,15 @@ export const OrderBox = ({
     setQuantity(_quantity);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder]);
+
+  useEffect(() => {
+    if (!imageUrl) {
+      return;
+    }
+    const img = new Image();
+    img.onload = () => setLoadedSrc(imageUrl);
+    img.src = imageUrl;
+  }, []);
 
   return (
     <div className={styles.orderBox}>
@@ -95,7 +107,11 @@ export const OrderBox = ({
               isSpecialsItem ? styles.specialImgWrap : ''
             }`}
           >
-            <img src={imageUrl} alt={getItemName(item)} />
+            {loadedSrc ? (
+              <img src={loadedSrc} alt={getItemName(item)} />
+            ) : (
+              <LoadingSpinner size="sm" color="dark" />
+            )}
           </div>
         )}
         <div className={styles.nameWrap}>

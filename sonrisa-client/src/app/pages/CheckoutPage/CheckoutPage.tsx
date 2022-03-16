@@ -1,6 +1,6 @@
 import { CheckoutForm, OrderView } from '@components';
 import { logger } from '@core';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Payment } from 'square';
 import styles from './CheckoutPage.module.scss';
