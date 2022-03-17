@@ -68,10 +68,6 @@ div.imgWrap {
   }
 }
 
-div.specialImgWrap > img {
-  opacity: 0.5;
-}
-
 div.imgHoverBg {
   transition: all 1.25s ease;
   position: absolute;
@@ -95,13 +91,4 @@ div.nameWrap {
   > span:first-child {
     font-weight: bold;
   }
-}
-
-div.specialNameWrap {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  text-align: center;
-  transform: translate(-50%, -50%);
 }

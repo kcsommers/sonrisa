@@ -1,23 +1,17 @@
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import JSONBig from 'json-bigint';
-import { CatalogObject } from 'square';
-import { catalogConstants } from '../../core/catalog/catalog-constants';
+import { CatalogImage, CatalogObject } from 'square';
 import { getItemImageId, getItemVariationId } from '../../core/utils';
-import { catalogImages } from '../../core/catalog/catalog-images';
 import { square } from '../../square';
 
 interface IGetCatalogResponse {
-  mainCatalogItems: CatalogObject[];
-
-  specialsCatalogItems: CatalogObject[];
-
-  catalogImageMap: { [imageId: string]: string[] };
+  catalogItems: CatalogObject[];
+  catalogImageMap: { [imageId: string]: CatalogImage };
 }
 
 class CatalogObjectTypes {
   public static ITEM = 'ITEM';
-
   public static IMAGE = 'IMAGE';
 }
 
@@ -34,74 +28,36 @@ router.get(
   '/',
   async (req: Request, res: Response<IGetCatalogResponse | Error>) => {
     try {
-      const _res = await square.catalogApi.listCatalog('', 'image,item');
-      const _allCatalogObjects = _res.result.objects;
+      const squareResponse = await square.catalogApi.listCatalog(
+        '',
+        'image,item'
+      );
+      const allCatalogObjects: CatalogObject[] = squareResponse.result.objects;
 
-      const _imageMapByImageId: { [imageId: string]: string[] } = {};
-      const _imageMapByItemId: { [itemId: string]: string[] } = {};
-      const _specialsItems: CatalogObject[] = [];
-      const _mainMenuItems: CatalogObject[] = _allCatalogObjects.filter(
-        (catalogObject) => {
-          // if its a catalog item add it to the array
-          if (catalogObject.type === CatalogObjectTypes.ITEM) {
-            if (
-              catalogObject.itemData.categoryId ===
-              catalogConstants[process.env.NODE_ENV].SPECIALS_CATEGORY_ID
-            ) {
-              _specialsItems.push(catalogObject);
-              return false;
-            }
-            return true;
-          }
-
-          // if its an image filter it out and store the url
-          if (catalogObject.type === CatalogObjectTypes.IMAGE) {
-            const _allImages =
-              catalogImages[process.env.NODE_ENV][catalogObject.id] || [];
-
-            _imageMapByImageId[catalogObject.id] = [
-              catalogObject.imageData?.url as string,
-              ..._allImages,
-            ];
+      const imgMap: { [imageId: string]: CatalogImage } = {};
+      const catalogItems: CatalogObject[] = allCatalogObjects.filter(
+        (catObj) => {
+          if (catObj.type === CatalogObjectTypes.IMAGE) {
+            imgMap[catObj.id] = catObj.imageData;
             return false;
           }
-
-          return false;
+          return true;
         }
       );
+      const catalogImageMap: { [itemId: string]: CatalogImage } =
+        catalogItems.reduce((map, currItem) => {
+          const itemId = getItemVariationId(currItem);
+          const imageId = getItemImageId(currItem);
+          if (imgMap[imageId]) {
+            map[itemId] = imgMap[imageId];
+          }
+          return map;
+        }, {});
 
-      // create image map based on item id
-      _mainMenuItems.forEach((item) => {
-        const _itemId = getItemVariationId(item);
-        const _imageId = getItemImageId(item);
-        const _images = _imageMapByImageId[_imageId];
-
-        _imageMapByItemId[_itemId] = _images;
-      });
-
-      // specials need special image
-      _specialsItems.forEach((item) => {
-        const _itemId = getItemVariationId(item);
-        const _imageId = getItemImageId(item);
-        const _images = _imageMapByImageId[_imageId];
-
-        _imageMapByItemId[_itemId] = [
-          catalogImages[process.env.NODE_ENV].SPECIAL,
-          ..._images,
-        ];
-      });
-
-      const _mainMenuItemsParsed = JSON.parse(
-        JSONBig.stringify(_mainMenuItems)
-      );
-      const _specialsItemsParsed = JSON.parse(
-        JSONBig.stringify(_specialsItems)
-      );
-
+      const catalogItemsParsed = JSON.parse(JSONBig.stringify(catalogItems));
       res.json({
-        mainCatalogItems: _mainMenuItemsParsed,
-        specialsCatalogItems: _specialsItemsParsed,
-        catalogImageMap: _imageMapByItemId,
+        catalogItems: catalogItemsParsed,
+        catalogImageMap,
       });
     } catch (err) {
       console.error(err);

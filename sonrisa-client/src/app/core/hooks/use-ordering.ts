@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { CreatePaymentRequest, Customer, Money, Order, Payment } from 'square';
 import { Api } from '../api/api';
 import { logger } from '../logger';
+import { IOrderingStatus } from '../orders';
 import { IAcceptingOrdersResponse } from '../orders/IAcceptingOrdersResponse';
 import { useStorage } from './use-storage';
 
@@ -26,7 +27,7 @@ export interface IOrderingHook {
 
   clearOrder: () => void;
 
-  checkAcceptingOrders: () => Promise<IAcceptingOrdersResponse>;
+  checkAcceptingOrders: () => Promise<IOrderingStatus>;
 
   createPayment: (
     request: CreatePaymentRequest,
@@ -166,7 +167,7 @@ export const useOrdering = (): IOrderingHook => {
     }
   };
 
-  const checkAcceptingOrders = async (): Promise<IAcceptingOrdersResponse> => {
+  const checkAcceptingOrders = async (): Promise<IOrderingStatus> => {
     try {
       const _response = await Api.acceptingOrders();
       logger.log('[acceptingOrders response]:::: ', _response);

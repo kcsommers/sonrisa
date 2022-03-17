@@ -1,9 +1,6 @@
-import { CatalogObject } from 'square';
+import { CatalogImage, CatalogObject } from 'square';
 
 export interface IGetCatalogResponse {
-  mainCatalogItems: CatalogObject[];
-
-  specialsCatalogItems: CatalogObject[];
-
-  catalogImageMap: { [imageId: string]: string[] };
+  catalogItems: CatalogObject[];
+  catalogImageMap: { [imageId: string]: CatalogImage };
 }

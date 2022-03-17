@@ -3,7 +3,6 @@ export { OrderFullfillmentScheduleTypes } from './orders/OrderFullfillmentSchedu
 export { useSnackbar } from './hooks/use-snackbar';
 export { logger } from './logger';
 export { useOrdering } from './hooks/use-ordering';
-export { useCatalog } from './hooks/use-catalog';
 export { useStorage } from './hooks/use-storage';
 export { useInterval } from './hooks/use-interval';
 export { ColorTypes } from './models/ColorTypes';
@@ -14,7 +13,6 @@ export type { IContactResponse } from './api/interfaces/IContactResponse';
 export type { IInstagramMedia } from './api/interfaces/IInstagramMedia';
 export type { IInstagramResponse } from './api/interfaces/IInstagramResponse';
 export type { IAcceptingOrdersResponse } from './orders/IAcceptingOrdersResponse';
-export { NotAcceptingOrdersReasons } from './orders/NotAcceptingOrdersReasons';
 export { ScrollRefNames } from './models/ScrollRefNames';
 export * from './image-loader';
 export * from './api/api';

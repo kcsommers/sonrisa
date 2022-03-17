@@ -11,6 +11,7 @@ import {
   UpdateOrderRequest,
   UpdateOrderResponse,
 } from 'square';
+import { IOrderingStatus } from '../../core';
 import { v4 as uuidV4 } from 'uuid';
 import {
   camelcaseKeys,
@@ -30,38 +31,35 @@ const router: Router = Router();
  * are currently being taken. Returns false if number of orders exceeds ?
  * or if its Sunday or Monday
  */
-router.get(
-  '/accepting',
-  (req: Request, res: Response<IAcceptingOrdersResponse>) => {
-    res.json({
-      acceptingOrders: false,
-      reason: NotAcceptingOrdersReasons.SOLD_OUT,
-      errors: null,
-    });
+router.get('/accepting', (req: Request, res: Response<IOrderingStatus>) => {
+  res.json({
+    acceptingOrders: false,
+    message: NotAcceptingOrdersReasons.SOLD_OUT,
+    errors: null,
+  });
 
-    const _badDays = [0, 1]; // Sunday & Monday
+  const _badDays = [0, 1]; // Sunday & Monday
 
-    const _date = new Date(
-      new Date().toLocaleString('en-us', { timeZone: 'America/Los_Angeles' })
-    );
+  const _date = new Date(
+    new Date().toLocaleString('en-us', { timeZone: 'America/Los_Angeles' })
+  );
 
-    let _acceptingOrders = true;
-    let _reason = '';
-    // check the day
-    if (_badDays.indexOf(_date.getDay()) > -1) {
-      _acceptingOrders = false;
-      _reason = NotAcceptingOrdersReasons.INVALID_DAY;
-    }
-
-    // @TODO check how many have been ordered this week
-
-    res.json({
-      acceptingOrders: _acceptingOrders,
-      reason: _reason,
-      errors: null,
-    });
+  let acceptingOrders = true;
+  let message = '';
+  // check the day
+  if (_badDays.indexOf(_date.getDay()) > -1) {
+    acceptingOrders = false;
+    message = NotAcceptingOrdersReasons.INVALID_DAY;
   }
-);
+
+  // @TODO check how many have been ordered this week
+
+  res.json({
+    acceptingOrders,
+    message,
+    errors: null,
+  });
+});
 
 /**
  * @route  POST api/order/create

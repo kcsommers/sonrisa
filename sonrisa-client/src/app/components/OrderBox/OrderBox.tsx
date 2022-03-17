@@ -7,7 +7,7 @@ import {
 } from '@core';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { CatalogObject } from 'square';
+import { CatalogImage, CatalogObject } from 'square';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import { OrderOverlay } from '../OrderOverlay/OrderOverlay';
 import { Overlay } from '../Overlay/Overlay';
@@ -15,19 +15,14 @@ import styles from './OrderBox.module.scss';
 
 interface OrderBoxProps {
   item: CatalogObject;
-
-  isSpecialsItem?: boolean;
-
-  imageUrl: string;
-
+  catalogImage: CatalogImage;
   onOrderUpdate: (success: boolean) => void;
 }
 
 export const OrderBox = ({
   item,
-  imageUrl,
+  catalogImage,
   onOrderUpdate,
-  isSpecialsItem = false,
 }: OrderBoxProps) => {
   const { getItemQuantity, currentOrder } = useOrdering();
 
@@ -61,13 +56,13 @@ export const OrderBox = ({
   }, [currentOrder]);
 
   useEffect(() => {
-    if (!imageUrl) {
+    if (!catalogImage || !catalogImage.url) {
       return;
     }
     const img = new Image();
-    img.onload = () => setLoadedSrc(imageUrl);
-    img.src = imageUrl;
-  }, []);
+    img.onload = () => setLoadedSrc(catalogImage.url);
+    img.src = catalogImage.url;
+  }, [catalogImage]);
 
   return (
     <div className={styles.orderBox}>
@@ -101,12 +96,8 @@ export const OrderBox = ({
             </motion.span>
           )}
         </AnimatePresence>
-        {imageUrl && (
-          <div
-            className={`${styles.imgWrap} ${
-              isSpecialsItem ? styles.specialImgWrap : ''
-            }`}
-          >
+        {catalogImage?.url && (
+          <div className={styles.imgWrap}>
             {loadedSrc ? (
               <img src={loadedSrc} alt={getItemName(item)} />
             ) : (
@@ -115,7 +106,7 @@ export const OrderBox = ({
           </div>
         )}
         <div className={styles.nameWrap}>
-          <span>{isSpecialsItem ? 'Rotating Special' : getItemName(item)}</span>
+          <span>{getItemName(item)}</span>
           <span>{getMoneyString(+getItemPrice(item))}</span>
         </div>
       </div>

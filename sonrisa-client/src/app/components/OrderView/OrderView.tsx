@@ -3,10 +3,9 @@ import {
   getOrderSubtotal,
   getOrderTax,
   getOrderTotal,
-  useCatalog,
   useOrdering,
 } from '@core';
-import { useOrder } from '../../context';
+import { useCatalog, useOrder } from '../../context';
 import { CartItem } from '../CartItem/CartItem';
 import styles from './OrderView.module.scss';
 
@@ -32,7 +31,7 @@ export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
               canRemove={canRemoveItems}
               orderItem={item}
               key={item.uid}
-              imageUrl={catalogImageMap[item.catalogObjectId as string]?.[0]}
+              imageUrl={catalogImageMap[item.catalogObjectId as string]?.url!}
             />
           ))}
           <div className={styles.checkoutWrap}>

@@ -1,11 +1,11 @@
 import { Cart, Footer, Header } from '@components';
+import { ScrollRefNames } from '@core';
 import { MutableRefObject, useRef, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { ScrollRefNames } from '@core';
+import { StoreProvider } from './context';
 import { CheckoutPage } from './pages/CheckoutPage/CheckoutPage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { OrderSuccessPage } from './pages/OrderSuccessPage/OrderSuccessPage';
-import { OrderContextProvider } from './context';
 
 export const AppRouter = () => {
   const [cartVisible, setCartVisible] = useState(false);
@@ -41,7 +41,7 @@ export const AppRouter = () => {
 
   return (
     <Router>
-      <OrderContextProvider>
+      <StoreProvider>
         <Header
           setCartVisible={setCartVisible}
           scrollRefs={{
@@ -86,7 +86,7 @@ export const AppRouter = () => {
         </div>
         <Footer />
         <Cart isVisible={cartVisible} setIsVisible={setCartVisible} />
-      </OrderContextProvider>
+      </StoreProvider>
     </Router>
   );
 };

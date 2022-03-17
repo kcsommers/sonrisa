@@ -6,28 +6,23 @@ import {
   getItemVariationId,
   getMoneyString,
   logger,
-  useCatalog,
   useOrdering,
 } from '@core';
 import { faMinus, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMemo, useState } from 'react';
-import { CatalogObject } from 'square';
+import { CatalogImage, CatalogObject } from 'square';
+import { useCatalog } from '../../context';
 import { Button } from '../Button/Button';
 import { ImageSlider } from './../ImageSlider/ImageSlider';
 import styles from './OrderOverlay.module.scss';
 
 interface OrderOverlayProps {
   item: CatalogObject;
-
   quantity: number;
-
   prevQuantityRef: React.MutableRefObject<number>;
-
   setQuantity: (quantity: number) => void;
-
   orderUpdated: (success: boolean) => void;
-
   closeOverlay?: (event: React.MouseEvent) => void;
 }
 
@@ -45,10 +40,9 @@ export const OrderOverlay = ({
 
   const [updatingOrder, setUpdatingOrder] = useState(false);
 
-  const images = useMemo(() => {
-    const imageMap = catalogImageMap[getItemVariationId(item)] || [];
-    const hasBuiltInImages = imageMap.length > 1;
-    return hasBuiltInImages ? imageMap.slice(1) : imageMap;
+  const catalogImage = useMemo<CatalogImage>(() => {
+    const image: CatalogImage = catalogImageMap[getItemVariationId(item)];
+    return image;
   }, []);
 
   const updateOrder = () => {
@@ -81,11 +75,7 @@ export const OrderOverlay = ({
         <FontAwesomeIcon icon={faTimes} />
       </button>
       <div className={styles.overlayBody}>
-        {images.length ? (
-          <div className={styles.imgSliderWrap}>
-            <ImageSlider images={images} autoSlide={true} />
-          </div>
-        ) : null}
+        <ImageSlider images={[catalogImage?.url!]} autoSlide={true} />
         <div className={styles.descriptionWrap}>
           <h3>{getItemName(item)}</h3>
           <p>{getItemDescription(item)}</p>
