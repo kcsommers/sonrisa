@@ -2,29 +2,21 @@ import {
   Button,
   ContactForm,
   InstagramFeed,
-  LoadingSpinner,
   SnackbarComponent,
-  Alert,
 } from '@components';
-import {
-  getItemVariationId,
-  ScrollRefNames,
-  useCatalog,
-  useOrdering,
-  useSnackbar,
-} from '@core';
+import { ScrollRefNames, useSnackbar } from '@core';
 import {
   faCheckCircle,
   faExclamationCircle,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import doughnutHalves from '@images/doughnut-halves.png';
 import jing from '@images/jing.jpg';
-import { RouteComponentProps } from 'react-router-dom';
-import { OrderBox } from '../../components/OrderBox/OrderBox';
-import styles from './HomePage.module.scss';
 import { useEffect, useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RouteComponentProps } from 'react-router-dom';
+import { Menu } from '../../components';
+import styles from './HomePage.module.scss';
 
 interface HomePageProps extends RouteComponentProps {
   setScrollRef: (elName: string, el: HTMLElement) => void;
@@ -38,11 +30,6 @@ export const HomePage = ({
   setCartVisible,
 }: HomePageProps) => {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
-
-  const { mainCatalogItems, specialsCatalogItems, catalogImageMap } =
-    useCatalog();
-
-  const { acceptingOrders, notAcceptingOrdersReason } = useOrdering();
 
   const aboutRef = useRef<HTMLElement>();
 
@@ -159,54 +146,13 @@ export const HomePage = ({
           setScrollRef('ORDER', el as HTMLElement);
         }}
       >
-        <div className={`${styles.orderBoxesWrap}`}>
-          <h3>Menu</h3>
-          <p className={`${styles.menuSectionText}`}>
-            <FontAwesomeIcon icon={faInfoCircle} />
-            Taking orders Tuesday - Saturday, or until sold out. Pick up Monday
-            between 1 and 4. Pickup instructions will be sent via email.
-          </p>
-          {!acceptingOrders && (
-            <div className={styles.alertWrap}>
-              <Alert type="danger" message={notAcceptingOrdersReason} />
-            </div>
-          )}
-          {mainCatalogItems && mainCatalogItems.length ? (
-            <div className={styles.orderBoxesInner}>
-              {mainCatalogItems.map((item) => (
-                <div key={item.id} className={styles.orderBoxWrap}>
-                  <OrderBox
-                    item={item}
-                    onOrderUpdate={onOrderUpdate}
-                    imageUrl={
-                      catalogImageMap[
-                        getItemVariationId(item) as string
-                      ]?.[0] || ''
-                    }
-                  />
-                </div>
-              ))}
-              {specialsCatalogItems.map((item) => (
-                <div key={item.id} className={styles.orderBoxWrap}>
-                  <OrderBox
-                    item={item}
-                    isSpecialsItem={true}
-                    onOrderUpdate={onOrderUpdate}
-                    imageUrl={
-                      catalogImageMap[
-                        getItemVariationId(item) as string
-                      ]?.[0] || ''
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className={styles.loadingWrap}>
-              <LoadingSpinner />
-            </div>
-          )}
-        </div>
+        <h3>Menu</h3>
+        <p className={`${styles.menuSectionText}`}>
+          <FontAwesomeIcon icon={faInfoCircle} />
+          Taking orders Tuesday - Saturday, or until sold out. Pick up Monday
+          between 1 and 4. Pickup instructions will be sent via email.
+        </p>
+        <Menu onOrderUpdate={onOrderUpdate} />
       </section>
 
       <section
