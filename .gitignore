@@ -1,37 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-sonrisa-client/node_modules
-sonrisa-client/.pnp
-sonrisa-client.pnp.js
-
-# testing
-sonrisa-client/coverage
-
-# production
-sonrisa-client/build
-
-# misc
-sonrisa-client.DS_Store
-sonrisa-client.env.local
-sonrisa-client.env.development.local
-sonrisa-client.env.test.local
-sonrisa-client.env.production.local
-
-sonrisa-clientnpm-debug.log*
-sonrisa-clientyarn-debug.log*
-sonrisa-clientyarn-error.log*
-
-sonrisa-server/node_modules
-sonrisa-server/dist
-sonrisa-server/package-lock.json
 node_modules
-package-lock.json
-
-sonrisa-client/.env
-sonrisa-server/.env
-
-sonrisa-server/src/google-keys.json
-sonrisa-server/src/google-keys.ts
 .DS_Store
-sonrisa-server/instagram_token.json
+.vscode
