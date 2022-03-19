@@ -14,26 +14,21 @@ import { Overlay } from '../Overlay/Overlay';
 import styles from './OrderBox.module.scss';
 
 interface OrderBoxProps {
-  item: CatalogObject;
-  catalogImage: CatalogImage;
+  catalogObjects: { item: CatalogObject; image: CatalogImage };
   onOrderUpdate: (success: boolean) => void;
+  categoryName: string;
 }
 
 export const OrderBox = ({
-  item,
-  catalogImage,
+  catalogObjects,
   onOrderUpdate,
+  categoryName,
 }: OrderBoxProps) => {
   const { getItemQuantity, currentOrder } = useOrdering();
-
   const [quantity, setQuantity] = useState(0);
-
   const [overlayOpen, setOverlayOpen] = useState(false);
-
   const prevQuantityRef = useRef(quantity);
-
   const [loadedSrc, setLoadedSrc] = useState<string>();
-
   const orderUpdated = (success: boolean): void => {
     setOverlayOpen(false);
     onOrderUpdate(success);
@@ -43,11 +38,13 @@ export const OrderBox = ({
   // updates local quantity and price if order id changes
   const orderIdRef = useRef('');
   useEffect(() => {
-    if (!item) {
+    if (!catalogObjects || catalogObjects.item) {
       return;
     }
 
-    const _quantity = getItemQuantity(getItemVariationId(item) || '');
+    const _quantity = getItemQuantity(
+      getItemVariationId(catalogObjects.item) || ''
+    );
 
     prevQuantityRef.current = _quantity;
     orderIdRef.current = currentOrder?.id as string;
@@ -56,19 +53,23 @@ export const OrderBox = ({
   }, [currentOrder]);
 
   useEffect(() => {
-    if (!catalogImage || !catalogImage.url) {
+    if (!catalogObjects.image || !catalogObjects.image.url) {
       return;
     }
     const img = new Image();
-    img.onload = () => setLoadedSrc(catalogImage.url);
-    img.src = catalogImage.url;
-  }, [catalogImage]);
+    img.onload = () => setLoadedSrc(catalogObjects.image.url);
+    img.src = catalogObjects.image.url;
+  }, [catalogObjects.image]);
 
   return (
-    <div className={styles.orderBox}>
+    <div
+      className={`${styles.orderBox}${
+        categoryName !== 'flavors' ? ` ${styles.orderable}` : ''
+      }`}
+    >
       <div
         className={styles.orderBoxInner}
-        onClick={() => setOverlayOpen(true)}
+        onClick={() => categoryName !== 'flavors' && setOverlayOpen(true)}
       >
         <div className={styles.imgHoverBg}></div>
         <AnimatePresence>
@@ -96,23 +97,30 @@ export const OrderBox = ({
             </motion.span>
           )}
         </AnimatePresence>
-        {catalogImage?.url && (
+        {catalogObjects.image?.url && (
           <div className={styles.imgWrap}>
             {loadedSrc ? (
-              <img src={loadedSrc} alt={getItemName(item)} />
+              <img src={loadedSrc} alt={getItemName(catalogObjects.item)} />
             ) : (
               <LoadingSpinner size="sm" color="dark" />
             )}
           </div>
         )}
         <div className={styles.nameWrap}>
-          <span>{getItemName(item)}</span>
-          <span>{getMoneyString(+getItemPrice(item))}</span>
+          <span>{getItemName(catalogObjects.item)}</span>
+          {categoryName !== 'flavors' && (
+            <span>{getMoneyString(+getItemPrice(catalogObjects.item))}</span>
+          )}
         </div>
+        {categoryName === 'flavors' && (
+          <div className={styles.descriptionWrap}>
+            {catalogObjects.item.itemData.description}
+          </div>
+        )}
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay
-          item={item}
+          item={catalogObjects.item}
           quantity={quantity}
           setQuantity={setQuantity}
           orderUpdated={orderUpdated}

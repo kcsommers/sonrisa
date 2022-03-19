@@ -2,6 +2,17 @@
 
 div.orderBox {
   height: 100%;
+  &.orderable {
+    cursor: pointer;
+  }
+  &:not(.orderable) {
+    &:hover {
+      div.descriptionWrap {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  }
 }
 
 div.orderBoxInner {
@@ -14,7 +25,6 @@ div.orderBoxInner {
   flex-direction: column;
   box-shadow: $box-shadow;
   padding: 0.5rem;
-  cursor: pointer;
   &:hover {
     > div.imgHoverBg {
       transform: translate(0%, 0%);
@@ -91,4 +101,21 @@ div.nameWrap {
   > span:first-child {
     font-weight: bold;
   }
+}
+
+div.descriptionWrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(to bottom, rgba($offwhite, 0.1), $offwhite);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.5s ease;
 }
