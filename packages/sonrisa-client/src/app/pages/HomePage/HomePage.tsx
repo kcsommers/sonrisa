@@ -148,7 +148,7 @@ export const HomePage = ({
           setScrollRef('ORDER', el as HTMLElement);
         }}
       >
-        <h3>Menu</h3>
+        <h3>Online Ordering</h3>
         <p className={`${styles.menuSectionText}`}>
           <FontAwesomeIcon icon={faInfoCircle as IconProp} />
           Taking orders Tuesday - Saturday, or until sold out. Pick up Monday

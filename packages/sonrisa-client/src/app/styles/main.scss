@@ -73,6 +73,14 @@ h4 {
   }
 }
 
+h5 {
+  font-family: 'Playfair Display';
+  font-size: 27px;
+  @include for-phone-only {
+    font-size: 22px;
+  }
+}
+
 input,
 textarea {
   height: 48px;

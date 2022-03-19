@@ -9,6 +9,10 @@ export const getItemImageId = (item: CatalogObject): string => {
   return item.imageId;
 };
 
+export const getItemCategoryId = (item: CatalogObject): string => {
+  return item.itemData?.categoryId || '';
+};
+
 export const camelcaseKeys = <T>(o: T): any => {
   let newO, origKey, newKey, value;
   if (o instanceof Array) {

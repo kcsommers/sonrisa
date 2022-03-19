@@ -1,3 +1,4 @@
+import { ICatalog } from 'packages/core/dist/bundles';
 import { useEffect, useState } from 'react';
 import { CatalogImage, CatalogObject } from 'square';
 import { Api } from '../../api';
@@ -5,24 +6,19 @@ import { logger } from '../../utils';
 import { CATALOG_CONTEXT } from './catalog.context';
 
 export const CatalogContextProvider = ({ children }) => {
-  const [catalogItems, setCatalogItems] = useState<CatalogObject[]>([]);
-
-  const [catalogImageMap, setCatalogImageMap] = useState<{
-    [itemId: string]: CatalogImage;
-  }>({});
+  const [catalog, setCatalog] = useState<ICatalog>();
 
   const [catalogError, setCatalogError] = useState<string>('');
 
   useEffect(() => {
     const fetchCatalog = async () => {
-      if (catalogItems && catalogItems.length) {
+      if (catalog) {
         return;
       }
       try {
         // get axios response and return the data property
         const _response = await Api.getCatalog();
-        setCatalogItems(_response.data.catalogItems);
-        setCatalogImageMap(_response.data.catalogImageMap);
+        setCatalog(_response.data);
         logger.log('[get catalog response]:::: ', _response.data);
       } catch (err: any) {
         // reject the promise on error
@@ -38,8 +34,7 @@ export const CatalogContextProvider = ({ children }) => {
   return (
     <CATALOG_CONTEXT.Provider
       value={{
-        catalogItems,
-        catalogImageMap,
+        catalog,
         catalogError,
       }}
     >

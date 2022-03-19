@@ -11,10 +11,10 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "paths": {
-      "*": ["node_modules/*", "src/types/*"],
-      "@core": ["src/core/public.ts"]
+      "*": ["node_modules/*", "src/types/*"]
     },
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": false
   },
   "include": ["src/**/*"],
   "exclude": ["instagram_token.json"]

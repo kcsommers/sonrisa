@@ -1,7 +1,6 @@
-import { CatalogImage, CatalogObject } from 'square';
+import { ICatalog } from '@sonrisa/core';
 
 export interface ICatalogContex {
-  catalogItems: CatalogObject[];
-  catalogImageMap: { [imageId: string]: CatalogImage }; // <imageId, imgUrl>
+  catalog: ICatalog;
   catalogError: string;
 }

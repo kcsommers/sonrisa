@@ -1,15 +1,18 @@
-import { CatalogObjectTypes } from '@sonrisa/core';
+import {
+  CatalogObjectTypes,
+  ICatalog,
+  ICatalogCategoryMap,
+} from '@sonrisa/core';
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import JSONBig from 'json-bigint';
-import { CatalogImage, CatalogObject } from 'square';
+import { CatalogCategory, CatalogImage, CatalogObject } from 'square';
 import { square } from '../../square';
-import { getItemImageId, getItemVariationId } from '../../utils';
-
-interface IGetCatalogResponse {
-  catalogItems: CatalogObject[];
-  catalogImageMap: { [imageId: string]: CatalogImage };
-}
+import {
+  getItemCategoryId,
+  getItemImageId,
+  getItemVariationId,
+} from '../../utils';
 
 const router: Router = Router();
 
@@ -20,46 +23,50 @@ const router: Router = Router();
  * Because of limitation on bigint serialization the price is converted to a string then a number
  *
  */
-router.get(
-  '/',
-  async (req: Request, res: Response<IGetCatalogResponse | Error>) => {
-    try {
-      const squareResponse = await square.catalogApi.listCatalog(
-        '',
-        'image,item'
-      );
-      const allCatalogObjects: CatalogObject[] = squareResponse.result.objects;
+router.get('/', async (req: Request, res: Response<ICatalog | Error>) => {
+  try {
+    const squareResponse = await square.catalogApi.listCatalog(
+      '',
+      'image,item,category'
+    );
+    const allCatalogObjects: CatalogObject[] = squareResponse.result.objects;
+    const imgMap: { [imageId: string]: CatalogImage } = {};
+    const catalogCategoryMap: ICatalogCategoryMap = {};
+    const catalogItems: CatalogObject[] = allCatalogObjects.filter((catObj) => {
+      if (catObj.type === CatalogObjectTypes.IMAGE) {
+        imgMap[catObj.id] = catObj.imageData;
+        return false;
+      }
+      if (catObj.type === CatalogObjectTypes.CATEGORY) {
+        catalogCategoryMap[catObj.id] = {
+          category: catObj.categoryData,
+          catalogObjects: [],
+        };
+        return false;
+      }
+      return true;
+    });
 
-      const imgMap: { [imageId: string]: CatalogImage } = {};
-      const catalogItems: CatalogObject[] = allCatalogObjects.filter(
-        (catObj) => {
-          if (catObj.type === CatalogObjectTypes.IMAGE) {
-            imgMap[catObj.id] = catObj.imageData;
-            return false;
-          }
-          return true;
-        }
-      );
-      const catalogImageMap: { [itemId: string]: CatalogImage } =
-        catalogItems.reduce((map, currItem) => {
-          const itemId = getItemVariationId(currItem);
-          const imageId = getItemImageId(currItem);
-          if (imgMap[imageId]) {
-            map[itemId] = imgMap[imageId];
-          }
-          return map;
-        }, {});
-
-      const catalogItemsParsed = JSON.parse(JSONBig.stringify(catalogItems));
-      res.json({
-        catalogItems: catalogItemsParsed,
-        catalogImageMap,
+    catalogItems.forEach((item) => {
+      const imageId = getItemImageId(item);
+      const categoryId = getItemCategoryId(item);
+      if (!catalogCategoryMap[categoryId]) {
+        return;
+      }
+      catalogCategoryMap[categoryId].catalogObjects.push({
+        item,
+        image: imgMap[imageId],
       });
-    } catch (err) {
-      console.error(err);
-      res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    });
+
+    res.json({
+      catalogObjects: JSON.parse(JSONBig.stringify(allCatalogObjects)),
+      catalogCategoryMap: JSON.parse(JSONBig.stringify(catalogCategoryMap)),
+    });
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
   }
-);
+});
 
 export const catalogRouter = router;
