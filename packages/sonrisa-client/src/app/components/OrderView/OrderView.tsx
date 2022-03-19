@@ -1,11 +1,10 @@
-import { useCatalog, useOrder } from '../../context';
+import { useCatalog, useOrdering } from '../../context';
 import {
   getMoneyString,
   getOrderSubtotal,
   getOrderTax,
   getOrderTotal,
 } from '../../utils';
-import { useOrdering } from '../../hooks';
 import { CartItem } from '../CartItem/CartItem';
 import styles from './OrderView.module.scss';
 
@@ -16,7 +15,7 @@ interface IOrderViewProps {
 export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
   const { currentOrder } = useOrdering();
 
-  const { tipMoney } = useOrder();
+  const { tipMoney } = useOrdering();
 
   const { catalogImageMap } = useCatalog();
 

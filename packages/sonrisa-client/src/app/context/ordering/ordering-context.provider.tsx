@@ -1,60 +1,59 @@
 import { IOrderingStatus } from '@sonrisa/core';
+import { useStorage } from '../../hooks';
+import { useEffect, useState } from 'react';
+import { CreatePaymentRequest, Customer, Money, Order, Payment } from 'square';
+import { Api } from '../../api';
+import { logger } from '../../utils';
+import { ORDER_CONTEXT } from './ordering.context';
 import { cloneDeep } from 'lodash';
-import { CreatePaymentRequest, Customer, Order, Payment } from 'square';
-import { Api } from '../api/api';
-import { setOrder, useAppDispatch, useAppSelector } from '../redux';
-import { logger } from '../utils';
-import { useStorage } from './use-storage';
 
-export interface IOrderingHook {
-  currentOrder: Order | undefined;
+export const OrderContextProvider = ({ children }) => {
+  const [currentOrder, setCurrentOrder] = useState<Order>({} as Order);
 
-  acceptingOrders: boolean;
-
-  notAcceptingOrdersReason: string;
-
-  getOrderId: () => string;
-
-  getOrderById: (orderId: string) => Promise<Order>;
-
-  getItemQuantity: (itemId: string) => number;
-
-  setItemQuantity: (itemId: string, quantity: number) => Promise<Order>;
-
-  updateOrder: (data: any) => Promise<Order>;
-
-  clearOrder: () => void;
-
-  checkAcceptingOrders: () => Promise<IOrderingStatus>;
-
-  createPayment: (
-    request: CreatePaymentRequest,
-    customer: Customer
-  ) => Promise<Payment>;
-}
-
-export const useOrdering = (): IOrderingHook => {
-  const orderState = useAppSelector((state) => state.order);
-
-  const currentOrder = orderState?.order;
-
-  const acceptingOrders = orderState?.accepting as boolean;
-
-  const notAcceptingOrdersReason = orderState?.notAcceptingReason as string;
+  const [orderingStatus, setOrderingStatus] = useState<IOrderingStatus>(
+    {} as IOrderingStatus
+  );
 
   const { setSessionItem, getSessionItem, storageKeys } = useStorage();
 
-  const dispatch = useAppDispatch();
+  const [tipMoney, setTipMoney] = useState<Money>({
+    amount: 0,
+    currency: 'USD',
+  } as any);
 
-  const getOrderId = (): string => {
-    const _orderId = getSessionItem(storageKeys.ORDER_NUMBER);
-    return _orderId || '';
-  };
+  useEffect(() => {
+    const checkAcceptingOrders = async () => {
+      try {
+        const _response = await Api.acceptingOrders();
+        logger.log('[acceptingOrders response]:::: ', _response);
+        setOrderingStatus(_response.data);
+      } catch (err: any) {
+        logger.error(err);
+        setOrderingStatus({
+          acceptingOrders: false,
+          message:
+            'There was an unexpected error. Please refresh the page to try again.',
+        });
+      }
+    };
+    checkAcceptingOrders();
+  }, []);
 
   const getOrderById = async (orderId: string): Promise<Order> => {
     const _response = await Api.getOrder(orderId);
     return _response.data.order as Order;
   };
+
+  useEffect(() => {
+    const orderId = getSessionItem(storageKeys.ORDER_NUMBER);
+    if (!orderId) {
+      return;
+    }
+    getOrderById(orderId)
+      .then((order) => setCurrentOrder(order))
+      .catch((err) => console.error(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getItemQuantity = (itemId: string): number => {
     if (
@@ -86,7 +85,7 @@ export const useOrdering = (): IOrderingHook => {
       const _order = _response.data.order as Order;
 
       setSessionItem(storageKeys.ORDER_NUMBER, _order.id);
-      dispatch(setOrder(_order));
+      setCurrentOrder(_order);
       return _order;
     } catch (err: any) {
       logger.error(err);
@@ -128,16 +127,16 @@ export const useOrdering = (): IOrderingHook => {
     try {
       // if theres an existing id update the order
       // otherwise create a new one
-      const _response = currentOrder?.id
+      const response = currentOrder?.id
         ? await Api.updateOrder(currentOrder.id, currentOrder?.version || 0, {
             lineItems: _clonedItems,
           })
         : await Api.createOrder(_clonedItems);
 
-      const _order = _response.data.order as Order;
+      const _order = response.data.order as Order;
 
       setSessionItem(storageKeys.ORDER_NUMBER, _order.id);
-      dispatch(setOrder(_order));
+      setCurrentOrder(_order);
       return _order;
     } catch (err: any) {
       logger.error(err);
@@ -146,7 +145,7 @@ export const useOrdering = (): IOrderingHook => {
   };
 
   const clearOrder = () => {
-    dispatch(setOrder(null));
+    setCurrentOrder(null);
     setSessionItem(storageKeys.ORDER_NUMBER, '');
   };
 
@@ -155,38 +154,31 @@ export const useOrdering = (): IOrderingHook => {
     customer: Customer
   ): Promise<Payment> => {
     try {
-      const _response = await Api.createPayment(request, customer);
-      const _payment = _response.data.payment as Payment;
+      const response = await Api.createPayment(request, customer);
+      const payment = response.data.payment as Payment;
 
-      return _payment;
+      return payment;
     } catch (err: any) {
       logger.error(err);
       throw new Error(err);
     }
   };
 
-  const checkAcceptingOrders = async (): Promise<IOrderingStatus> => {
-    try {
-      const _response = await Api.acceptingOrders();
-      logger.log('[acceptingOrders response]:::: ', _response);
-      return _response.data;
-    } catch (err: any) {
-      logger.error(err);
-      throw new Error(err);
-    }
-  };
-
-  return {
-    currentOrder,
-    acceptingOrders,
-    notAcceptingOrdersReason,
-    getOrderId,
-    getOrderById,
-    getItemQuantity,
-    setItemQuantity,
-    updateOrder,
-    clearOrder,
-    createPayment,
-    checkAcceptingOrders,
-  };
+  return (
+    <ORDER_CONTEXT.Provider
+      value={{
+        currentOrder,
+        tipMoney,
+        orderingStatus,
+        setTipMoney,
+        getItemQuantity,
+        setItemQuantity,
+        updateOrder,
+        clearOrder,
+        createPayment,
+      }}
+    >
+      {children}
+    </ORDER_CONTEXT.Provider>
+  );
 };

@@ -2,7 +2,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { OrderLineItem } from 'square';
-import { useOrdering } from '../../hooks';
+import { useOrdering } from '../../context';
 import styles from './CartItem.module.scss';
 
 type CartItemProps = {

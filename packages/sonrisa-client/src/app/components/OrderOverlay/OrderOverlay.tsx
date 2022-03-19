@@ -3,8 +3,7 @@ import { faMinus, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMemo, useState } from 'react';
 import { CatalogImage, CatalogObject } from 'square';
-import { useCatalog } from '../../context';
-import { useOrdering } from '../../hooks';
+import { useCatalog, useOrdering } from '../../context';
 import {
   calculateCost,
   getItemDescription,
@@ -35,7 +34,7 @@ export const OrderOverlay = ({
   prevQuantityRef,
   closeOverlay,
 }: OrderOverlayProps) => {
-  const { setItemQuantity, acceptingOrders } = useOrdering();
+  const { setItemQuantity, orderingStatus } = useOrdering();
 
   const { catalogImageMap } = useCatalog();
 
@@ -84,7 +83,7 @@ export const OrderOverlay = ({
         <div className={styles.quantityWrap}>
           <button
             className={`${styles.quantityBtn}${
-              !acceptingOrders ? ' btn-disabled' : ''
+              !orderingStatus?.acceptingOrders ? ' btn-disabled' : ''
             }`}
             onClick={() => setQuantity(Math.max(quantity - 1, 0))}
           >
@@ -93,7 +92,7 @@ export const OrderOverlay = ({
           <span className={styles.quantity}>{quantity}</span>
           <button
             className={`${styles.quantityBtn}${
-              !acceptingOrders ? ' btn-disabled' : ''
+              !orderingStatus?.acceptingOrders ? ' btn-disabled' : ''
             }`}
             onClick={() => setQuantity(quantity + 1)}
           >
@@ -111,7 +110,10 @@ export const OrderOverlay = ({
           isFullWidth={true}
           onClick={updateOrder}
           showSpinner={updatingOrder}
-          isDisabled={!acceptingOrders || prevQuantityRef.current === quantity}
+          isDisabled={
+            !orderingStatus?.acceptingOrders ||
+            prevQuantityRef.current === quantity
+          }
         />
       </div>
     </div>

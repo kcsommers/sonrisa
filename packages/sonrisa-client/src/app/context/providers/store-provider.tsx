@@ -1,5 +1,5 @@
 import { CatalogContextProvider } from '../catalog';
-import { OrderContextProvider } from '../order';
+import { OrderContextProvider } from '../ordering';
 
 export const StoreProvider = ({ children }) => {
   return (

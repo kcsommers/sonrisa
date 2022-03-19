@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { CatalogImage, CatalogObject } from 'square';
-import { useOrdering } from '../../hooks';
+import { useOrdering } from '../../context';
 import {
   getItemName,
   getItemPrice,

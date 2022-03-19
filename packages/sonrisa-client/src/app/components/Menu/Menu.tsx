@@ -1,4 +1,4 @@
-import { useCatalog, useOrder } from '../../context';
+import { useCatalog, useOrdering } from '../../context';
 import { getItemVariationId } from '../../utils';
 import { Alert } from '../Alert/Alert';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
@@ -12,7 +12,7 @@ interface IMenuProps {
 export const Menu = ({ onOrderUpdate }: IMenuProps) => {
   const { catalogItems, catalogImageMap } = useCatalog();
 
-  const { orderingStatus } = useOrder();
+  const { orderingStatus } = useOrdering();
 
   console.log('imagemap:::: ', catalogImageMap, catalogItems);
 

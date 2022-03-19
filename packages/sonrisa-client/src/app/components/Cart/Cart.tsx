@@ -4,14 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useOrdering } from '../../hooks';
+import { useOrdering } from '../../context';
 import { Button } from '../Button/Button';
 import { OrderView } from '../OrderView/OrderView';
 import styles from './Cart.module.scss';
 
 interface ICartProps {
   isVisible: boolean;
-
   setIsVisible: (isVisible: boolean) => void;
 }
 

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useOrder } from '../../context';
+import { useOrdering } from '../../context';
 import { getMoneyString } from '../../utils';
 import styles from './TipBox.module.scss';
 
@@ -18,7 +18,7 @@ export const TipBox = ({ subTotal }: ITipBoxProps) => {
     [subTotal]
   );
 
-  const { setTipMoney, tipMoney } = useOrder();
+  const { setTipMoney, tipMoney } = useOrdering();
 
   const tipOptionSelected = (tipAmount: number) => {
     setTipMoney({ currency: 'USD', amount: tipAmount } as any);

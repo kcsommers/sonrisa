@@ -9,8 +9,7 @@ import { useEffect, useState } from 'react';
 import { CreatePaymentRequest, Customer, Payment } from 'square';
 import { v4 as uuidV4 } from 'uuid';
 import { environments } from '../../../environments';
-import { useOrder } from '../../context';
-import { useOrdering } from '../../hooks';
+import { useOrdering } from '../../context';
 import {
   getOrderSubtotal,
   getOrderTotal,
@@ -28,7 +27,7 @@ interface ICheckoutFormProps {
 export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
   const { currentOrder, updateOrder, createPayment } = useOrdering();
 
-  const { tipMoney } = useOrder();
+  const { tipMoney } = useOrdering();
 
   const [givenName, setGivenName] = useState('');
 

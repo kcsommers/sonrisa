@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { Payment } from 'square';
 import { Button } from '../../components';
-import { useOrdering } from '../../hooks';
+import { useOrdering } from '../../context';
 import styles from './OrderSuccessPage.module.scss';
 
 interface ISuccessPageLocationState {

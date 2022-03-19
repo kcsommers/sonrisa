@@ -12,7 +12,7 @@ import { MutableRefObject, useEffect, useState } from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import logo from '../../../assets/images/sonrisa_logo.jpg';
-import { useOrdering } from '../../hooks';
+import { useOrdering } from '../../context';
 import styles from './Header.module.scss';
 
 type HeaderProps = {
