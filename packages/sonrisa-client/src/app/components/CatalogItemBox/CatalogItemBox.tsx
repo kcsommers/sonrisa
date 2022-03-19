@@ -1,6 +1,6 @@
+import { ICatalogObjects } from '@sonrisa/core';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { CatalogImage, CatalogObject } from 'square';
 import { useOrdering } from '../../context';
 import {
   getItemName,
@@ -14,7 +14,7 @@ import { Overlay } from '../Overlay/Overlay';
 import styles from './CatalogItemBox.module.scss';
 
 interface CatalogItemBoxProps {
-  catalogObjects: { item: CatalogObject; image: CatalogImage };
+  catalogObjects: ICatalogObjects;
   onOrderUpdate: (success: boolean) => void;
   categoryName: string;
 }
@@ -120,7 +120,7 @@ export const CatalogItemBox = ({
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay
-          item={catalogObjects.item}
+          catalogObjects={catalogObjects}
           quantity={quantity}
           setQuantity={setQuantity}
           orderUpdated={orderUpdated}

@@ -1,9 +1,9 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faMinus, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useMemo, useState } from 'react';
-import { CatalogImage, CatalogObject } from 'square';
-import { useCatalog, useOrdering } from '../../context';
+import { ICatalogObjects } from '@sonrisa/core';
+import { useState } from 'react';
+import { useOrdering } from '../../context';
 import {
   calculateCost,
   getItemDescription,
@@ -18,7 +18,7 @@ import { ImageSlider } from './../ImageSlider/ImageSlider';
 import styles from './OrderOverlay.module.scss';
 
 interface OrderOverlayProps {
-  item: CatalogObject;
+  catalogObjects: ICatalogObjects;
   quantity: number;
   prevQuantityRef: React.MutableRefObject<number>;
   setQuantity: (quantity: number) => void;
@@ -27,7 +27,7 @@ interface OrderOverlayProps {
 }
 
 export const OrderOverlay = ({
-  item,
+  catalogObjects,
   quantity,
   setQuantity,
   orderUpdated,
@@ -35,15 +35,7 @@ export const OrderOverlay = ({
   closeOverlay,
 }: OrderOverlayProps) => {
   const { setItemQuantity, orderingStatus } = useOrdering();
-
-  const { catalogImageMap } = useCatalog();
-
   const [updatingOrder, setUpdatingOrder] = useState(false);
-
-  const catalogImage = useMemo<CatalogImage>(() => {
-    const image: CatalogImage = catalogImageMap[getItemVariationId(item)];
-    return image;
-  }, []);
 
   const updateOrder = () => {
     if (quantity === prevQuantityRef.current) {
@@ -52,7 +44,7 @@ export const OrderOverlay = ({
 
     setUpdatingOrder(true);
 
-    setItemQuantity(getItemVariationId(item), quantity)
+    setItemQuantity(getItemVariationId(catalogObjects.item), quantity)
       .then((res) => {
         prevQuantityRef.current = quantity;
         orderUpdated(true);
@@ -75,10 +67,12 @@ export const OrderOverlay = ({
         <FontAwesomeIcon icon={faTimes as IconProp} />
       </button>
       <div className={styles.overlayBody}>
-        <ImageSlider images={[catalogImage?.url!]} autoSlide={true} />
+        {catalogObjects.image?.url && (
+          <ImageSlider images={[catalogObjects.image?.url!]} autoSlide={true} />
+        )}
         <div className={styles.descriptionWrap}>
-          <h3>{getItemName(item)}</h3>
-          <p>{getItemDescription(item)}</p>
+          <h3>{getItemName(catalogObjects.item)}</h3>
+          <p>{getItemDescription(catalogObjects.item)}</p>
         </div>
         <div className={styles.quantityWrap}>
           <button
@@ -104,7 +98,7 @@ export const OrderOverlay = ({
       <div className={styles.overlayFooter}>
         <Button
           text={`Update Cart ${getMoneyString(
-            calculateCost(getItemPrice(item), quantity)
+            calculateCost(getItemPrice(catalogObjects.item), quantity)
           )}`}
           size="md"
           isFullWidth={true}
