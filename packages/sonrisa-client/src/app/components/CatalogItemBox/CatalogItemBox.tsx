@@ -11,19 +11,19 @@ import {
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import { OrderOverlay } from '../OrderOverlay/OrderOverlay';
 import { Overlay } from '../Overlay/Overlay';
-import styles from './OrderBox.module.scss';
+import styles from './CatalogItemBox.module.scss';
 
-interface OrderBoxProps {
+interface CatalogItemBoxProps {
   catalogObjects: { item: CatalogObject; image: CatalogImage };
   onOrderUpdate: (success: boolean) => void;
   categoryName: string;
 }
 
-export const OrderBox = ({
+export const CatalogItemBox = ({
   catalogObjects,
   onOrderUpdate,
   categoryName,
-}: OrderBoxProps) => {
+}: CatalogItemBoxProps) => {
   const { getItemQuantity, currentOrder } = useOrdering();
   const [quantity, setQuantity] = useState(0);
   const [overlayOpen, setOverlayOpen] = useState(false);
@@ -63,12 +63,12 @@ export const OrderBox = ({
 
   return (
     <div
-      className={`${styles.orderBox}${
+      className={`${styles.catalogItemBox}${
         categoryName !== 'flavors' ? ` ${styles.orderable}` : ''
       }`}
     >
       <div
-        className={styles.orderBoxInner}
+        className={styles.catalogItemBoxInner}
         onClick={() => categoryName !== 'flavors' && setOverlayOpen(true)}
       >
         <div className={styles.imgHoverBg}></div>

@@ -13,6 +13,6 @@ export * from './Overlay/Overlay';
 export * from './Cart/Cart';
 export * from './Footer/Footer';
 export * from './Header/Header';
-export * from './OrderBox/OrderBox';
+export * from './CatalogItemBox/CatalogItemBox';
 export * from './OrderOverlay/OrderOverlay';
 export * from './TipBox/TipBox';

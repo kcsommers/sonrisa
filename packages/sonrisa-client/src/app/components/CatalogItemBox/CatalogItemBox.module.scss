@@ -1,6 +1,6 @@
 @import '../../styles/variables.scss';
 
-div.orderBox {
+div.catalogItemBox {
   height: 100%;
   &.orderable {
     cursor: pointer;
@@ -15,7 +15,7 @@ div.orderBox {
   }
 }
 
-div.orderBoxInner {
+div.catalogItemBoxInner {
   background-color: #fff;
   border-radius: $border-radius;
   position: relative;

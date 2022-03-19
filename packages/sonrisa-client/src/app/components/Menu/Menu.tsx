@@ -1,10 +1,10 @@
 import { ICatalogCategoryMap } from 'packages/core/dist/bundles';
 import { useMemo } from 'react';
 import { useCatalog, useOrdering } from '../../context';
-import { getItemVariationId, toTitleCase } from '../../utils';
+import { toTitleCase } from '../../utils';
 import { Alert } from '../Alert/Alert';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
-import { OrderBox } from '../OrderBox/OrderBox';
+import { CatalogItemBox } from '../CatalogItemBox/CatalogItemBox';
 import styles from './Menu.module.scss';
 
 interface IMenuProps {
@@ -53,7 +53,7 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
             <div className={styles.categoryWrapInner}>
               {categoryMapByName[categoryName].catalogObjects.map(
                 (objects, i) => (
-                  <OrderBox
+                  <CatalogItemBox
                     key={categoryName + i}
                     catalogObjects={objects}
                     onOrderUpdate={onOrderUpdate}
