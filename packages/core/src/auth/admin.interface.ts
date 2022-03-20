@@ -3,4 +3,5 @@ export interface IAdmin {
   email: string;
   token?: string;
   password?: string;
+  _id?: string;
 }

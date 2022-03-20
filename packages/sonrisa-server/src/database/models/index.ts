@@ -1,1 +1,2 @@
-export * from './admin/admin.model';
+export * from './admin';
+export * from './events';

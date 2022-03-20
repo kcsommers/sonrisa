@@ -7,6 +7,7 @@ import {
   contactRouter,
   instagramRouter,
   orderingRouter,
+  eventsController,
 } from './controllers';
 import { connectToMongoDb } from './database';
 
@@ -50,6 +51,7 @@ app.use('/api/catalog', catalogRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/instagram', instagramRouter);
 app.use('/api/auth', authController);
+app.use('/api/events', eventsController);
 
 connectToMongoDb();
 

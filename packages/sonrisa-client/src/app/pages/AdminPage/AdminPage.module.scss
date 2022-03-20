@@ -1,0 +1,27 @@
+@import '../../styles/variables.scss';
+
+div.adminPageWrap {
+  padding: 4rem 0;
+}
+
+div.adminPageWrapInner {
+  background-color: $offwhite;
+  width: 75%;
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: 3px;
+}
+
+div.newEventWrap {
+  margin-bottom: 2rem;
+  > h6 {
+    margin-bottom: 1rem;
+  }
+}
+
+div.upcomingEventsWrap {
+  margin-bottom: 2rem;
+  > h6 {
+    margin-bottom: 1rem;
+  }
+}
