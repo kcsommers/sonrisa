@@ -8,3 +8,4 @@ google-keys.ts
 node_modules
 instagram_token.json
 .vscode
+*.ignore*

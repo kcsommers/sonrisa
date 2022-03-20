@@ -7,6 +7,7 @@ import {
   instagramRouter,
   orderingRouter,
 } from './controllers';
+import { connectToMongoDb } from './database';
 
 const app = express();
 
@@ -47,6 +48,8 @@ app.use('/api/order', orderingRouter);
 app.use('/api/catalog', catalogRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/instagram', instagramRouter);
+
+connectToMongoDb();
 
 const port = app.get('port');
 const server = app.listen(port, () =>

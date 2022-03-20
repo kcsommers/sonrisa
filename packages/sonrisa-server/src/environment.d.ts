@@ -27,5 +27,7 @@ declare namespace NodeJS {
     SONRISA_EMAIL: string;
 
     INSTAGRAM_TOKEN: string;
+
+    MONGODB_URI: string;
   }
 }
