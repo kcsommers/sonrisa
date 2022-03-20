@@ -1,3 +1,4 @@
+import { OrderLineItem } from 'square';
 import { useCatalog, useOrdering } from '../../context';
 import {
   getMoneyString,
@@ -14,10 +15,8 @@ interface IOrderViewProps {
 
 export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
   const { currentOrder } = useOrdering();
-
   const { tipMoney } = useOrdering();
-
-  const { catalogImageMap } = useCatalog();
+  const { catalog } = useCatalog();
 
   return (
     <div>
@@ -30,7 +29,7 @@ export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
               canRemove={canRemoveItems}
               orderItem={item}
               key={item.uid}
-              imageUrl={catalogImageMap[item.catalogObjectId as string]?.url!}
+              imageUrl={catalog.catalogImageMap[item.catalogObjectId]?.url!}
             />
           ))}
           <div className={styles.checkoutWrap}>

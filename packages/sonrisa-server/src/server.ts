@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
 import {
+  authController,
   catalogRouter,
   contactRouter,
   instagramRouter,
@@ -48,6 +49,7 @@ app.use('/api/order', orderingRouter);
 app.use('/api/catalog', catalogRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/instagram', instagramRouter);
+app.use('/api/auth', authController);
 
 connectToMongoDb();
 

@@ -13,14 +13,14 @@ router.post(
   '/login',
   async (_req: Request<any, any, ILoginCredentials>, _res: Response) => {
     try {
-      const _credentials: ILoginCredentials = _req.body;
-      if (!(_credentials.email && _credentials.password)) {
+      const credentials: ILoginCredentials = _req.body;
+      if (!(credentials.email && credentials.password)) {
         return _res
           .status(HttpStatusCodes.BAD_REQUEST)
           .send('All Inputs Required');
       }
 
-      const _user = await AdminModel.findOne({ email: _credentials.email });
+      const _user = await AdminModel.findOne({ email: credentials.email });
       if (!_user) {
         return _res
           .status(HttpStatusCodes.BAD_REQUEST)
@@ -28,7 +28,7 @@ router.post(
       }
 
       const _passwordValid: boolean = await bcrypt.compare(
-        _credentials.password,
+        credentials.password,
         _user.password
       );
       if (!_passwordValid) {

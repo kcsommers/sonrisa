@@ -4,15 +4,10 @@ import styles from './Button.module.scss';
 
 type ButtonProps = {
   text: string;
-
   size?: 'lg' | 'md' | 'sm';
-
   isFullWidth?: boolean;
-
   showSpinner?: boolean;
-
   isDisabled?: boolean;
-
   onClick?: () => void;
 };
 

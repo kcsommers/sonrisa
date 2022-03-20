@@ -1,11 +1,11 @@
-import { Cart, Footer, Header } from './components';
+import { Cart, Footer, Header, ProtectedRoute } from './components';
 import { MutableRefObject, useRef, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { StoreProvider } from './context';
+import { AuthContextProvider, StoreProvider } from './context';
 import { CheckoutPage } from './pages/CheckoutPage/CheckoutPage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { OrderSuccessPage } from './pages/OrderSuccessPage/OrderSuccessPage';
-import { ScrollRefNames } from './pages';
+import { ScrollRefNames, LoginPage, AdminPage } from './pages';
 
 export const AppRouter = () => {
   const [cartVisible, setCartVisible] = useState(false);
@@ -41,25 +41,32 @@ export const AppRouter = () => {
 
   return (
     <Router>
-      <StoreProvider>
-        <Header
-          setCartVisible={setCartVisible}
-          scrollRefs={{
-            ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
-            CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
-            ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
-            PHOTOS: photosScrollRef as MutableRefObject<HTMLElement>,
-          }}
-        />
-        <div
-          style={{
-            maxWidth: '1980px',
-            margin: '0 auto',
-            position: 'relative',
-            zIndex: 1,
-            backgroundColor: '#fff',
-          }}
-        >
+      <Header
+        setCartVisible={setCartVisible}
+        scrollRefs={{
+          ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
+          CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
+          ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
+          PHOTOS: photosScrollRef as MutableRefObject<HTMLElement>,
+        }}
+      />
+      <div
+        style={{
+          maxWidth: '1980px',
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 1,
+          backgroundColor: '#fff',
+          minHeight: 'calc(100vh - 315px)',
+        }}
+      >
+        <AuthContextProvider>
+          <Switch>
+            <Route exact path="/login" component={LoginPage} />
+            <ProtectedRoute exact path="/admin" component={AdminPage} />
+          </Switch>
+        </AuthContextProvider>
+        <StoreProvider>
           <Switch>
             <Route
               exact
@@ -83,10 +90,10 @@ export const AppRouter = () => {
               component={OrderSuccessPage}
             />
           </Switch>
-        </div>
-        <Footer />
-        <Cart isVisible={cartVisible} setIsVisible={setCartVisible} />
-      </StoreProvider>
+          <Cart isVisible={cartVisible} setIsVisible={setCartVisible} />
+        </StoreProvider>
+      </div>
+      <Footer />
     </Router>
   );
 };

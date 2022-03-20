@@ -99,10 +99,13 @@ textarea {
   &:focus {
     border-color: $yellow;
   }
+}
 
-  &::placeholder {
-    font-size: 14px;
-  }
+label {
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 0.25rem;
 }
 
 textarea {

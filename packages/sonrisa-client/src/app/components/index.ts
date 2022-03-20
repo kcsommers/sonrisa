@@ -16,3 +16,4 @@ export * from './Header/Header';
 export * from './CatalogItemBox/CatalogItemBox';
 export * from './OrderOverlay/OrderOverlay';
 export * from './TipBox/TipBox';
+export * from './ProtectedRoute';
