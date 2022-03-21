@@ -11,8 +11,10 @@ router.get(
   async (req: Request, res: Response<Document<IPickupEvent>[]>) => {
     try {
       const { upcomingOnly } = req.query;
-      const events: Document<IPickupEvent>[] =
-        await PickupEventModel.find().populate('location');
+      const query = upcomingOnly ? { startTime: { $gte: Date.now() } } : {};
+      const events: Document<IPickupEvent>[] = await PickupEventModel.find(
+        query
+      ).populate('location');
       console.log('Successfully retrieved events from DB');
       res.status(HttpStatusCodes.OK).json(events);
     } catch (_error: any) {
@@ -46,7 +48,6 @@ router.post(
   ) => {
     try {
       const newPickupEventData: Partial<IPickupEvent> = req.body;
-      console.log('new data:::: ', newPickupEventData);
       const updatedLocation: Document<any, any, ILocation> =
         await LocationModel.findOneAndUpdate(
           {

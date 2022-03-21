@@ -1,4 +1,8 @@
-import { IOrderingStatus, NotAcceptingOrdersReasons } from '@sonrisa/core';
+import {
+  IOrderingStatus,
+  IPickupEvent,
+  NotAcceptingOrdersReasons,
+} from '@sonrisa/core';
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import {
@@ -13,6 +17,7 @@ import {
   UpdateOrderResponse,
 } from 'square';
 import { v4 as uuidV4 } from 'uuid';
+import { PickupEventModel } from '../../database/models';
 import { environments } from '../../environments';
 import { square } from '../../square';
 import { camelcaseKeys } from '../../utils';
@@ -28,11 +33,11 @@ const router: Router = Router();
  * or if its Sunday or Monday
  */
 router.get('/accepting', (req: Request, res: Response<IOrderingStatus>) => {
-  res.json({
-    acceptingOrders: false,
-    message: NotAcceptingOrdersReasons.SOLD_OUT,
-    errors: null,
-  });
+  // res.json({
+  //   acceptingOrders: false,
+  //   message: NotAcceptingOrdersReasons.SOLD_OUT,
+  //   errors: null,
+  // });
 
   const _badDays = [0, 1]; // Sunday & Monday
 
@@ -43,13 +48,12 @@ router.get('/accepting', (req: Request, res: Response<IOrderingStatus>) => {
   let acceptingOrders = true;
   let message = '';
   // check the day
-  if (_badDays.indexOf(_date.getDay()) > -1) {
-    acceptingOrders = false;
-    message = NotAcceptingOrdersReasons.INVALID_DAY;
-  }
+  // if (_badDays.indexOf(_date.getDay()) > -1) {
+  //   acceptingOrders = false;
+  //   message = NotAcceptingOrdersReasons.INVALID_DAY;
+  // }
 
   // @TODO check how many have been ordered this week
-
   res.json({
     acceptingOrders,
     message,
@@ -201,45 +205,57 @@ router.post(
   '/payments',
   async (req: Request, res: Response<CreatePaymentResponse>) => {
     // get the request and the customer from the req body
-    const _request = req.body.request as CreatePaymentRequest;
-    const _customer = req.body.customer as Customer;
-
-    console.log('req:::: ', _request);
+    const request = req.body.request as CreatePaymentRequest;
+    const customer = req.body.customer as Customer;
+    const pickupEvent = req.body.pickupEvent as IPickupEvent;
 
     // if one doesn't exist send bad request status
-    if (!_request || !_customer) {
+    if (!request || !customer) {
       return res.status(HttpStatusCodes.BAD_REQUEST);
     }
 
     try {
       // create the payment through square
-      const _response = await square.paymentsApi.createPayment(_request);
+      const _response = await square.paymentsApi.createPayment(request);
       console.log('[create payment response]:::: ', _response.body);
 
       // parse the response
-      const _resParsed = JSON.parse(
+      const resParsed = JSON.parse(
         _response.body as string
       ) as CreatePaymentResponse;
       console.log(
         '[create receipt]:::: ',
-        _resParsed,
-        _resParsed.payment.receiptUrl
+        resParsed,
+        resParsed.payment.receiptUrl
       );
 
       // convert underscores to camelcase
-      const _camelCasePayment = camelcaseKeys(_resParsed.payment) as Payment;
+      const _camelCasePayment = camelcaseKeys(resParsed.payment) as Payment;
       if (!_camelCasePayment) {
         console.error('Error converting to camel case');
         return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
       }
 
-      if (!_resParsed.errors || !_resParsed.errors.length) {
-        // no errors so far, send an email to customer
-        sendEmail(
-          _customer.emailAddress,
-          'Thank you for your order!',
-          'Your order has been placed successfully',
-          `
+      if (resParsed.errors && resParsed.errors.length) {
+        res.json({ errors: resParsed.errors, payment: _camelCasePayment });
+        return;
+      }
+
+      await PickupEventModel.findOneAndUpdate(
+        {
+          _id: pickupEvent._id,
+        },
+        {
+          orders: [...(pickupEvent.orders || []), request.orderId],
+        }
+      );
+
+      // no errors so far, send an email to customer
+      sendEmail(
+        customer.emailAddress,
+        'Thank you for your order!',
+        'Your order has been placed successfully',
+        `
             <div
               style="
                 position: relative;
@@ -292,26 +308,21 @@ router.post(
                 </div>
             </div>
           `
-        )
-          .then((emailRes) => {
-            console.log('EMAIL RESPONSE:::: ', emailRes);
-            res.json({ errors: _resParsed.errors, payment: _camelCasePayment });
-          })
-          .catch((err) => {
-            // if email errors, send payment success response but include email error
-            console.error('EMAIL ERROR:::: ', err);
+      )
+        .then((emailRes) => {
+          console.log('EMAIL RESPONSE:::: ', emailRes);
+          res.json({ errors: resParsed.errors, payment: _camelCasePayment });
+        })
+        .catch((err) => {
+          // if email errors, send payment success response but include email error
+          console.error('EMAIL ERROR:::: ', err);
 
-            (_resParsed.errors || []).push({
-              category: 'EMAIL',
-              code: 'EMAIL',
-            });
-            res.json({ errors: _resParsed.errors, payment: _camelCasePayment });
+          (resParsed.errors || []).push({
+            category: 'EMAIL',
+            code: 'EMAIL',
           });
-
-        return;
-      }
-
-      res.json({ errors: _resParsed.errors, payment: _camelCasePayment });
+          res.json({ errors: resParsed.errors, payment: _camelCasePayment });
+        });
     } catch (err) {
       console.error('PAYMENT ERROR:::: ', err);
       res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);

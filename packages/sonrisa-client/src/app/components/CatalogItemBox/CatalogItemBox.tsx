@@ -38,17 +38,17 @@ export const CatalogItemBox = ({
   // updates local quantity and price if order id changes
   const orderIdRef = useRef('');
   useEffect(() => {
-    if (!catalogObjects || catalogObjects.item) {
+    if (!catalogObjects || !catalogObjects.item) {
       return;
     }
 
-    const _quantity = getItemQuantity(
+    const quantity = getItemQuantity(
       getItemVariationId(catalogObjects.item) || ''
     );
 
-    prevQuantityRef.current = _quantity;
+    prevQuantityRef.current = quantity;
     orderIdRef.current = currentOrder?.id as string;
-    setQuantity(_quantity);
+    setQuantity(quantity);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder]);
 
@@ -102,7 +102,7 @@ export const CatalogItemBox = ({
             {loadedSrc ? (
               <img src={loadedSrc} alt={getItemName(catalogObjects.item)} />
             ) : (
-              <LoadingSpinner size="sm" color="dark" />
+              <LoadingSpinner size='sm' color='dark' />
             )}
           </div>
         )}

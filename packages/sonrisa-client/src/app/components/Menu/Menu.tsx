@@ -18,7 +18,6 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
   const { orderingStatus } = useOrdering();
 
   const categoryMapByName = useMemo<ICatalogCategoryMap>(() => {
-    console.log('filtering:::::::: ');
     if (!catalog) {
       return catalog;
     }
@@ -39,7 +38,7 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
     <div className={`${styles.menuWrap}`}>
       {!orderingStatus.acceptingOrders && (
         <div className={styles.alertWrap}>
-          <Alert type="danger" message={orderingStatus.message!} />
+          <Alert type='danger' message={orderingStatus.message!} />
         </div>
       )}
       {categoryMapByName ? (

@@ -64,7 +64,6 @@ export const Header = ({
   scrollRefs,
 }: HeaderProps) => {
   const { currentOrder } = useOrdering();
-
   const location = useLocation();
 
   const history = useHistory();
@@ -98,17 +97,17 @@ export const Header = ({
     <header className={`${styles.header} responsive-container`}>
       <div className={`${styles.headerInner}`}>
         <div className={styles.headerLogoWrap}>
-          <Link to="/" className={styles.headerLogoLink}>
-            <img className={styles.logo} src={logo} alt="Sonrisa Logo" />
+          <Link to='/' className={styles.headerLogoLink}>
+            <img className={styles.logo} src={logo} alt='Sonrisa Logo' />
           </Link>
         </div>
         <div className={styles.headerSidesWrap}>
           <div className={styles.headerLeft}>
             <span className={styles.headerContentLg}>
-              <a href="tel:2534595365">
+              <a href='tel:2534595365'>
                 <FontAwesomeIcon icon={faPhone as IconProp} />
               </a>
-              <a href="https://www.instagram.com/sonrisa.donuts/">
+              <a href='https://www.instagram.com/sonrisa.donuts/'>
                 <FontAwesomeIcon icon={faInstagram as IconProp} />
               </a>
             </span>
@@ -169,9 +168,9 @@ export const Header = ({
         {mobileNavVisible && (
           <motion.div
             className={styles.mobileNavOverlay}
-            initial="enter"
-            animate="center"
-            exit="exit"
+            initial='enter'
+            animate='center'
+            exit='exit'
             variants={mobileNavOverlayVariants}
             onClick={(e) => {
               if (
@@ -185,9 +184,9 @@ export const Header = ({
           >
             <motion.div
               className={styles.mobileNavWrap}
-              initial="enter"
-              animate="center"
-              exit="exit"
+              initial='enter'
+              animate='center'
+              exit='exit'
               variants={mobileNavVariants}
               transition={{
                 duration: 0.3,
@@ -205,11 +204,11 @@ export const Header = ({
               <span onClick={() => scrollToRef('ABOUT')}>About</span>
               <span onClick={() => scrollToRef('CONTACT')}>Contact</span>
               <span onClick={() => scrollToRef('PHOTOS')}>Photos</span>
-              <a href="https://www.instagram.com/sonrisa.donuts/">
+              <a href='https://www.instagram.com/sonrisa.donuts/'>
                 <FontAwesomeIcon icon={faInstagram as IconProp} />
                 Instagram
               </a>
-              <a href="tel:2534595365">
+              <a href='tel:2534595365'>
                 <FontAwesomeIcon icon={faPhone as IconProp} />
                 (253) 459-5365
               </a>

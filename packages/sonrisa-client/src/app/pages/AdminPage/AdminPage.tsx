@@ -52,6 +52,7 @@ export const AdminPage = () => {
   const [pendingEvent, setPendingEvent] = useState<IPickupEvent>({
     startTime: new Date(),
     endTime: new Date(),
+    orders: [],
     location: {
       name: '',
       address: {
@@ -175,6 +176,7 @@ export const AdminPage = () => {
     setPendingEvent({
       startTime: new Date(),
       endTime: new Date(),
+      orders: [],
       location: {
         name: '',
         address: {
@@ -221,7 +223,7 @@ export const AdminPage = () => {
       setSnackbarVisible({
         message: 'Event Deleted Successfully',
         icon: faCheckCircle as IconProp,
-        iconColor: 'succes',
+        iconColor: 'error',
         duration: 4000,
       });
       fetchUpcomingEvents();

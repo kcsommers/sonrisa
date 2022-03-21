@@ -14,6 +14,9 @@ const pickupEventSchema = new Schema<any, IPickupEvent>({
     type: Schema.Types.ObjectId,
     ref: 'Location',
   },
+  orders: {
+    type: [String],
+  },
 });
 
 export const PickupEventModel = model<IPickupEvent>(

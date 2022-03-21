@@ -136,9 +136,6 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
         },
         tipMoney,
       };
-
-      console.log('request:::: ', _paymentRequest);
-
       // update the order with fulfillments and customer info
       // if it hasn't already been done
       if (!currentOrder.fulfillments) {
@@ -213,8 +210,8 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
     <div className={styles.checkoutFormWrap}>
       <div className={styles.inputWrap}>
         <input
-          type="name"
-          placeholder="First Name"
+          type='name'
+          placeholder='First Name'
           value={givenName}
           onChange={(e) => setGivenName(e.target.value)}
         />
@@ -229,8 +226,8 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
       </div>
       <div className={styles.inputWrap}>
         <input
-          type="name"
-          placeholder="Last Name"
+          type='name'
+          placeholder='Last Name'
           value={familyName}
           onChange={(e) => setFamilyName(e.target.value)}
         />
@@ -245,8 +242,8 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
       </div>
       <div className={styles.inputWrap}>
         <input
-          type="email"
-          placeholder="Email Address"
+          type='email'
+          placeholder='Email Address'
           value={emailAddress}
           onChange={(e) => setEmailAddress(e.target.value)}
         />
@@ -261,8 +258,8 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
       </div>
       <div className={styles.inputWrap}>
         <input
-          type="phone"
-          placeholder="Phone Number"
+          type='phone'
+          placeholder='Phone Number'
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
@@ -277,21 +274,21 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
       </div>
       <div className={styles.inputWrap}>
         <textarea
-          placeholder="Optional Message"
+          placeholder='Optional Message'
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
       </div>
       <div className={styles.tipBoxWrap}>
-        <label className={styles.label} htmlFor="tipbox">
+        <label className={styles.label} htmlFor='tipbox'>
           Tip
         </label>
         <TipBox subTotal={getOrderSubtotal(currentOrder!)} />
       </div>
-      <div id="card-container"></div>
+      <div id='card-container'></div>
       <div className={styles.inputWrap}>
         <Button
-          text="Submit Payment"
+          text='Submit Payment'
           onClick={submit}
           showSpinner={submittingForm}
         />

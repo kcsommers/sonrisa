@@ -3,6 +3,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { OrderLineItem } from 'square';
 import { useOrdering } from '../../context';
+import { getMoneyString } from '../../utils';
 import styles from './CartItem.module.scss';
 
 type CartItemProps = {

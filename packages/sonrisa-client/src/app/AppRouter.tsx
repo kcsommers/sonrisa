@@ -41,36 +41,36 @@ export const AppRouter = () => {
 
   return (
     <Router>
-      <Header
-        setCartVisible={setCartVisible}
-        scrollRefs={{
-          ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
-          CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
-          ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
-          PHOTOS: photosScrollRef as MutableRefObject<HTMLElement>,
-        }}
-      />
-      <div
-        style={{
-          maxWidth: '1980px',
-          margin: '0 auto',
-          position: 'relative',
-          zIndex: 1,
-          backgroundColor: '#fff',
-          minHeight: 'calc(100vh - 315px)',
-        }}
-      >
-        <AuthContextProvider>
-          <Switch>
-            <Route exact path="/login" component={LoginPage} />
-            <ProtectedRoute exact path="/admin" component={AdminPage} />
-          </Switch>
-        </AuthContextProvider>
-        <StoreProvider>
+      <StoreProvider>
+        <Header
+          setCartVisible={setCartVisible}
+          scrollRefs={{
+            ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
+            CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
+            ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
+            PHOTOS: photosScrollRef as MutableRefObject<HTMLElement>,
+          }}
+        />
+        <div
+          style={{
+            maxWidth: '1980px',
+            margin: '0 auto',
+            position: 'relative',
+            zIndex: 1,
+            backgroundColor: '#fff',
+            minHeight: 'calc(100vh - 315px)',
+          }}
+        >
+          <AuthContextProvider>
+            <Switch>
+              <Route exact path='/login' component={LoginPage} />
+              <ProtectedRoute exact path='/admin' component={AdminPage} />
+            </Switch>
+          </AuthContextProvider>
           <Switch>
             <Route
               exact
-              path="/"
+              path='/'
               render={(props) => (
                 <HomePage
                   {...props}
@@ -81,19 +81,19 @@ export const AppRouter = () => {
             />
             <Route
               exact
-              path="/checkout"
+              path='/checkout'
               render={(props) => <CheckoutPage {...props} />}
             />
             <Route
               exact
-              path="/checkout/complete"
+              path='/checkout/complete'
               component={OrderSuccessPage}
             />
           </Switch>
           <Cart isVisible={cartVisible} setIsVisible={setCartVisible} />
-        </StoreProvider>
-      </div>
-      <Footer />
+        </div>
+        <Footer />
+      </StoreProvider>
     </Router>
   );
 };
