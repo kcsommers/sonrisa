@@ -1,7 +1,8 @@
 import { ILocation } from './location.interface';
 
 export interface IPickupEvent {
-  startTime: number;
+  startTime: Date;
+  endTime: Date;
   location: ILocation;
   _id?: string;
 }

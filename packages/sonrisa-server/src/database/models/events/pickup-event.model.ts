@@ -3,7 +3,11 @@ import { model, Schema } from 'mongoose';
 
 const pickupEventSchema = new Schema<any, IPickupEvent>({
   startTime: {
-    type: Number,
+    type: Date,
+    required: true,
+  },
+  endTime: {
+    type: Date,
     required: true,
   },
   location: {

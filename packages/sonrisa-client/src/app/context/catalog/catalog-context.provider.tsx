@@ -1,6 +1,5 @@
 import { ICatalog } from 'packages/core/dist/bundles';
 import { useEffect, useState } from 'react';
-import { CatalogImage, CatalogObject } from 'square';
 import { Api } from '../../api';
 import { logger } from '../../utils';
 import { CATALOG_CONTEXT } from './catalog.context';

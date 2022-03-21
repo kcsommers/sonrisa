@@ -68,17 +68,17 @@ export const Overlay = ({
       {isOpen && (
         <motion.div
           className={styles.overlayContainer}
-          initial="enter"
-          animate="center"
-          exit="exit"
+          initial='enter'
+          animate='center'
+          exit='exit'
           variants={containerVariants}
           onClick={close}
         >
           <motion.div
             className={styles.overlayInner}
-            initial="enter"
-            animate="center"
-            exit="exit"
+            initial='enter'
+            animate='center'
+            exit='exit'
             variants={templateVariants}
           >
             {cloneElement(children as ReactElement, { closeOverlay: close })}

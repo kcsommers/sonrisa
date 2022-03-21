@@ -4,6 +4,7 @@ export interface ILocation {
     street: string;
     city: string;
     state: string;
-    zip: number;
+    zip: string;
   };
+  _id?: string;
 }

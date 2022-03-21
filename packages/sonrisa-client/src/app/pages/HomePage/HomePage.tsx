@@ -114,21 +114,21 @@ export const HomePage = ({
     <div className={styles.homePageWrap}>
       <section className={`${styles.landingSection} responsive-container`}>
         <div className={`${styles.landingInner}`}>
-          <div className="inner-border"></div>
+          <div className='inner-border'></div>
           <div className={`${styles.landingCta} responsive-container-inner`}>
             <h3>
               Handmade Brioche Donuts. Fresh and Local Ingredients. Made in
               Seattle, WA.
             </h3>
             <Button
-              text="Order Now"
+              text='Order Now'
               isFullWidth={false}
               onClick={() => {
                 orderSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
               }}
             />
           </div>
-          <img src={doughnutHalves} alt="Doughnut Half" />
+          <img src={doughnutHalves} alt='Doughnut Half' />
         </div>
       </section>
       <section className={`${styles.introSection} responsive-container`}>
@@ -165,10 +165,10 @@ export const HomePage = ({
         }}
       >
         <span className={styles.aboutImgWrap}>
-          <img src={jing} alt="Jing" />
+          <img src={jing} alt='Jing' />
         </span>
         <div className={`${styles.bioWrap}`}>
-          <div className="inner-border"></div>
+          <div className='inner-border'></div>
           <div className={`${styles.bioInner} max-1280`}>
             <div className={`${styles.taglineWrap}`}>
               <h3>Sonrisa</h3>
@@ -203,26 +203,26 @@ export const HomePage = ({
             <div className={styles.bioImagesWrap}>
               <span>
                 <img
-                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325477/Sonrisa/thai-olympics-2.jpg"
-                  alt="Thai Olympic Team 1"
+                  src='https://res.cloudinary.com/kcsommers/image/upload/v1626325477/Sonrisa/thai-olympics-2.jpg'
+                  alt='Thai Olympic Team 1'
                 />
               </span>
               <span>
                 <img
-                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-3.jpg"
-                  alt="Thai Olympic Team 1"
+                  src='https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-3.jpg'
+                  alt='Thai Olympic Team 1'
                 />
               </span>
               <span>
                 <img
-                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-1.jpg"
-                  alt="Thai Olympic Team 4"
+                  src='https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-1.jpg'
+                  alt='Thai Olympic Team 4'
                 />
               </span>
               <span>
                 <img
-                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-4.jpg"
-                  alt="Thai Olympic Team 3"
+                  src='https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-4.jpg'
+                  alt='Thai Olympic Team 3'
                 />
               </span>
             </div>
@@ -237,7 +237,7 @@ export const HomePage = ({
           setScrollRef('CONTACT', el as HTMLElement);
         }}
       >
-        <div className="max-1280">
+        <div className='max-1280'>
           <ContactForm formSubmitted={contactFormSubmitted} />
         </div>
       </section>

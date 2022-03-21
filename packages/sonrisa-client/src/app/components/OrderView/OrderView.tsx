@@ -1,4 +1,3 @@
-import { OrderLineItem } from 'square';
 import { useCatalog, useOrdering } from '../../context';
 import {
   getMoneyString,
