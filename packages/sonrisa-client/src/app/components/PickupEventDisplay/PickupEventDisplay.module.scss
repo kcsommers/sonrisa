@@ -1,0 +1,39 @@
+@import '../../styles/variables.scss';
+
+p {
+  line-height: 25px;
+}
+
+div.upcomingEventWrap {
+  display: flex;
+  justify-content: space-between;
+  > h6 {
+    margin-bottom: 1rem;
+  }
+  &.useCard {
+    box-shadow: $box-shadow;
+    background-color: #fff;
+    border-radius: $border-radius;
+    padding: 1rem;
+  }
+}
+
+div.eventControlsWrap {
+  > svg {
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+}
+
+span.viewOrders {
+  font-size: 14px;
+  cursor: pointer;
+  color: $primary-color;
+}
+
+div.addressWrap {
+  > p {
+    font-style: italic;
+    color: $primary-color;
+  }
+}
