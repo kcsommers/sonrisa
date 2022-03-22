@@ -42,15 +42,6 @@ export const AppRouter = () => {
   return (
     <Router>
       <StoreProvider>
-        <Header
-          setCartVisible={setCartVisible}
-          scrollRefs={{
-            ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
-            CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
-            ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
-            PHOTOS: photosScrollRef as MutableRefObject<HTMLElement>,
-          }}
-        />
         <div
           style={{
             maxWidth: '1980px',
@@ -61,6 +52,15 @@ export const AppRouter = () => {
             minHeight: 'calc(100vh - 315px)',
           }}
         >
+          <Header
+            setCartVisible={setCartVisible}
+            scrollRefs={{
+              ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
+              CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
+              ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
+              PHOTOS: photosScrollRef as MutableRefObject<HTMLElement>,
+            }}
+          />
           <AuthContextProvider>
             <Switch>
               <Route exact path='/login' component={LoginPage} />

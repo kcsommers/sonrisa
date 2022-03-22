@@ -65,9 +65,9 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
       {isVisible && (
         <motion.div
           className={styles.cartWrap}
-          initial="enter"
-          animate="center"
-          exit="exit"
+          initial='enter'
+          animate='center'
+          exit='exit'
           variants={containerVariants}
           onClick={(e) => {
             if ((e.target as Element).classList.contains(styles.cartWrap)) {
@@ -77,9 +77,9 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
         >
           <motion.div
             className={styles.cartInner}
-            initial="enter"
-            animate="center"
-            exit="exit"
+            initial='enter'
+            animate='center'
+            exit='exit'
             variants={innerVariants}
             transition={{
               duration: 0.3,
@@ -96,7 +96,7 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
             <div className={styles.cartBody}>
               <OrderView canRemoveItems={true} />
               {currentOrder?.lineItems?.length ? (
-                <Button text="Checkout" onClick={goToCheckout} />
+                <Button text='Checkout' onClick={goToCheckout} />
               ) : null}
             </div>
           </motion.div>

@@ -28,7 +28,10 @@ export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
               canRemove={canRemoveItems}
               orderItem={item}
               key={item.uid}
-              imageUrl={catalog.catalogImageMap[item.catalogObjectId]?.url!}
+              imageUrl={
+                catalog.catalogImageMap[item.catalogObjectId] &&
+                catalog.catalogImageMap[item.catalogObjectId][0]?.url!
+              }
             />
           ))}
           <div className={styles.checkoutWrap}>
@@ -48,7 +51,7 @@ export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
               <p className={styles.checkoutItemLabel}>Tip</p>
               <p className={styles.checkoutItemTotal}>
                 {
-                  //@ts-ignore
+                  // @ts-ignore
                   getMoneyString(tipMoney.amount)
                 }
               </p>

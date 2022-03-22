@@ -9,7 +9,11 @@ import HttpStatusCodes from 'http-status-codes';
 import JSONBig from 'json-bigint';
 import { CatalogImage, CatalogObject } from 'square';
 import { square } from '../../square';
-import { getItemCategoryId, getItemImageId } from '../../utils';
+import {
+  getItemCategoryId,
+  getItemImageId,
+  getItemVariationId,
+} from '../../utils';
 
 const router: Router = Router();
 
@@ -51,6 +55,7 @@ router.get('/', async (req: Request, res: Response<ICatalog | Error>) => {
       if (obj.type === CatalogObjectTypes.ITEM) {
         const imageId = getItemImageId(obj);
         const categoryId = getItemCategoryId(obj);
+        const objectId = getItemVariationId(obj);
         if (!catalogCategoryMap[categoryId]) {
           return;
         }
@@ -58,10 +63,12 @@ router.get('/', async (req: Request, res: Response<ICatalog | Error>) => {
           item: obj,
           image: imgMap[imageId],
         });
-        if (catalogImageMap[categoryId]) {
-          catalogImageMap[categoryId].push(imgMap[imageId]);
-        } else {
-          catalogImageMap[categoryId] = [imgMap[imageId]];
+        if (imgMap[imageId]) {
+          if (catalogImageMap[objectId]) {
+            catalogImageMap[objectId].push(imgMap[imageId]);
+          } else {
+            catalogImageMap[objectId] = [imgMap[imageId]];
+          }
         }
       }
     });
