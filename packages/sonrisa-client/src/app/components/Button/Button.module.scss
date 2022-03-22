@@ -9,16 +9,27 @@
   border: none;
   display: inline-block;
   font-family: 'Roboto', sans-serif;
-  background-color: #fff;
   transition: all 0.2s ease;
   box-shadow: $box-shadow;
   color: $dark;
   max-width: 100%;
 
-  &:hover,
-  &:focus {
-    background-color: $dark;
-    color: #fff;
+  &.btn-primary {
+    background-color: #fff;
+    &:hover,
+    &:focus {
+      background-color: $dark;
+      color: #fff;
+    }
+  }
+
+  &.btn-accent {
+    background-color: $light-yellow;
+    &:hover,
+    &:focus {
+      background-color: $dark;
+      color: #fff;
+    }
   }
 }
 
@@ -32,10 +43,10 @@
 }
 
 .btn-sm {
-  padding: 0 0.5rem;
-
+  padding: 0.5rem;
+  font-size: 16px;
   @include for-phone-only {
-    padding: 0rem 0.15rem;
+    padding: 0.15rem;
   }
 }
 

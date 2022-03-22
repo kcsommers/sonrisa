@@ -209,12 +209,6 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
   return (
     <div className={styles.checkoutFormWrap}>
       <div className={styles.inputWrap}>
-        <input
-          type='name'
-          placeholder='First Name'
-          value={givenName}
-          onChange={(e) => setGivenName(e.target.value)}
-        />
         {givenNameError && (
           <p className={`${styles.inputErrorText} error-color`}>
             <FontAwesomeIcon
@@ -223,14 +217,14 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
             {givenNameError}
           </p>
         )}
-      </div>
-      <div className={styles.inputWrap}>
         <input
           type='name'
-          placeholder='Last Name'
-          value={familyName}
-          onChange={(e) => setFamilyName(e.target.value)}
+          placeholder='First Name'
+          value={givenName}
+          onChange={(e) => setGivenName(e.target.value)}
         />
+      </div>
+      <div className={styles.inputWrap}>
         {familyNameError && (
           <p className={`${styles.inputErrorText} error-color`}>
             <FontAwesomeIcon
@@ -239,14 +233,14 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
             {familyNameError}
           </p>
         )}
+        <input
+          type='name'
+          placeholder='Last Name'
+          value={familyName}
+          onChange={(e) => setFamilyName(e.target.value)}
+        />
       </div>
       <div className={styles.inputWrap}>
-        <input
-          type='email'
-          placeholder='Email Address'
-          value={emailAddress}
-          onChange={(e) => setEmailAddress(e.target.value)}
-        />
         {emailAddressError && (
           <p className={`${styles.inputErrorText} error-color`}>
             <FontAwesomeIcon
@@ -255,14 +249,14 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
             {emailAddressError}
           </p>
         )}
+        <input
+          type='email'
+          placeholder='Email Address'
+          value={emailAddress}
+          onChange={(e) => setEmailAddress(e.target.value)}
+        />
       </div>
       <div className={styles.inputWrap}>
-        <input
-          type='phone'
-          placeholder='Phone Number'
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-        />
         {phoneNumberError && (
           <p className={`${styles.inputErrorText} error-color`}>
             <FontAwesomeIcon
@@ -271,6 +265,12 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
             {phoneNumberError}
           </p>
         )}
+        <input
+          type='phone'
+          placeholder='Phone Number'
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
       </div>
       <div className={styles.inputWrap}>
         <textarea

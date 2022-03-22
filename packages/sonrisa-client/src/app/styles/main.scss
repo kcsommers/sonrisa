@@ -159,7 +159,8 @@ button:not(.app-btn) {
   opacity: 0.5;
 }
 
-.inner-border {
+.inner-border,
+.inner-border-white {
   position: absolute;
   border: 3px solid $yellow;
   z-index: 0;
@@ -175,4 +176,8 @@ button:not(.app-btn) {
     right: 0.75rem;
     bottom: 0.75rem;
   }
+}
+
+.inner-border-white {
+  border-color: #fff;
 }

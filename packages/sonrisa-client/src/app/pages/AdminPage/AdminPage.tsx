@@ -7,6 +7,7 @@ import {
   Button,
   LoadingSpinner,
   Overlay,
+  PickupEventDisplay,
   SnackbarComponent,
 } from '../../components';
 import styles from './AdminPage.module.scss';
@@ -24,29 +25,6 @@ import { cloneDeep } from 'lodash';
 import { useSnackbar } from '../../hooks';
 
 const BASE_URL = environments[process.env.NODE_ENV].API_BASE_URL;
-const MONTHS_ABREVIATED: string[] = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
-const DAYS_ABREVIATED: string[] = [
-  'Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat',
-];
 
 export const AdminPage = () => {
   const [pendingEvent, setPendingEvent] = useState<IPickupEvent>({
@@ -189,27 +167,6 @@ export const AdminPage = () => {
     });
   };
 
-  const getDateString = (date: Date): string => {
-    const dateModel = new Date(date);
-    const day = dateModel.getDay();
-    const month = dateModel.getMonth();
-    const dateNum = dateModel.getDate();
-    const year = dateModel.getFullYear();
-    return `${DAYS_ABREVIATED[day]} ${MONTHS_ABREVIATED[month]} ${dateNum}, ${year}`;
-  };
-
-  const getTimeString = (date: Date): string => {
-    const dateModel = new Date(date);
-    let hour = dateModel.getHours();
-    const mins = dateModel.getMinutes();
-    let amPm = 'AM';
-    if (hour > 12) {
-      hour -= 12;
-      amPm = 'PM';
-    }
-    return `${hour}:${mins < 10 ? `0${mins}` : mins} ${amPm}`;
-  };
-
   const setOverlayOpen = (isOpen: boolean): void => {
     if (!isOpen) {
       setOverlayTemplate(undefined);
@@ -319,49 +276,33 @@ export const AdminPage = () => {
           <h6>Upcoming Events</h6>
           {upcomingEvents ? (
             upcomingEvents.map((event: IPickupEvent) => (
-              <div key={event._id} className={styles.upcomingEventWrap}>
-                <div key={event._id} className={styles.upcomingEventWrapInner}>
-                  <h4>{getDateString(event.startTime)}</h4>
-                  <p>{event.location.name}</p>
-                  <div>
-                    {getTimeString(event.startTime)} -{' '}
-                    {getTimeString(event.endTime)}
-                  </div>
-                  <span className={styles.viewOrders}>View Orders</span>
-                </div>
-                <div className={styles.eventControlsWrap}>
-                  <FontAwesomeIcon
-                    icon={faPen as IconProp}
-                    onClick={() => {
-                      const clonedEvent = cloneDeep(event);
-                      clonedEvent.startTime = new Date(event.startTime);
-                      clonedEvent.endTime = new Date(event.endTime);
-                      setPendingEvent(clonedEvent);
-                    }}
-                  />
-                  <FontAwesomeIcon
-                    icon={faTrash as IconProp}
-                    color='#cc0023'
-                    onClick={() => {
-                      setOverlayTemplate(
-                        <div className={styles.confirmDeleteWrap}>
-                          <h4>Delete This Event?</h4>
-                          <div className={styles.confirmDeleteBtnsWrap}>
-                            <Button
-                              text='OK'
-                              onClick={() => deleteEvent(event._id)}
-                            />
-                            <Button
-                              text='Cancel'
-                              onClick={() => setOverlayOpen(false)}
-                            />
-                          </div>
-                        </div>
-                      );
-                    }}
-                  />
-                </div>
-              </div>
+              <PickupEventDisplay
+                pickupEvent={event}
+                showControls={true}
+                pickupEventSelected={(pickupEvent: IPickupEvent) => {
+                  const clonedEvent = cloneDeep(pickupEvent);
+                  clonedEvent.startTime = new Date(pickupEvent.startTime);
+                  clonedEvent.endTime = new Date(pickupEvent.endTime);
+                  setPendingEvent(clonedEvent);
+                }}
+                pickupEventDeleted={(pickupEvent) => {
+                  setOverlayTemplate(
+                    <div className={styles.confirmDeleteWrap}>
+                      <h4>Delete This Event?</h4>
+                      <div className={styles.confirmDeleteBtnsWrap}>
+                        <Button
+                          text='OK'
+                          onClick={() => deleteEvent(pickupEvent._id)}
+                        />
+                        <Button
+                          text='Cancel'
+                          onClick={() => setOverlayOpen(false)}
+                        />
+                      </div>
+                    </div>
+                  );
+                }}
+              />
             ))
           ) : (
             <div className={styles.spinnerWrap}>

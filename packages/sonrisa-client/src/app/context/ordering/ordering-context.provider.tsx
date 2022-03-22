@@ -1,4 +1,4 @@
-import { IOrderingStatus } from '@sonrisa/core';
+import { IOrderingStatus, IPickupEvent } from '@sonrisa/core';
 import { useStorage } from '../../hooks';
 import { useEffect, useState } from 'react';
 import { CreatePaymentRequest, Customer, Money, Order, Payment } from 'square';
@@ -9,7 +9,7 @@ import { cloneDeep } from 'lodash';
 
 export const OrderContextProvider = ({ children }) => {
   const [currentOrder, setCurrentOrder] = useState<Order>({} as Order);
-
+  const [pickupEvent, setPickupEvent] = useState<IPickupEvent>();
   const [orderingStatus, setOrderingStatus] = useState<IOrderingStatus>(
     {} as IOrderingStatus
   );
@@ -176,6 +176,8 @@ export const OrderContextProvider = ({ children }) => {
         updateOrder,
         clearOrder,
         createPayment,
+        pickupEvent,
+        setPickupEvent,
       }}
     >
       {children}

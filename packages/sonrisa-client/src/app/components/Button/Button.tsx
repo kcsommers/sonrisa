@@ -8,6 +8,7 @@ type ButtonProps = {
   isFullWidth?: boolean;
   showSpinner?: boolean;
   isDisabled?: boolean;
+  type?: 'primary' | 'accent';
   onClick?: () => void;
 };
 
@@ -17,10 +18,10 @@ export const Button = ({
   size = 'md',
   showSpinner = false,
   onClick,
+  type = 'primary',
   isDisabled = false,
 }: ButtonProps) => {
   const buttonEl = useRef<HTMLButtonElement>();
-
   const clicked = (event: React.MouseEvent) => {
     if (!onClick || !buttonEl.current || showSpinner) {
       return;
@@ -43,12 +44,14 @@ export const Button = ({
   return (
     <button
       className={`app-btn ${styles.btn} ${styles[`btn-${size}`]} ${
-        isFullWidth ? styles.btnFullWidth : ''
-      }${isDisabled ? ' btn-disabled' : ''}`}
+        styles[`btn-${type}`]
+      } ${isFullWidth ? styles.btnFullWidth : ''}${
+        isDisabled ? ' btn-disabled' : ''
+      }`}
       onClick={clicked}
       ref={(el: HTMLButtonElement) => (buttonEl.current = el)}
     >
-      {showSpinner ? <LoadingSpinner size="xs" /> : text}
+      {showSpinner ? <LoadingSpinner size='xs' /> : text}
     </button>
   );
 };

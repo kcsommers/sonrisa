@@ -3,12 +3,12 @@
 
 div.checkoutPageInner {
   background-color: $offwhite;
+  background-color: #fff;
   display: grid;
   justify-content: stretch;
   min-height: $body-min-height;
   grid-gap: 1rem;
   grid-template-columns: 1fr;
-  padding: 2rem 1rem;
   transition: all 0.2s ease;
   margin-bottom: 4rem;
 
@@ -26,13 +26,12 @@ div.orderSection {
 }
 
 div.checkoutSection {
-  padding: 1rem;
   position: relative;
 }
 
 div.paymentSection,
 div.orderSection {
-  background-color: #fff;
+  background-color: $offwhite;
   border-radius: $border-radius;
 
   @include for-tablet-landscape-up {
@@ -52,7 +51,7 @@ div.orderSection {
 }
 
 div.checkoutSectionInner {
-  padding: 1rem;
+  padding: 2rem;
   height: 100%;
   position: relative;
   z-index: 1;
@@ -60,6 +59,69 @@ div.checkoutSectionInner {
     margin-bottom: 2rem;
   }
   @include for-phone-only {
-    padding: 1rem;
+    padding: 2rem;
+  }
+}
+
+div.pickupLocationWrap {
+  padding: 2rem;
+  margin-top: 2rem;
+  grid-column: 1 / -1;
+  border-radius: $border-radius;
+  background-color: $offwhite;
+  position: relative;
+  display: flex;
+  svg {
+    transform: translateY(3px);
+  }
+}
+
+div.pickupLocationWrapInner {
+  margin-left: 0.5rem;
+  > h6 {
+    margin-bottom: 0.5rem;
+  }
+}
+
+div.upcomingEventsWrap {
+  flex: 1;
+  background-color: $offwhite;
+  box-shadow: $box-shadow;
+  max-width: 600px;
+  margin: 0 auto;
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: $border-radius;
+  position: relative;
+  @include for-phone-only {
+    max-height: none;
+    height: 100%;
+  }
+}
+
+div.overlayBody {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+}
+
+div.overlayFooter {
+  flex: 1;
+  max-height: 114px;
+  padding: 1rem;
+  background-color: $offwhite;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+}
+
+div.upcomingEventWrap {
+  transform: scale(1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 3px solid rgba($yellow, 0);
+  margin-bottom: 0.5rem;
+  &.isSelected {
+    border: 3px solid $yellow;
   }
 }

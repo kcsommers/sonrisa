@@ -94,13 +94,12 @@ export const OrderOverlay = ({
           </button>
         </div>
       </div>
-
       <div className={styles.overlayFooter}>
         <Button
           text={`Update Cart ${getMoneyString(
             calculateCost(getItemPrice(catalogObjects.item), quantity)
           )}`}
-          size="md"
+          size='md'
           isFullWidth={true}
           onClick={updateOrder}
           showSpinner={updatingOrder}
