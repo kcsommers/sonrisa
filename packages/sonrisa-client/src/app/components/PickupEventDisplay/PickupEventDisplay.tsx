@@ -1,54 +1,8 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IPickupEvent } from '@sonrisa/core';
-import { cloneDeep } from 'lodash';
+import { IPickupEvent, DateHelper } from '@sonrisa/core';
 import styles from './PickupEventDisplay.module.scss';
-
-const MONTHS_ABREVIATED: string[] = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
-const DAYS_ABREVIATED: string[] = [
-  'Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat',
-];
-
-const getDateString = (date: Date): string => {
-  const dateModel = new Date(date);
-  const day = dateModel.getDay();
-  const month = dateModel.getMonth();
-  const dateNum = dateModel.getDate();
-  const year = dateModel.getFullYear();
-  return `${DAYS_ABREVIATED[day]} ${MONTHS_ABREVIATED[month]} ${dateNum}, ${year}`;
-};
-
-const getTimeString = (date: Date): string => {
-  const dateModel = new Date(date);
-  let hour = dateModel.getHours();
-  const mins = dateModel.getMinutes();
-  let amPm = 'AM';
-  if (hour > 12) {
-    hour -= 12;
-    amPm = 'PM';
-  }
-  return `${hour}:${mins < 10 ? `0${mins}` : mins} ${amPm}`;
-};
 
 interface IPickupEventDisplayProps {
   pickupEvent: IPickupEvent;
@@ -75,10 +29,10 @@ export const PickupEventDisplay = ({
       }`}
     >
       <div key={pickupEvent._id} className={styles.upcomingEventWrapInner}>
-        <h4>{getDateString(pickupEvent.startTime)}</h4>
+        <h4>{DateHelper.getDateString(pickupEvent.startTime)}</h4>
         <div>
-          {getTimeString(pickupEvent.startTime)} -{' '}
-          {getTimeString(pickupEvent.endTime)}
+          {DateHelper.getTimeString(pickupEvent.startTime)} -{' '}
+          {DateHelper.getTimeString(pickupEvent.endTime)}
         </div>
         <p>{pickupEvent.location.name}</p>
         {showAddress && (

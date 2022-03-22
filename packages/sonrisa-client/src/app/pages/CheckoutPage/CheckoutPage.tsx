@@ -29,7 +29,10 @@ export const CheckoutPage = (props: RouteComponentProps) => {
   const onCheckout = (success: boolean, payment?: Payment): void => {
     // route to success page on success
     logger.log('[onCheckout]:::: ', success, payment);
-    props.history.push('/checkout/complete', { payment });
+    props.history.push('/checkout/complete', {
+      payment,
+      pickupEvent: selectedPickupEvent,
+    });
   };
 
   // scroll to top
@@ -116,7 +119,11 @@ export const CheckoutPage = (props: RouteComponentProps) => {
             ))}
           </div>
           <div className={styles.overlayFooter}>
-            <Button text='OK' isDisabled={!selectedPickupEvent} />
+            <Button
+              text='OK'
+              isDisabled={!selectedPickupEvent}
+              onClick={() => setPickupEventOverlayOpen(false)}
+            />
           </div>
         </div>
       </Overlay>

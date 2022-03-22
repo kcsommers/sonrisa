@@ -25,30 +25,19 @@ interface ICheckoutFormProps {
 }
 
 export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
-  const { currentOrder, updateOrder, createPayment } = useOrdering();
-
+  const { currentOrder, updateOrder, createPayment, pickupEvent } =
+    useOrdering();
   const { tipMoney } = useOrdering();
-
   const [givenName, setGivenName] = useState('');
-
   const [givenNameError, setGivenNameError] = useState('');
-
   const [familyName, setFamilyName] = useState('');
-
   const [familyNameError, setFamilyNameError] = useState('');
-
   const [emailAddress, setEmailAddress] = useState('');
-
   const [emailAddressError, setEmailAddressError] = useState('');
-
   const [phoneNumber, setPhoneNumber] = useState('');
-
   const [phoneNumberError, setPhoneNumberError] = useState('');
-
   const [paymentMethod, setPaymentMethod] = useState(null);
-
   const [message, setMessage] = useState('');
-
   const [submittingForm, setSubmittingForm] = useState<boolean>(false);
 
   const validateForm = (): boolean => {
@@ -291,6 +280,15 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
           text='Submit Payment'
           onClick={submit}
           showSpinner={submittingForm}
+          isDisabled={
+            !!(
+              !givenName ||
+              !familyName ||
+              !emailAddress ||
+              !phoneNumber ||
+              !pickupEvent
+            )
+          }
         />
       </div>
     </div>

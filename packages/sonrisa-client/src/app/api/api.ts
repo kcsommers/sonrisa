@@ -15,6 +15,7 @@ import {
   IContactResponse,
   IInstagramResponse,
   IOrderingStatus,
+  IPickupEvent,
 } from '@sonrisa/core';
 
 let myInterceptor;
@@ -65,9 +66,14 @@ export const Api = {
 
   createPayment: async (
     request: CreatePaymentRequest,
-    customer: Customer
+    customer: Customer,
+    pickupEvent: IPickupEvent
   ): Promise<AxiosResponse<CreatePaymentResponse>> => {
-    return axios.post(`${getBaseUrl()}/order/payments`, { request, customer });
+    return axios.post(`${getBaseUrl()}/order/payments`, {
+      request,
+      customer,
+      pickupEvent,
+    });
   },
 
   getCatalog: (): Promise<AxiosResponse<ICatalog>> => {

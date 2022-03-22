@@ -154,7 +154,7 @@ export const OrderContextProvider = ({ children }) => {
     customer: Customer
   ): Promise<Payment> => {
     try {
-      const response = await Api.createPayment(request, customer);
+      const response = await Api.createPayment(request, customer, pickupEvent);
       const payment = response.data.payment as Payment;
 
       return payment;

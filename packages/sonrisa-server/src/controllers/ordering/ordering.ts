@@ -1,8 +1,4 @@
-import {
-  IOrderingStatus,
-  IPickupEvent,
-  NotAcceptingOrdersReasons,
-} from '@sonrisa/core';
+import { IOrderingStatus, IPickupEvent, DateHelper } from '@sonrisa/core';
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import {
@@ -277,23 +273,31 @@ router.post(
                     />
                   </div>
                   <h3 style="font-family: sans-serif; font-size: initial">
-                    Your order has been placed successfully. Your order number is ${_camelCasePayment.orderId}
+                    Your order has been placed successfully. Your order number is ${
+                      _camelCasePayment.orderId
+                    }
                   </h3>
-                  <a href="${_camelCasePayment.receiptUrl}" style="color: inherit"> Click here to view your receipt</a>
+                  <a href="${
+                    _camelCasePayment.receiptUrl
+                  }" style="color: inherit"> Click here to view your receipt</a>
                   <p
                     style="
                       font-family: sans-serif;
                     "
                   >
-                    Thank you for your order! You've made me smile. I hope my sonrisa
-                    brings you sonrisa. &#9786;<br />Your order will be available for pickup on Monday between 1pm and 4pm in Capitol Hill, Seattle. Location:
-                    <div style="
-                      margin: 1rem 0;
-                      font-family: sans-serif;
-                      font-size: 16px;
-                    ">
-                      120 10th Ave E <br />
-                      Seattle, WA 98102
+                    Thank you for your order! You've made me smile. I hope my sonrisa brings you sonrisa. &#9786;<br />Here are the pickup details for your order:
+                    <h4>${DateHelper.getDateString(pickupEvent.startTime)}</h4>
+                    <div>
+                      ${DateHelper.getTimeString(pickupEvent.startTime)} -
+                      ${DateHelper.getTimeString(pickupEvent.endTime)}
+                    </div>
+                    <p>
+                    ${pickupEvent.location.name}<br />
+                    ${pickupEvent.location.address.street}<br />
+                    ${pickupEvent.location.address.city}, ${
+          pickupEvent.location.address.state
+        } ${pickupEvent.location.address.zip}
+                    </p>
                     </div>
                     If you have any additional questions or would like to make a change to your order, please feel free to contact us here:
                     <div style="
@@ -303,7 +307,7 @@ router.post(
                     ">
                       (253) 459-5365
                     </div>
-                    Thanks again, see you on Monday!
+                    Thanks again, see you soon!
                   </p>
                 </div>
             </div>

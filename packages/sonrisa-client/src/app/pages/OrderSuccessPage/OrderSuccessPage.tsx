@@ -1,19 +1,19 @@
+import { IPickupEvent } from '@sonrisa/core';
 import { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { Payment } from 'square';
-import { Button } from '../../components';
+import { Button, PickupEventDisplay } from '../../components';
 import { useOrdering } from '../../context';
 import styles from './OrderSuccessPage.module.scss';
 
 interface ISuccessPageLocationState {
   payment: Payment;
+  pickupEvent: IPickupEvent;
 }
 
 export const OrderSuccessPage = () => {
   const { clearOrder } = useOrdering();
-
   const { state } = useLocation<ISuccessPageLocationState>();
-
   const history = useHistory();
 
   useEffect(() => {
@@ -43,13 +43,16 @@ export const OrderSuccessPage = () => {
               <a href={state.payment.receiptUrl}>
                 Click here to view your receipt
               </a>
-              <p>
+              <p style={{ marginBottom: '1rem' }}>
                 Thank you for your order! You've made me smile! I hope my
-                sonrisa brings you sonrisa &#9786;. Your order will be available
-                for pickup in Capitol Hill, Seattle, on Monday between 1pm and
-                4pm. You should receive an email shortly with these
-                instructions, as well as the pickup location.
+                sonrisa brings you sonrisa &#9786;. The pickup details for your
+                order are listed below, and will be emailed to you shortly.
               </p>
+              <PickupEventDisplay
+                pickupEvent={state.pickupEvent}
+                showAddress={true}
+                useCard={false}
+              ></PickupEventDisplay>
             </>
           ) : (
             <>
@@ -60,7 +63,7 @@ export const OrderSuccessPage = () => {
               <Button
                 onClick={() => history.push('/checkout')}
                 isFullWidth={false}
-                text="Back to Checkout"
+                text='Back to Checkout'
               />
             </>
           )}
