@@ -5,5 +5,6 @@ export interface IPickupEvent {
   endTime: Date;
   location: ILocation;
   orders: string[];
+  soldOut: boolean;
   _id?: string;
 }

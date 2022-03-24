@@ -10,9 +10,10 @@ import { cloneDeep } from 'lodash';
 export const OrderContextProvider = ({ children }) => {
   const [currentOrder, setCurrentOrder] = useState<Order>({} as Order);
   const [pickupEvent, setPickupEvent] = useState<IPickupEvent>();
-  const [orderingStatus, setOrderingStatus] = useState<IOrderingStatus>(
-    {} as IOrderingStatus
-  );
+  const [orderingStatus, setOrderingStatus] = useState<IOrderingStatus>({
+    acceptingOrders: true,
+    message: '',
+  } as IOrderingStatus);
 
   const { setSessionItem, getSessionItem, storageKeys } = useStorage();
 
@@ -20,24 +21,6 @@ export const OrderContextProvider = ({ children }) => {
     amount: 0,
     currency: 'USD',
   } as any);
-
-  useEffect(() => {
-    const checkAcceptingOrders = async () => {
-      try {
-        const _response = await Api.acceptingOrders();
-        logger.log('[acceptingOrders response]:::: ', _response);
-        setOrderingStatus(_response.data);
-      } catch (err: any) {
-        logger.error(err);
-        setOrderingStatus({
-          acceptingOrders: false,
-          message:
-            'There was an unexpected error. Please refresh the page to try again.',
-        });
-      }
-    };
-    checkAcceptingOrders();
-  }, []);
 
   const getOrderById = async (orderId: string): Promise<Order> => {
     const _response = await Api.getOrder(orderId);
@@ -178,6 +161,7 @@ export const OrderContextProvider = ({ children }) => {
         createPayment,
         pickupEvent,
         setPickupEvent,
+        setOrderingStatus,
       }}
     >
       {children}

@@ -81,7 +81,7 @@ export const Overlay = ({
             exit='exit'
             variants={templateVariants}
           >
-            {cloneElement(children as ReactElement, { closeOverlay: close })}
+            {children}
           </motion.div>
         </motion.div>
       )}

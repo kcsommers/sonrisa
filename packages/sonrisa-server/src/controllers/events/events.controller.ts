@@ -13,7 +13,9 @@ router.get(
       const { upcomingOnly } = req.query;
       const query = upcomingOnly ? { startTime: { $gte: Date.now() } } : {};
       const events: Document<IPickupEvent>[] = await PickupEventModel.find(
-        query
+        query,
+        null,
+        { sort: { startTime: 1 } }
       ).populate('location');
       console.log('Successfully retrieved events from DB');
       res.status(HttpStatusCodes.OK).json(events);
@@ -41,31 +43,39 @@ router.post('/create', async (req: Request, res: Response) => {
 });
 
 router.post(
-  '/update',
+  '/update/:id',
   async (
     req: Request<any, any, Partial<IPickupEvent>>,
     res: Response<Document<IPickupEvent>>
   ) => {
     try {
+      const eventId: string = req.params.id;
       const newPickupEventData: Partial<IPickupEvent> = req.body;
-      const updatedLocation: Document<any, any, ILocation> =
-        await LocationModel.findOneAndUpdate(
+      let updatedLocation: Document<any, any, ILocation>;
+      if (newPickupEventData.location) {
+        updatedLocation = await LocationModel.findOneAndUpdate(
           {
             _id: newPickupEventData.location._id,
           },
-          newPickupEventData.location || {}
+          newPickupEventData.location || {},
+          {
+            new: true,
+          }
         );
-
+      }
       const updatedPickupEvent: Document<any, any, IPickupEvent> =
         await PickupEventModel.findOneAndUpdate(
           {
-            _id: newPickupEventData._id,
+            _id: eventId,
           },
           {
             ...newPickupEventData,
             location: updatedLocation,
+          },
+          {
+            new: true,
           }
-        );
+        ).populate('location');
       console.log(`Successfully updated pickup event: ${updatedPickupEvent}`);
       res.status(HttpStatusCodes.OK).json(updatedPickupEvent);
     } catch (_error: any) {

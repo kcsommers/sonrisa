@@ -10,6 +10,9 @@ const pickupEventSchema = new Schema<any, IPickupEvent>({
     type: Date,
     required: true,
   },
+  soldOut: {
+    type: Boolean,
+  },
   location: {
     type: Schema.Types.ObjectId,
     ref: 'Location',

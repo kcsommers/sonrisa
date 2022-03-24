@@ -12,6 +12,7 @@ export interface IOrderContext {
   setItemQuantity: (itemId: string, quantity: number) => Promise<Order>;
   updateOrder: (data: any) => Promise<Order>;
   clearOrder: () => void;
+  setOrderingStatus: (orderingStatus: IOrderingStatus) => void;
   createPayment: (
     request: CreatePaymentRequest,
     customer: Customer

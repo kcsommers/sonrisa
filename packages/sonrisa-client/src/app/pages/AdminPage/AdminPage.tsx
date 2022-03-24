@@ -1,5 +1,12 @@
 import 'react-datepicker/dist/react-datepicker.css';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import {
+  faCheckCircle,
+  faExclamationCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import { IPickupEvent } from '@sonrisa/core';
+import axios, { AxiosResponse } from 'axios';
+import { cloneDeep } from 'lodash';
 import { ReactNode, useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { environments } from '../../../environments';
@@ -10,19 +17,9 @@ import {
   PickupEventDisplay,
   SnackbarComponent,
 } from '../../components';
-import styles from './AdminPage.module.scss';
-import axios, { AxiosResponse } from 'axios';
-import { logger } from '../../utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import {
-  faCheckCircle,
-  faExclamationCircle,
-  faPen,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
-import { cloneDeep } from 'lodash';
 import { useSnackbar } from '../../hooks';
+import { logger } from '../../utils';
+import styles from './AdminPage.module.scss';
 
 const BASE_URL = environments[process.env.NODE_ENV].API_BASE_URL;
 
@@ -31,6 +28,7 @@ export const AdminPage = () => {
     startTime: new Date(),
     endTime: new Date(),
     orders: [],
+    soldOut: false,
     location: {
       name: '',
       address: {
@@ -122,7 +120,7 @@ export const AdminPage = () => {
   const addEvent = async () => {
     try {
       setAddingEvent(true);
-      const path = pendingEvent._id ? 'update' : 'create';
+      const path = pendingEvent._id ? `update/${pendingEvent._id}` : 'create';
       await axios.post<IPickupEvent>(
         `${BASE_URL}/events/${path}`,
         pendingEvent
@@ -155,6 +153,7 @@ export const AdminPage = () => {
       startTime: new Date(),
       endTime: new Date(),
       orders: [],
+      soldOut: false,
       location: {
         name: '',
         address: {
@@ -180,7 +179,7 @@ export const AdminPage = () => {
       setSnackbarVisible({
         message: 'Event Deleted Successfully',
         icon: faCheckCircle as IconProp,
-        iconColor: 'error',
+        iconColor: 'success',
         duration: 4000,
       });
       fetchUpcomingEvents();
@@ -273,36 +272,50 @@ export const AdminPage = () => {
         </div>
 
         <div className={styles.upcomingEventsWrap}>
-          <h6>Upcoming Events</h6>
+          <h6 style={{ marginBottom: '1rem' }}>Upcoming Events</h6>
           {upcomingEvents ? (
             upcomingEvents.map((event: IPickupEvent) => (
-              <PickupEventDisplay
-                pickupEvent={event}
-                showControls={true}
-                pickupEventSelected={(pickupEvent: IPickupEvent) => {
-                  const clonedEvent = cloneDeep(pickupEvent);
-                  clonedEvent.startTime = new Date(pickupEvent.startTime);
-                  clonedEvent.endTime = new Date(pickupEvent.endTime);
-                  setPendingEvent(clonedEvent);
-                }}
-                pickupEventDeleted={(pickupEvent) => {
-                  setOverlayTemplate(
-                    <div className={styles.confirmDeleteWrap}>
-                      <h4>Delete This Event?</h4>
-                      <div className={styles.confirmDeleteBtnsWrap}>
-                        <Button
-                          text='OK'
-                          onClick={() => deleteEvent(pickupEvent._id)}
-                        />
-                        <Button
-                          text='Cancel'
-                          onClick={() => setOverlayOpen(false)}
-                        />
+              <div key={event._id} style={{ marginBottom: '1rem' }}>
+                <PickupEventDisplay
+                  pickupEvent={event}
+                  showControls={true}
+                  pickupEventUpdated={(updatedEvent: IPickupEvent) => {
+                    setUpcomingEvents((prevEvents: IPickupEvent[]) => {
+                      const clonedEvents = cloneDeep(prevEvents);
+                      const prevIndex: number = prevEvents.findIndex(
+                        (e) => e._id === updatedEvent._id
+                      );
+                      if (prevIndex > -1) {
+                        clonedEvents.splice(prevIndex, 1, updatedEvent);
+                      }
+                      return clonedEvents;
+                    });
+                  }}
+                  pickupEventSelected={(pickupEvent: IPickupEvent) => {
+                    const clonedEvent = cloneDeep(pickupEvent);
+                    clonedEvent.startTime = new Date(pickupEvent.startTime);
+                    clonedEvent.endTime = new Date(pickupEvent.endTime);
+                    setPendingEvent(clonedEvent);
+                  }}
+                  pickupEventDeleted={(pickupEvent) => {
+                    setOverlayTemplate(
+                      <div className={styles.confirmDeleteWrap}>
+                        <h4>Delete This Event?</h4>
+                        <div className={styles.confirmDeleteBtnsWrap}>
+                          <Button
+                            text='OK'
+                            onClick={() => deleteEvent(pickupEvent._id)}
+                          />
+                          <Button
+                            text='Cancel'
+                            onClick={() => setOverlayOpen(false)}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  );
-                }}
-              />
+                    );
+                  }}
+                />
+              </div>
             ))
           ) : (
             <div className={styles.spinnerWrap}>

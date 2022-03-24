@@ -1,4 +1,9 @@
-import { IOrderingStatus, IPickupEvent, DateHelper } from '@sonrisa/core';
+import {
+  IOrderingStatus,
+  IPickupEvent,
+  DateHelper,
+  NotAcceptingOrdersReasons,
+} from '@sonrisa/core';
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import {
@@ -18,6 +23,7 @@ import { environments } from '../../environments';
 import { square } from '../../square';
 import { camelcaseKeys } from '../../utils';
 import { sendEmail } from '../contact';
+import { Document } from 'mongoose';
 
 const router: Router = Router();
 
@@ -28,34 +34,40 @@ const router: Router = Router();
  * are currently being taken. Returns false if number of orders exceeds ?
  * or if its Sunday or Monday
  */
-router.get('/accepting', (req: Request, res: Response<IOrderingStatus>) => {
-  // res.json({
-  //   acceptingOrders: false,
-  //   message: NotAcceptingOrdersReasons.SOLD_OUT,
-  //   errors: null,
-  // });
+router.get(
+  '/accepting',
+  async (req: Request, res: Response<IOrderingStatus>) => {
+    // res.json({
+    //   acceptingOrders: false,
+    //   message: NotAcceptingOrdersReasons.SOLD_OUT,
+    //   errors: null,
+    // });
+    let acceptingOrders = true;
+    let message = '';
+    const upcomingEvents: Document<IPickupEvent>[] =
+      await PickupEventModel.find({
+        startTime: { $gte: Date.now() },
+      });
+    if (!upcomingEvents || !upcomingEvents.length) {
+      acceptingOrders = false;
+      message = NotAcceptingOrdersReasons.SOLD_OUT;
+    } else {
+      const allSoldOut: boolean = upcomingEvents.every(
+        (event: Document<IPickupEvent>) => (event as any).soldOut
+      );
+      if (allSoldOut) {
+        acceptingOrders = false;
+        message = NotAcceptingOrdersReasons.SOLD_OUT;
+      }
+    }
 
-  const _badDays = [0, 1]; // Sunday & Monday
-
-  const _date = new Date(
-    new Date().toLocaleString('en-us', { timeZone: 'America/Los_Angeles' })
-  );
-
-  let acceptingOrders = true;
-  let message = '';
-  // check the day
-  // if (_badDays.indexOf(_date.getDay()) > -1) {
-  //   acceptingOrders = false;
-  //   message = NotAcceptingOrdersReasons.INVALID_DAY;
-  // }
-
-  // @TODO check how many have been ordered this week
-  res.json({
-    acceptingOrders,
-    message,
-    errors: null,
-  });
-});
+    res.json({
+      acceptingOrders,
+      message,
+      errors: null,
+    });
+  }
+);
 
 /**
  * @route  POST api/order/create

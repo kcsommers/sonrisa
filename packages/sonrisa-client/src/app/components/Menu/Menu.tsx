@@ -1,11 +1,12 @@
 import { ICatalogCategoryMap } from 'packages/core/dist/bundles';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useCatalog, useOrdering } from '../../context';
-import { toTitleCase } from '../../utils';
+import { logger, toTitleCase } from '../../utils';
 import { Alert } from '../Alert/Alert';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import { CatalogItemBox } from '../CatalogItemBox/CatalogItemBox';
 import styles from './Menu.module.scss';
+import { Api } from '../../api';
 
 interface IMenuProps {
   onOrderUpdate: (success: boolean) => void;
@@ -15,7 +16,7 @@ const CATEGORIES = ['flavors', 'main menu', 'specials', 'drinks'];
 
 export const Menu = ({ onOrderUpdate }: IMenuProps) => {
   const { catalog } = useCatalog();
-  const { orderingStatus } = useOrdering();
+  const { orderingStatus, setOrderingStatus } = useOrdering();
 
   const categoryMapByName = useMemo<ICatalogCategoryMap>(() => {
     if (!catalog) {
@@ -33,6 +34,24 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
     }, {});
     return filteredMap;
   }, [catalog]);
+
+  useEffect(() => {
+    const checkAcceptingOrders = async () => {
+      try {
+        const _response = await Api.acceptingOrders();
+        logger.log('[acceptingOrders response]:::: ', _response);
+        setOrderingStatus(_response.data);
+      } catch (err: any) {
+        logger.error(err);
+        setOrderingStatus({
+          acceptingOrders: false,
+          message:
+            'There was an unexpected error. Please refresh the page to try again.',
+        });
+      }
+    };
+    checkAcceptingOrders();
+  }, []);
 
   return (
     <div className={`${styles.menuWrap}`}>
