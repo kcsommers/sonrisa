@@ -49,18 +49,24 @@ section.menuSection {
   margin-top: 3rem;
 }
 
-p.menuSectionText {
+div.pickupEventWrap {
   background-color: $offwhite;
   margin: 1rem 0;
   padding: 1rem 2rem;
-  display: flex;
-  align-items: center;
-  > svg {
+  svg {
     margin-right: 1rem;
   }
   @include for-phone-only {
     padding: 1rem;
   }
+}
+
+div.alertWrap {
+  margin-top: 1rem;
+}
+
+div.pickupEventWrapInner {
+  padding: 0.5rem 2rem;
 }
 
 section.aboutSection {

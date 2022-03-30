@@ -1,5 +1,6 @@
 import { ICatalog, ICatalogCategoryMap } from 'packages/core/dist/bundles';
 import { useEffect, useMemo, useState } from 'react';
+
 import { Api } from '../../api';
 import { logger } from '../../utils';
 import { CATALOG_CONTEXT } from './catalog.context';

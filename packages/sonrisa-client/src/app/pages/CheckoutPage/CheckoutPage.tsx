@@ -1,19 +1,11 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios, { AxiosResponse } from 'axios';
-import { IPickupEvent } from 'packages/core/dist/bundles';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Payment } from 'square';
 import { environments } from '../../../environments';
-import {
-  Button,
-  CheckoutForm,
-  OrderView,
-  Overlay,
-  PickupEventDisplay,
-} from '../../components';
+import { CheckoutForm, OrderView, PickupEventDisplay } from '../../components';
 import { useOrdering } from '../../context';
 import { logger } from '../../utils';
 import styles from './CheckoutPage.module.scss';
@@ -21,17 +13,17 @@ import styles from './CheckoutPage.module.scss';
 const BASE_URL = environments[process.env.NODE_ENV].API_BASE_URL;
 
 export const CheckoutPage = (props: RouteComponentProps) => {
-  const [pickupEventOverlayOpen, setPickupEventOverlayOpen] =
-    useState<boolean>(false);
-  const [upcomingEvents, setUpcomingEvents] = useState<IPickupEvent[]>();
-  const { pickupEvent: selectedPickupEvent, setPickupEvent } = useOrdering();
+  // const [pickupEventOverlayOpen, setPickupEventOverlayOpen] =
+  // useState<boolean>(false);
+  // const [upcomingEvents, setUpcomingEvents] = useState<IPickupEvent[]>();
+  const { orderingStatus } = useOrdering();
 
   const onCheckout = (success: boolean, payment?: Payment): void => {
     // route to success page on success
     logger.log('[onCheckout]:::: ', success, payment);
     props.history.push('/checkout/complete', {
       payment,
-      pickupEvent: selectedPickupEvent,
+      pickupEvent: orderingStatus.pickupEvent,
     });
   };
 
@@ -40,21 +32,21 @@ export const CheckoutPage = (props: RouteComponentProps) => {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      return await axios.get<IPickupEvent[]>(
-        `${BASE_URL}/events?upcomingOnly=true`
-      );
-    };
-    fetchEvents()
-      .then((response: AxiosResponse<IPickupEvent[]>) => {
-        logger.log('Upcoming Events:::: ', response.data);
-        setUpcomingEvents(response.data);
-      })
-      .catch((err: any) => {
-        logger.error('AdminPage.fetchUpcomingEvents', err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   const fetchEvents = async () => {
+  //     return await axios.get<IPickupEvent[]>(
+  //       `${BASE_URL}/events?upcomingOnly=true`
+  //     );
+  //   };
+  //   fetchEvents()
+  //     .then((response: AxiosResponse<IPickupEvent[]>) => {
+  //       logger.log('Upcoming Events:::: ', response.data);
+  //       setUpcomingEvents(response.data);
+  //     })
+  //     .catch((err: any) => {
+  //       logger.error('AdminPage.fetchUpcomingEvents', err);
+  //     });
+  // }, []);
 
   return (
     <div className={`${styles.checkoutPageWrap} responsive-container`}>
@@ -63,21 +55,21 @@ export const CheckoutPage = (props: RouteComponentProps) => {
           <FontAwesomeIcon icon={faMapMarkerAlt as IconProp} />
           <div className={styles.pickupLocationWrapInner}>
             <h6>Pickup Date and Location</h6>
-            {selectedPickupEvent && (
+            {orderingStatus.pickupEvent && (
               <div style={{ marginBottom: '1rem' }}>
                 <PickupEventDisplay
-                  pickupEvent={selectedPickupEvent}
+                  pickupEvent={orderingStatus.pickupEvent}
                   showAddress={true}
                   useCard={false}
                 />
               </div>
             )}
-            <Button
+            {/* <Button
               text='Select Location'
               isFullWidth={false}
               size='sm'
               onClick={() => setPickupEventOverlayOpen(true)}
-            />
+            /> */}
           </div>
         </div>
         <div className={`${styles.paymentSection} ${styles.checkoutSection}`}>
@@ -97,7 +89,7 @@ export const CheckoutPage = (props: RouteComponentProps) => {
           </div>
         </div>
       </div>
-      <Overlay
+      {/* <Overlay
         isOpen={pickupEventOverlayOpen}
         setIsOpen={setPickupEventOverlayOpen}
       >
@@ -126,7 +118,7 @@ export const CheckoutPage = (props: RouteComponentProps) => {
             />
           </div>
         </div>
-      </Overlay>
+      </Overlay> */}
     </div>
   );
 };

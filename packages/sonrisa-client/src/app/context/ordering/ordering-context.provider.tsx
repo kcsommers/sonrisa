@@ -9,7 +9,6 @@ import { cloneDeep } from 'lodash';
 
 export const OrderContextProvider = ({ children }) => {
   const [currentOrder, setCurrentOrder] = useState<Order>({} as Order);
-  const [pickupEvent, setPickupEvent] = useState<IPickupEvent>();
   const [orderingStatus, setOrderingStatus] = useState<IOrderingStatus>({
     acceptingOrders: true,
     message: '',
@@ -137,7 +136,11 @@ export const OrderContextProvider = ({ children }) => {
     customer: Customer
   ): Promise<Payment> => {
     try {
-      const response = await Api.createPayment(request, customer, pickupEvent);
+      const response = await Api.createPayment(
+        request,
+        customer,
+        orderingStatus.pickupEvent
+      );
       const payment = response.data.payment as Payment;
 
       return payment;
@@ -159,8 +162,6 @@ export const OrderContextProvider = ({ children }) => {
         updateOrder,
         clearOrder,
         createPayment,
-        pickupEvent,
-        setPickupEvent,
         setOrderingStatus,
       }}
     >

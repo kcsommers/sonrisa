@@ -44,25 +44,29 @@ router.get(
     // });
     let acceptingOrders = true;
     let message = '';
-    const upcomingEvents: Document<IPickupEvent>[] =
-      await PickupEventModel.find({
-        startTime: { $gte: Date.now() },
-      });
+    const upcomingEvents: IPickupEvent[] = await PickupEventModel.find(
+      { startTime: { $gte: Date.now() } },
+      null,
+      { sort: { startTime: 1 } }
+    ).populate('location');
+    let pickupEvent: IPickupEvent;
     if (!upcomingEvents || !upcomingEvents.length) {
       acceptingOrders = false;
       message = NotAcceptingOrdersReasons.SOLD_OUT;
     } else {
-      const allSoldOut: boolean = upcomingEvents.every(
-        (event: Document<IPickupEvent>) => (event as any).soldOut
-      );
-      if (allSoldOut) {
-        acceptingOrders = false;
-        message = NotAcceptingOrdersReasons.SOLD_OUT;
-      }
+      pickupEvent = upcomingEvents && upcomingEvents[0];
+      // const allSoldOut: boolean = upcomingEvents.every(
+      //   (event: IPickupEvent) => event.soldOut
+      // );
+      // if (pickupEvent.soldOut) {
+      //   acceptingOrders = false;
+      //   message = NotAcceptingOrdersReasons.SOLD_OUT;
+      // }
     }
 
     res.json({
       acceptingOrders,
+      pickupEvent,
       message,
       errors: null,
     });
@@ -249,13 +253,19 @@ router.post(
         return;
       }
 
+      const pickupEventUpdateData: Partial<IPickupEvent> = {
+        orders: [...(pickupEvent.orders || []), request.orderId],
+      };
+      // set === 49 so that sold out can be toggled off in admin page
+      if (pickupEvent.orders && pickupEvent.orders.length === 49) {
+        pickupEventUpdateData.soldOut = true;
+      }
+
       await PickupEventModel.findOneAndUpdate(
         {
           _id: pickupEvent._id,
         },
-        {
-          orders: [...(pickupEvent.orders || []), request.orderId],
-        }
+        pickupEventUpdateData
       );
 
       // no errors so far, send an email to customer
@@ -303,13 +313,21 @@ router.post(
                       ${DateHelper.getTimeString(pickupEvent.startTime)} -
                       ${DateHelper.getTimeString(pickupEvent.endTime)}
                     </div>
-                    <p>
-                    ${pickupEvent.location.name}<br />
-                    ${pickupEvent.location.address.street}<br />
-                    ${pickupEvent.location.address.city}, ${
+                    <a
+                      style="color: inherit
+                      href="https://maps.google.com/?q=${
+                        pickupEvent?.location.address.street
+                      }, ${pickupEvent?.location.address.city}, ${
+          pickupEvent?.location.address.state
+        }, ${pickupEvent?.location.address.zip}"
+                      target='_blank'
+                    >
+                      ${pickupEvent.location.name}<br />
+                      ${pickupEvent.location.address.street}<br />
+                      ${pickupEvent.location.address.city}, ${
           pickupEvent.location.address.state
         } ${pickupEvent.location.address.zip}
-                    </p>
+                    </a>
                     </div>
                     If you have any additional questions or would like to make a change to your order, please feel free to contact us here:
                     <div style="

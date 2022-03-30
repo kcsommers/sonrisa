@@ -25,7 +25,7 @@ interface ICheckoutFormProps {
 }
 
 export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
-  const { currentOrder, updateOrder, createPayment, pickupEvent } =
+  const { currentOrder, updateOrder, createPayment, orderingStatus } =
     useOrdering();
   const { tipMoney } = useOrdering();
   const [givenName, setGivenName] = useState('');
@@ -286,7 +286,7 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
               !familyName ||
               !emailAddress ||
               !phoneNumber ||
-              !pickupEvent
+              !orderingStatus.pickupEvent
             )
           }
         />

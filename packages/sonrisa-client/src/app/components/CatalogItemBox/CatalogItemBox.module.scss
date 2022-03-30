@@ -3,10 +3,13 @@
 div.catalogItemBox {
   height: 100%;
   cursor: pointer;
-  box-shadow: $box-shadow;
 }
 
 div.catalogItemBoxInner {
+  height: 100%;
+}
+div.catalogItemBoxCard {
+  box-shadow: $box-shadow;
   background-color: #fff;
   border-radius: $border-radius;
   position: relative;
@@ -15,6 +18,7 @@ div.catalogItemBoxInner {
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
+  max-height: 350px;
   &:hover {
     > div.imgHoverBg {
       transform: translate(0%, 0%);

@@ -10,13 +10,15 @@ import { RouteComponentProps } from 'react-router-dom';
 import doughnutHalves from '../../../assets/images/doughnut-halves.png';
 import jing from '../../../assets/images/jing.jpg';
 import {
+  Alert,
   Button,
   ContactForm,
   InstagramFeed,
   Menu,
+  PickupEventDisplay,
   SnackbarComponent,
 } from '../../components';
-import { useCatalog } from '../../context';
+import { useOrdering } from '../../context';
 import { useSnackbar } from '../../hooks';
 import styles from './HomePage.module.scss';
 import { ScrollRefNames } from './scroll-ref-names';
@@ -37,7 +39,7 @@ export const HomePage = ({
   const contactRef = useRef<HTMLElement>();
   const orderSectionRef = useRef<HTMLElement | null>();
   const photosSectionRef = useRef<HTMLElement | null>();
-  const { categoryMapByName } = useCatalog();
+  const { orderingStatus } = useOrdering();
 
   const contactFormSubmitted = (success: boolean) => {
     setSnackbarVisible(
@@ -147,11 +149,27 @@ export const HomePage = ({
         }}
       >
         <h3>Online Ordering</h3>
-        <p className={`${styles.menuSectionText}`}>
-          <FontAwesomeIcon icon={faInfoCircle as IconProp} />
-          Taking orders Tuesday - Saturday, or until sold out. Pick up Monday
-          between 1 and 4. Pickup instructions will be sent via email.
-        </p>
+
+        {orderingStatus.acceptingOrders ? (
+          <div className={`${styles.pickupEventWrap}`}>
+            <p>
+              <FontAwesomeIcon icon={faInfoCircle as IconProp} />
+              Taking orders for the following date and location:
+            </p>
+            <div className={styles.pickupEventWrapInner}>
+              <PickupEventDisplay
+                pickupEvent={orderingStatus.pickupEvent}
+                showAddress={true}
+                useCard={false}
+                showControls={false}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className={styles.alertWrap}>
+            <Alert type='danger' message={orderingStatus.message!} />
+          </div>
+        )}
         <Menu onOrderUpdate={onOrderUpdate} />
       </section>
       <section

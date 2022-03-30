@@ -1,12 +1,10 @@
-import { ICatalogCategoryMap } from 'packages/core/dist/bundles';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
+import { Api } from '../../api';
 import { useCatalog, useOrdering } from '../../context';
 import { logger, toTitleCase } from '../../utils';
-import { Alert } from '../Alert/Alert';
-import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import { CatalogItemBox } from '../CatalogItemBox/CatalogItemBox';
+import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import styles from './Menu.module.scss';
-import { Api } from '../../api';
 
 interface IMenuProps {
   onOrderUpdate: (success: boolean) => void;
@@ -16,7 +14,7 @@ const CATEGORIES = ['donut boxes', 'specials', 'drinks'];
 
 export const Menu = ({ onOrderUpdate }: IMenuProps) => {
   const { categoryMapByName } = useCatalog();
-  const { orderingStatus, setOrderingStatus } = useOrdering();
+  const { setOrderingStatus } = useOrdering();
 
   useEffect(() => {
     const checkAcceptingOrders = async () => {
@@ -27,6 +25,7 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
       } catch (err: any) {
         logger.error(err);
         setOrderingStatus({
+          pickupEvent: null,
           acceptingOrders: false,
           message:
             'There was an unexpected error. Please refresh the page to try again.',
@@ -38,11 +37,6 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
 
   return (
     <div className={`${styles.menuWrap}`}>
-      {!orderingStatus.acceptingOrders && (
-        <div className={styles.alertWrap}>
-          <Alert type='danger' message={orderingStatus.message!} />
-        </div>
-      )}
       {categoryMapByName ? (
         CATEGORIES.filter(
           (categoryName) => !!categoryMapByName[categoryName]
@@ -51,11 +45,7 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
             <h5>
               {toTitleCase(categoryMapByName[categoryName].category.name)}
             </h5>
-            <div
-              className={`${styles.categoryWrapInner}${
-                categoryName === 'donut boxes' ? ` ${styles.wrapSmall}` : ''
-              }`}
-            >
+            <div className={styles.categoryWrapInner}>
               {categoryMapByName[categoryName].catalogObjects.map(
                 (objects, i) => (
                   <CatalogItemBox
@@ -86,6 +76,15 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
                         </div>
                       )
                     )}
+                    <div className={styles.flavorWrap}>
+                      <div className={styles.flavorImgWrap}>
+                        <img
+                          src='https://res.cloudinary.com/kcsommers/image/upload/v1625978476/Sonrisa/rotating-special.png'
+                          alt='Rotating Special'
+                        />
+                      </div>
+                      <p>Rotating Special</p>
+                    </div>
                   </div>
                 </div>
               )}

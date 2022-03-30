@@ -67,44 +67,49 @@ export const CatalogItemBox = ({
         className={styles.catalogItemBoxInner}
         onClick={() => setOverlayOpen(true)}
       >
-        <div className={styles.imgHoverBg}></div>
-        <AnimatePresence>
-          {prevQuantityRef.current && (
-            <motion.span
-              className={`${styles.quantityWrap}`}
-              initial={{
-                transform: 'translate(-100%, -100%)',
-                opacity: 0,
-              }}
-              animate={{
-                transform: 'translate(0%, 0%)',
-                opacity: 1,
-              }}
-              exit={{
-                transform: 'translate(-100%, -100%)',
-                opacity: 0,
-              }}
-              transition={{
-                type: 'spring',
-                bounce: 0.25,
-              }}
-            >
-              <span>{prevQuantityRef.current}</span>
-            </motion.span>
-          )}
-        </AnimatePresence>
-        {catalogObjects.image?.url && (
-          <div className={styles.imgWrap}>
-            {loadedSrc ? (
-              <img src={loadedSrc} alt={getItemName(catalogObjects.item)} />
-            ) : (
-              <LoadingSpinner size='sm' color='dark' />
+        <div
+          className={styles.catalogItemBoxCard}
+          onClick={() => setOverlayOpen(true)}
+        >
+          <div className={styles.imgHoverBg}></div>
+          <AnimatePresence>
+            {prevQuantityRef.current && (
+              <motion.span
+                className={`${styles.quantityWrap}`}
+                initial={{
+                  transform: 'translate(-100%, -100%)',
+                  opacity: 0,
+                }}
+                animate={{
+                  transform: 'translate(0%, 0%)',
+                  opacity: 1,
+                }}
+                exit={{
+                  transform: 'translate(-100%, -100%)',
+                  opacity: 0,
+                }}
+                transition={{
+                  type: 'spring',
+                  bounce: 0.25,
+                }}
+              >
+                <span>{prevQuantityRef.current}</span>
+              </motion.span>
             )}
+          </AnimatePresence>
+          {catalogObjects.image?.url && (
+            <div className={styles.imgWrap}>
+              {loadedSrc ? (
+                <img src={loadedSrc} alt={getItemName(catalogObjects.item)} />
+              ) : (
+                <LoadingSpinner size='sm' color='dark' />
+              )}
+            </div>
+          )}
+          <div className={styles.nameWrap}>
+            <span>{getItemName(catalogObjects.item)}</span>
+            <span>{getMoneyString(+getItemPrice(catalogObjects.item))}</span>
           </div>
-        )}
-        <div className={styles.nameWrap}>
-          <span>{getItemName(catalogObjects.item)}</span>
-          <span>{getMoneyString(+getItemPrice(catalogObjects.item))}</span>
         </div>
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
