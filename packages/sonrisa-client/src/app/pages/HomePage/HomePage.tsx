@@ -16,6 +16,7 @@ import {
   Menu,
   SnackbarComponent,
 } from '../../components';
+import { useCatalog } from '../../context';
 import { useSnackbar } from '../../hooks';
 import styles from './HomePage.module.scss';
 import { ScrollRefNames } from './scroll-ref-names';
@@ -32,14 +33,11 @@ export const HomePage = ({
   setCartVisible,
 }: HomePageProps) => {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
-
   const aboutRef = useRef<HTMLElement>();
-
   const contactRef = useRef<HTMLElement>();
-
   const orderSectionRef = useRef<HTMLElement | null>();
-
   const photosSectionRef = useRef<HTMLElement | null>();
+  const { categoryMapByName } = useCatalog();
 
   const contactFormSubmitted = (success: boolean) => {
     setSnackbarVisible(
@@ -156,7 +154,6 @@ export const HomePage = ({
         </p>
         <Menu onOrderUpdate={onOrderUpdate} />
       </section>
-
       <section
         className={`${styles.aboutSection} responsive-container`}
         ref={(el) => {

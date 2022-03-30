@@ -12,28 +12,11 @@ interface IMenuProps {
   onOrderUpdate: (success: boolean) => void;
 }
 
-const CATEGORIES = ['flavors', 'main menu', 'specials', 'drinks'];
+const CATEGORIES = ['donut boxes', 'specials', 'drinks'];
 
 export const Menu = ({ onOrderUpdate }: IMenuProps) => {
-  const { catalog } = useCatalog();
+  const { categoryMapByName } = useCatalog();
   const { orderingStatus, setOrderingStatus } = useOrdering();
-
-  const categoryMapByName = useMemo<ICatalogCategoryMap>(() => {
-    if (!catalog) {
-      return catalog;
-    }
-    const categoryMap: ICatalogCategoryMap = catalog.catalogCategoryMap;
-    const filteredMap = Object.keys(categoryMap).reduce((map, categoryId) => {
-      const categoryObjects = categoryMap[categoryId].catalogObjects;
-      if (!categoryObjects || !categoryObjects.length) {
-        return map;
-      }
-      const categoryName = categoryMap[categoryId].category.name;
-      map[categoryName] = categoryMap[categoryId];
-      return map;
-    }, {});
-    return filteredMap;
-  }, [catalog]);
 
   useEffect(() => {
     const checkAcceptingOrders = async () => {
@@ -68,7 +51,11 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
             <h5>
               {toTitleCase(categoryMapByName[categoryName].category.name)}
             </h5>
-            <div className={styles.categoryWrapInner}>
+            <div
+              className={`${styles.categoryWrapInner}${
+                categoryName === 'donut boxes' ? ` ${styles.wrapSmall}` : ''
+              }`}
+            >
               {categoryMapByName[categoryName].catalogObjects.map(
                 (objects, i) => (
                   <CatalogItemBox
@@ -78,6 +65,29 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
                     categoryName={categoryName}
                   />
                 )
+              )}
+              {categoryName === 'donut boxes' && (
+                <div className={styles.flavorsWrap}>
+                  <h6>Flavors</h6>
+                  <div className={styles.flavorsWrapInner}>
+                    {categoryMapByName.flavors.catalogObjects.map(
+                      (flavorObj) => (
+                        <div
+                          key={flavorObj.item.itemData.name}
+                          className={styles.flavorWrap}
+                        >
+                          <div className={styles.flavorImgWrap}>
+                            <img
+                              src={flavorObj.image.url}
+                              alt={flavorObj.item.itemData.name}
+                            />
+                          </div>
+                          <p>{flavorObj.item.itemData.name}</p>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
               )}
             </div>
           </div>

@@ -62,14 +62,10 @@ export const CatalogItemBox = ({
   }, [catalogObjects.image]);
 
   return (
-    <div
-      className={`${styles.catalogItemBox}${
-        categoryName !== 'flavors' ? ` ${styles.orderable}` : ''
-      }`}
-    >
+    <div className={styles.catalogItemBox}>
       <div
         className={styles.catalogItemBoxInner}
-        onClick={() => categoryName !== 'flavors' && setOverlayOpen(true)}
+        onClick={() => setOverlayOpen(true)}
       >
         <div className={styles.imgHoverBg}></div>
         <AnimatePresence>
@@ -108,15 +104,8 @@ export const CatalogItemBox = ({
         )}
         <div className={styles.nameWrap}>
           <span>{getItemName(catalogObjects.item)}</span>
-          {categoryName !== 'flavors' && (
-            <span>{getMoneyString(+getItemPrice(catalogObjects.item))}</span>
-          )}
+          <span>{getMoneyString(+getItemPrice(catalogObjects.item))}</span>
         </div>
-        {categoryName === 'flavors' && (
-          <div className={styles.descriptionWrap}>
-            {catalogObjects.item.itemData.description}
-          </div>
-        )}
       </div>
       <Overlay isOpen={overlayOpen} setIsOpen={setOverlayOpen}>
         <OrderOverlay

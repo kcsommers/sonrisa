@@ -2,17 +2,8 @@
 
 div.catalogItemBox {
   height: 100%;
-  &.orderable {
-    cursor: pointer;
-  }
-  &:not(.orderable) {
-    &:hover {
-      div.descriptionWrap {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-  }
+  cursor: pointer;
+  box-shadow: $box-shadow;
 }
 
 div.catalogItemBoxInner {
@@ -23,11 +14,15 @@ div.catalogItemBoxInner {
   height: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: $box-shadow;
   padding: 0.5rem;
   &:hover {
     > div.imgHoverBg {
       transform: translate(0%, 0%);
+    }
+    div.imgWrap {
+      > img {
+        transform: scale(1.2);
+      }
     }
   }
 }
@@ -70,11 +65,6 @@ div.imgWrap {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  &:hover {
-    > img {
-      transform: scale(1.2);
-    }
   }
 }
 

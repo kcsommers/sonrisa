@@ -46,7 +46,7 @@ div.landingCta {
 }
 
 section.menuSection {
-  margin-top: 1rem;
+  margin-top: 3rem;
 }
 
 p.menuSectionText {
@@ -156,4 +156,13 @@ div.introSectionInner {
       font-style: italic;
     }
   }
+}
+
+div.categoryWrapInner {
+  margin-top: 1rem;
+  display: grid;
+  column-gap: 1rem;
+  row-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-auto-rows: minmax(200px, auto);
 }
