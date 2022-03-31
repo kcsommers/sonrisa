@@ -1,16 +1,22 @@
 {
-  "name": "sonrisa",
+  "name": "@sonrisa/root",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "start:windows": "concurrently \"npm run server:windows\" \"npm run client\"",
-    "server": "cd sonrisa-server && npm run server",
-    "server:windows": "cd sonrisa-server && npm run server:windows",
-    "client": "cd sonrisa-client && npm start",
-    "heroku:push": "git subtree push --prefix sonrisa-server heroku master"
+    "start": "concurrently \"yarn run start:core\" \"yarn run start:server\" \"yarn run start:client\"",
+    "start:windows": "concurrently \"yarn run server:windows\" \"yarn run client\"",
+    "start:core": "lerna exec --scope @sonrisa/core -- yarn run watch",
+    "start:server": "lerna exec --scope @sonrisa/server -- yarn run server",
+    "server:windows": "cd sonrisa-server && yarn run server:windows",
+    "start:client": "lerna exec --scope @sonrisa/client -- yarn run start",
+    "heroku:push": "git subtree push --prefix sonrisa-server heroku master",
+    "build:core": "yarn workspace @sonrisa/core build",
+    "build:client": "yarn run build:core && yarn workspace @sonrisa/client build",
+    "build:server": "yarn run build:core && yarn workspace @sonrisa/server build",
+    "build": "yarn workspace @sonrisa/core build && yarn workspace @sonrisa/server build && yarn workspace @sonrisa/client build"
   },
   "repository": {
     "type": "git",
@@ -22,8 +28,13 @@
     "url": "https://github.com/kcsommers/sonrisa/issues"
   },
   "homepage": "https://github.com/kcsommers/sonrisa#readme",
-  "dependencies": {
+  "devDependencies": {
     "concurrently": "^6.2.0",
-    "tslint": "^6.1.3"
+    "lerna": "^4.0.0"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/**"
+    ]
   }
 }

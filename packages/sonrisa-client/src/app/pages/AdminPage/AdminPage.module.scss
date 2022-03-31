@@ -1,0 +1,47 @@
+@import '../../styles/variables.scss';
+
+div.adminPageWrap {
+  padding: 4rem 0;
+}
+
+div.adminPageWrapInner {
+  background-color: $offwhite;
+  width: 75%;
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: 3px;
+}
+
+div.newEventWrap {
+  margin-bottom: 2rem;
+  > h6 {
+    margin-bottom: 1rem;
+  }
+}
+
+div.spinnerWrap {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+input {
+  margin-bottom: 0.25rem;
+}
+
+div.confirmDeleteWrap {
+  padding-bottom: 1rem;
+  box-shadow: $box-shadow;
+  border-radius: $border-radius;
+  background-color: #fff;
+  padding: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  > h4 {
+    margin-bottom: 1rem;
+  }
+}
+
+div.confirmDeleteBtnsWrap {
+  display: flex;
+  gap: 1rem;
+}

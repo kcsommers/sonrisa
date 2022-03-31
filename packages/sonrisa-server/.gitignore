@@ -1,0 +1,11 @@
+node_modules
+dist
+node_modules
+.env
+google-keys.json
+google-keys.ts
+.DS_Store
+node_modules
+instagram_token.json
+.vscode
+*.ignore*
