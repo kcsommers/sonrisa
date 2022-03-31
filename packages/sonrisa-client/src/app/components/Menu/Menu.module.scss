@@ -34,6 +34,9 @@ div.flavorsWrapInner {
   column-gap: 0.5rem;
   row-gap: 0.5rem;
   align-items: baseline;
+  @include for-desktop-up {
+    grid-template-columns: repeat(auto-fill, minmax(15%, 1fr));
+  }
 }
 
 div.flavorWrap {

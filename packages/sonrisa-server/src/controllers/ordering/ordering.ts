@@ -302,7 +302,7 @@ router.post(
                   <a href="${
                     _camelCasePayment.receiptUrl
                   }" style="color: inherit"> Click here to view your receipt</a>
-                  <p
+                  <div
                     style="
                       font-family: sans-serif;
                     "
@@ -314,7 +314,7 @@ router.post(
                       ${DateHelper.getTimeString(pickupEvent.endTime)}
                     </div>
                     <a
-                      style="color: inherit
+                      style="color: #282c34; text-decoration: none; font-style: italic;"
                       href="https://maps.google.com/?q=${
                         pickupEvent?.location.address.street
                       }, ${pickupEvent?.location.address.city}, ${
@@ -329,16 +329,23 @@ router.post(
         } ${pickupEvent.location.address.zip}
                     </a>
                     </div>
+                    <div>
                     If you have any additional questions or would like to make a change to your order, please feel free to contact us here:
-                    <div style="
+                    <a
+                      href="tel:2534595365"
+                     style="
                       margin: 1rem 0;
                       font-family: sans-serif;
                       font-size: 16px;
+                      color: #282c34;
+                      display: block;
+                      text-decoration: none;
                     ">
                       (253) 459-5365
-                    </div>
+                    </a>
                     Thanks again, see you soon!
-                  </p>
+                    </div>
+                  </div>
                 </div>
             </div>
           `

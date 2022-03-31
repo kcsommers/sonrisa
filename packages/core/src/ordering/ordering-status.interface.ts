@@ -1,4 +1,4 @@
-import { IPickupEvent } from '@sonrisa/core';
+import { IPickupEvent } from '../events';
 
 export interface IOrderingStatus {
   acceptingOrders: boolean;

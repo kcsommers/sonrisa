@@ -151,20 +151,22 @@ export const HomePage = ({
         <h3>Online Ordering</h3>
 
         {orderingStatus.acceptingOrders ? (
-          <div className={`${styles.pickupEventWrap}`}>
-            <p>
-              <FontAwesomeIcon icon={faInfoCircle as IconProp} />
-              Taking orders for the following date and location:
-            </p>
-            <div className={styles.pickupEventWrapInner}>
-              <PickupEventDisplay
-                pickupEvent={orderingStatus.pickupEvent}
-                showAddress={true}
-                useCard={false}
-                showControls={false}
-              />
+          orderingStatus.pickupEvent && (
+            <div className={`${styles.pickupEventWrap}`}>
+              <p>
+                <FontAwesomeIcon icon={faInfoCircle as IconProp} />
+                Taking orders for the following date and location:
+              </p>
+              <div className={styles.pickupEventWrapInner}>
+                <PickupEventDisplay
+                  pickupEvent={orderingStatus.pickupEvent}
+                  showAddress={true}
+                  useCard={false}
+                  showControls={false}
+                />
+              </div>
             </div>
-          </div>
+          )
         ) : (
           <div className={styles.alertWrap}>
             <Alert type='danger' message={orderingStatus.message!} />

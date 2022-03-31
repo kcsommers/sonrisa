@@ -45,6 +45,7 @@ export const Menu = ({ onOrderUpdate }: IMenuProps) => {
             <h5>
               {toTitleCase(categoryMapByName[categoryName].category.name)}
             </h5>
+            {categoryName === 'drinks' && <p>Featuring Caffè Umbria coffee</p>}
             <div className={styles.categoryWrapInner}>
               {categoryMapByName[categoryName].catalogObjects.map(
                 (objects, i) => (
