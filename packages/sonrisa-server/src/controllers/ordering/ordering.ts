@@ -115,6 +115,14 @@ router.get(
         message: NotAcceptingOrdersReasons.SOLD_OUT,
         errors: null,
       });
+      PickupEventModel.findOneAndUpdate(
+        {
+          _id: pickupEvent._id,
+        },
+        {
+          soldOut: true,
+        }
+      );
     } else {
       res.json({
         acceptingOrders: true,
