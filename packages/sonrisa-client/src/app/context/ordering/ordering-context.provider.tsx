@@ -6,6 +6,7 @@ import { Api } from '../../api';
 import { logger } from '../../utils';
 import { ORDER_CONTEXT } from './ordering.context';
 import { cloneDeep } from 'lodash';
+import { useLocation } from 'react-router';
 
 export const OrderContextProvider = ({ children }) => {
   const [currentOrder, setCurrentOrder] = useState<Order>({} as Order);
@@ -15,6 +16,7 @@ export const OrderContextProvider = ({ children }) => {
   } as IOrderingStatus);
 
   const { setSessionItem, getSessionItem, storageKeys } = useStorage();
+  const location = useLocation();
 
   const [tipMoney, setTipMoney] = useState<Money>({
     amount: 0,
@@ -149,6 +151,25 @@ export const OrderContextProvider = ({ children }) => {
       throw new Error(err);
     }
   };
+
+  useEffect(() => {
+    const checkAcceptingOrders = async () => {
+      try {
+        const _response = await Api.acceptingOrders();
+        logger.log('[acceptingOrders response]:::: ', _response);
+        setOrderingStatus(_response.data);
+      } catch (err: any) {
+        logger.error(err);
+        setOrderingStatus({
+          pickupEvent: null,
+          acceptingOrders: false,
+          message:
+            'There was an unexpected error. Please refresh the page to try again.',
+        });
+      }
+    };
+    checkAcceptingOrders();
+  }, [location.pathname]);
 
   return (
     <ORDER_CONTEXT.Provider

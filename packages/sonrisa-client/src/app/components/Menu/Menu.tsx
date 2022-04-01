@@ -14,26 +14,6 @@ const CATEGORIES = ['donut boxes', 'specials', 'drinks'];
 
 export const Menu = ({ onOrderUpdate }: IMenuProps) => {
   const { categoryMapByName } = useCatalog();
-  const { setOrderingStatus } = useOrdering();
-
-  useEffect(() => {
-    const checkAcceptingOrders = async () => {
-      try {
-        const _response = await Api.acceptingOrders();
-        logger.log('[acceptingOrders response]:::: ', _response);
-        setOrderingStatus(_response.data);
-      } catch (err: any) {
-        logger.error(err);
-        setOrderingStatus({
-          pickupEvent: null,
-          acceptingOrders: false,
-          message:
-            'There was an unexpected error. Please refresh the page to try again.',
-        });
-      }
-    };
-    checkAcceptingOrders();
-  }, []);
 
   return (
     <div className={`${styles.menuWrap}`}>

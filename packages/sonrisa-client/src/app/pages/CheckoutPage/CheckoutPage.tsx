@@ -53,7 +53,6 @@ export const CheckoutPage = (props: RouteComponentProps) => {
   //     });
   // }, []);
 
-  console.log('checkout page ordering status::::::::: ', orderingStatus);
   if (!orderingStatus.acceptingOrders) {
     return (
       <div className={styles.alertWrap}>
