@@ -125,3 +125,8 @@ div.upcomingEventWrap {
     border: 3px solid $yellow;
   }
 }
+
+div.alertWrap {
+  padding: 6rem;
+  min-height: calc(100vh - 350px);
+}

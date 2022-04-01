@@ -5,7 +5,12 @@ import { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Payment } from 'square';
 import { environments } from '../../../environments';
-import { CheckoutForm, OrderView, PickupEventDisplay } from '../../components';
+import {
+  Alert,
+  CheckoutForm,
+  OrderView,
+  PickupEventDisplay,
+} from '../../components';
 import { useOrdering } from '../../context';
 import { logger } from '../../utils';
 import styles from './CheckoutPage.module.scss';
@@ -47,6 +52,14 @@ export const CheckoutPage = (props: RouteComponentProps) => {
   //       logger.error('AdminPage.fetchUpcomingEvents', err);
   //     });
   // }, []);
+
+  if (!orderingStatus.acceptingOrders) {
+    return (
+      <div className={styles.alertWrap}>
+        <Alert type='danger' message={orderingStatus.message!} />
+      </div>
+    );
+  }
 
   return (
     <div className={`${styles.checkoutPageWrap} responsive-container`}>
