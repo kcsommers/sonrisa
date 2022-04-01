@@ -91,6 +91,11 @@ router.get(
     const ordersParsed = JSON.parse(
       orders.body as string
     ) as SearchOrdersResponse;
+    console.log(
+      'startAtTime::::: ',
+      new Date('31 March 2022 00:00 UTC').toISOString()
+    );
+    console.log('total orders::::: ', ordersParsed.orders?.length);
     let totalItems = 0;
     if (ordersParsed && ordersParsed.orders && ordersParsed.orders.length) {
       ordersParsed.orders.forEach((order: Order) => {
