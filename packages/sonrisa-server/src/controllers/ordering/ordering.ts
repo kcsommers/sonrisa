@@ -38,39 +38,40 @@ router.get(
   '/accepting',
   async (req: Request, res: Response<IOrderingStatus>) => {
     console.log('hit accepting orders route:::::');
-    // res.json({
-    //   acceptingOrders: false,
-    //   message: NotAcceptingOrdersReasons.SOLD_OUT,
-    //   errors: null,
-    // });
-    let acceptingOrders = true;
-    let message = '';
-    const upcomingEvents: IPickupEvent[] = await PickupEventModel.find(
-      { startTime: { $gte: Date.now() } },
-      null,
-      { sort: { startTime: 1 } }
-    ).populate('location');
-    let pickupEvent: IPickupEvent;
-    if (!upcomingEvents || !upcomingEvents.length) {
-      acceptingOrders = false;
-      message = NotAcceptingOrdersReasons.SOLD_OUT;
-    } else {
-      pickupEvent = upcomingEvents && upcomingEvents[0];
-      // const allSoldOut: boolean = upcomingEvents.every(
-      //   (event: IPickupEvent) => event.soldOut
-      // );
-      // if (pickupEvent.soldOut) {
-      //   acceptingOrders = false;
-      //   message = NotAcceptingOrdersReasons.SOLD_OUT;
-      // }
-    }
-
     res.json({
-      acceptingOrders,
-      pickupEvent,
-      message,
+      acceptingOrders: false,
+      pickupEvent: null,
+      message: NotAcceptingOrdersReasons.CHECK_BACK,
       errors: null,
     });
+    // let acceptingOrders = true;
+    // let message = '';
+    // const upcomingEvents: IPickupEvent[] = await PickupEventModel.find(
+    //   { startTime: { $gte: Date.now() } },
+    //   null,
+    //   { sort: { startTime: 1 } }
+    // ).populate('location');
+    // let pickupEvent: IPickupEvent;
+    // if (!upcomingEvents || !upcomingEvents.length) {
+    //   acceptingOrders = false;
+    //   message = NotAcceptingOrdersReasons.SOLD_OUT;
+    // } else {
+    //   pickupEvent = upcomingEvents && upcomingEvents[0];
+    //   // const allSoldOut: boolean = upcomingEvents.every(
+    //   //   (event: IPickupEvent) => event.soldOut
+    //   // );
+    //   // if (pickupEvent.soldOut) {
+    //   //   acceptingOrders = false;
+    //   //   message = NotAcceptingOrdersReasons.SOLD_OUT;
+    //   // }
+    // }
+
+    // res.json({
+    //   acceptingOrders,
+    //   pickupEvent,
+    //   message,
+    //   errors: null,
+    // });
   }
 );
 
