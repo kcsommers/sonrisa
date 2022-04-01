@@ -95,6 +95,7 @@ router.get(
       'startAtTime::::: ',
       new Date('31 March 2022 00:00 UTC').toISOString()
     );
+    console.log('orders::::: ', ordersParsed.orders);
     console.log('total orders::::: ', ordersParsed.orders?.length);
     let totalItems = 0;
     if (ordersParsed && ordersParsed.orders && ordersParsed.orders.length) {
