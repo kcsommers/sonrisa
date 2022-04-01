@@ -91,38 +91,22 @@ router.get(
     const ordersParsed = JSON.parse(
       orders.body as string
     ) as SearchOrdersResponse;
-    console.log(
-      'startAtTime::::: ',
-      new Date('31 March 2022 00:00 UTC').toISOString()
-    );
-    console.log('orders::::: ', ordersParsed.orders);
-    console.log('total orders::::: ', ordersParsed.orders?.length);
+    console.log('total retrieved orders::::: ', ordersParsed.orders?.length);
     let totalItems = 0;
-    if (ordersParsed && ordersParsed.orders && ordersParsed.orders.length) {
-      ordersParsed.orders.forEach((order: Order) => {
-        if ((order as any).line_items || order.lineItems) {
-          ((order as any).line_items || order.lineItems).forEach(
-            (item: OrderLineItem) => {
-              totalItems += +item.quantity;
-            }
-          );
-        }
-      });
-    }
-
     const hasFulFillments = ordersParsed.orders.filter((o) => !!o.fulfillments);
-    let totes = 0;
     hasFulFillments.forEach((order) => {
       if ((order as any).line_items || order.lineItems) {
         ((order as any).line_items || order.lineItems).forEach(
           (item: OrderLineItem) => {
-            totes += +item.quantity;
+            totalItems += +item.quantity;
           }
         );
       }
     });
-    console.log('totes:::: ', totes);
-
+    console.log(
+      'total orders with fulfillments::::: ',
+      ordersParsed.orders?.length
+    );
     console.log('total boxes ordered::::: ', totalItems);
     if (totalItems >= 50) {
       res.json({
