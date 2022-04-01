@@ -12,8 +12,10 @@ import {
   CreatePaymentResponse,
   Customer,
   Order,
+  OrderLineItem,
   Payment,
   RetrieveOrderResponse,
+  SearchOrdersResponse,
   UpdateOrderRequest,
   UpdateOrderResponse,
 } from 'square';
@@ -23,7 +25,6 @@ import { environments } from '../../environments';
 import { square } from '../../square';
 import { camelcaseKeys } from '../../utils';
 import { sendEmail } from '../contact';
-import { Document } from 'mongoose';
 
 const router: Router = Router();
 
@@ -37,41 +38,87 @@ const router: Router = Router();
 router.get(
   '/accepting',
   async (req: Request, res: Response<IOrderingStatus>) => {
-    console.log('hit accepting orders route:::::');
-    res.json({
-      acceptingOrders: false,
-      pickupEvent: null,
-      message: NotAcceptingOrdersReasons.CHECK_BACK,
-      errors: null,
-    });
-    // let acceptingOrders = true;
-    // let message = '';
-    // const upcomingEvents: IPickupEvent[] = await PickupEventModel.find(
-    //   { startTime: { $gte: Date.now() } },
-    //   null,
-    //   { sort: { startTime: 1 } }
-    // ).populate('location');
-    // let pickupEvent: IPickupEvent;
-    // if (!upcomingEvents || !upcomingEvents.length) {
-    //   acceptingOrders = false;
-    //   message = NotAcceptingOrdersReasons.SOLD_OUT;
-    // } else {
-    //   pickupEvent = upcomingEvents && upcomingEvents[0];
-    //   // const allSoldOut: boolean = upcomingEvents.every(
-    //   //   (event: IPickupEvent) => event.soldOut
-    //   // );
-    //   // if (pickupEvent.soldOut) {
-    //   //   acceptingOrders = false;
-    //   //   message = NotAcceptingOrdersReasons.SOLD_OUT;
-    //   // }
-    // }
-
+    // console.log('hit accepting orders route:::::');
     // res.json({
-    //   acceptingOrders,
-    //   pickupEvent,
-    //   message,
+    //   acceptingOrders: false,
+    //   pickupEvent: null,
+    //   message: NotAcceptingOrdersReasons.CHECK_BACK,
     //   errors: null,
     // });
+    const upcomingEvents: IPickupEvent[] = await PickupEventModel.find(
+      { startTime: { $gte: Date.now() } },
+      null,
+      { sort: { startTime: 1 } }
+    ).populate('location');
+
+    if (
+      !upcomingEvents ||
+      !upcomingEvents.length ||
+      upcomingEvents[0].soldOut
+    ) {
+      res.json({
+        acceptingOrders: false,
+        pickupEvent: null,
+        message: NotAcceptingOrdersReasons.SOLD_OUT,
+        errors: null,
+      });
+      return;
+    }
+    const pickupEvent = upcomingEvents && upcomingEvents[0];
+    // const allSoldOut: boolean = upcomingEvents.every(
+    //   (event: IPickupEvent) => event.soldOut
+    // );
+    // if (pickupEvent.soldOut) {
+    //   acceptingOrders = false;
+    //   message = NotAcceptingOrdersReasons.SOLD_OUT;
+    // }
+    const orders = await square.ordersApi.searchOrders({
+      locationIds: [environments[process.env.NODE_ENV].SQUARE_LOCATION_ID],
+      query: {
+        filter: {
+          dateTimeFilter: {
+            createdAt: {
+              startAt: new Date('31 March 2022 00:00 UTC').toISOString(),
+            },
+          },
+        },
+        sort: {
+          sortField: 'CREATED_AT',
+          sortOrder: 'DESC',
+        },
+      },
+    });
+    const ordersParsed = JSON.parse(
+      orders.body as string
+    ) as SearchOrdersResponse;
+    let totalItems = 0;
+    if (ordersParsed && ordersParsed.orders && ordersParsed.orders.length) {
+      ordersParsed.orders.forEach((order: Order) => {
+        if ((order as any).line_items || order.lineItems) {
+          ((order as any).line_items || order.lineItems).forEach(
+            (item: OrderLineItem) => {
+              totalItems += +item.quantity;
+            }
+          );
+        }
+      });
+    }
+    console.log('total boxes ordered::::: ', totalItems);
+    if (totalItems >= 50) {
+      res.json({
+        acceptingOrders: false,
+        pickupEvent,
+        message: NotAcceptingOrdersReasons.SOLD_OUT,
+        errors: null,
+      });
+    } else {
+      res.json({
+        acceptingOrders: true,
+        pickupEvent,
+        message: '',
+        errors: null,
+      });
+    }
   }
 );
 
@@ -255,20 +302,20 @@ router.post(
         return;
       }
 
-      const pickupEventUpdateData: Partial<IPickupEvent> = {
-        orders: [...(pickupEvent.orders || []), request.orderId],
-      };
-      // set === 49 so that sold out can be toggled off in admin page
-      if (pickupEvent.orders && pickupEvent.orders.length === 49) {
-        pickupEventUpdateData.soldOut = true;
-      }
+      // const pickupEventUpdateData: Partial<IPickupEvent> = {
+      //   orders: [...(pickupEvent.orders || []), request.orderId],
+      // };
+      // // set === 49 so that sold out can be toggled off in admin page
+      // if (pickupEvent.orders && pickupEvent.orders.length === 49) {
+      //   pickupEventUpdateData.soldOut = true;
+      // }
 
-      await PickupEventModel.findOneAndUpdate(
-        {
-          _id: pickupEvent._id,
-        },
-        pickupEventUpdateData
-      );
+      // await PickupEventModel.findOneAndUpdate(
+      //   {
+      //     _id: pickupEvent._id,
+      //   },
+      //   pickupEventUpdateData
+      // );
 
       // no errors so far, send an email to customer
       sendEmail(
