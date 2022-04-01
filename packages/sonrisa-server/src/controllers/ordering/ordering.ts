@@ -37,6 +37,7 @@ const router: Router = Router();
 router.get(
   '/accepting',
   async (req: Request, res: Response<IOrderingStatus>) => {
+    console.log('hit accepting orders route:::::');
     // res.json({
     //   acceptingOrders: false,
     //   message: NotAcceptingOrdersReasons.SOLD_OUT,
