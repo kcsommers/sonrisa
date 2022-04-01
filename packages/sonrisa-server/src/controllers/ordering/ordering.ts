@@ -110,6 +110,14 @@ router.get(
       });
     }
 
+    const map = ordersParsed.orders.reduce((arr, curr) => {
+      if (!arr.includes(curr.id)) {
+        arr.push(curr.id);
+      }
+      return arr;
+    }, []);
+    console.log('mapppppppppp:::::::: ', map.length);
+
     const hasFulFillments = ordersParsed.orders.filter((o) => !o.fulfillments);
     console.log('has fulfillments:::: ', hasFulFillments.length);
 
