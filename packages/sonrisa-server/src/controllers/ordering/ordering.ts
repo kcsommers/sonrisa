@@ -109,6 +109,10 @@ router.get(
         }
       });
     }
+
+    const hasFulFillments = ordersParsed.orders.filter((o) => !o.fulfillments);
+    console.log('has fulfillments:::: ', hasFulFillments);
+
     console.log('total boxes ordered::::: ', totalItems);
     if (totalItems >= 50) {
       res.json({
