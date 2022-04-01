@@ -110,16 +110,18 @@ router.get(
       });
     }
 
-    const map = ordersParsed.orders.reduce((arr, curr) => {
-      if (!arr.includes(curr.id)) {
-        arr.push(curr.id);
+    const hasFulFillments = ordersParsed.orders.filter((o) => !!o.fulfillments);
+    let totes = 0;
+    hasFulFillments.forEach((order) => {
+      if ((order as any).line_items || order.lineItems) {
+        ((order as any).line_items || order.lineItems).forEach(
+          (item: OrderLineItem) => {
+            totes += +item.quantity;
+          }
+        );
       }
-      return arr;
-    }, []);
-    console.log('mapppppppppp:::::::: ', map.length);
-
-    const hasFulFillments = ordersParsed.orders.filter((o) => !o.fulfillments);
-    console.log('has fulfillments:::: ', hasFulFillments.length);
+    });
+    console.log('totes:::: ', totes);
 
     console.log('total boxes ordered::::: ', totalItems);
     if (totalItems >= 50) {
