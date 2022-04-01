@@ -105,7 +105,7 @@ router.get(
     });
     console.log(
       'total orders with fulfillments::::: ',
-      ordersParsed.orders?.length
+      hasFulFillments?.length
     );
     console.log('total boxes ordered::::: ', totalItems);
     if (totalItems >= 50) {
