@@ -1,9 +1,8 @@
 import {
+  DateHelper,
   IOrderingStatus,
   IPickupEvent,
-  DateHelper,
   NotAcceptingOrdersReasons,
-  OrderFulfillmentTypes,
 } from '@sonrisa/core';
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
@@ -17,7 +16,6 @@ import {
   OrderLineItem,
   Payment,
   RetrieveOrderResponse,
-  SearchOrdersResponse,
   UpdateOrderRequest,
   UpdateOrderResponse,
 } from 'square';
