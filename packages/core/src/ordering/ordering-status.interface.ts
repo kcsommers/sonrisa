@@ -5,4 +5,5 @@ export interface IOrderingStatus {
   pickupEvent: IPickupEvent;
   message?: string;
   errors?: Error[];
+  remainingItems?: number;
 }

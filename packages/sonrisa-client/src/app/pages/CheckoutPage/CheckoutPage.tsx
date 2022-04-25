@@ -72,7 +72,6 @@ export const CheckoutPage = (props: RouteComponentProps) => {
               <div style={{ marginBottom: '1rem' }}>
                 <PickupEventDisplay
                   pickupEvent={orderingStatus.pickupEvent}
-                  showAddress={true}
                   useCard={false}
                 />
               </div>
@@ -118,7 +117,6 @@ export const CheckoutPage = (props: RouteComponentProps) => {
               >
                 <PickupEventDisplay
                   pickupEvent={event}
-                  showAddress={true}
                 ></PickupEventDisplay>
               </div>
             ))}

@@ -12,7 +12,6 @@ import styles from './PickupEventDisplay.module.scss';
 interface IPickupEventDisplayProps {
   pickupEvent: IPickupEvent;
   showControls?: boolean;
-  showAddress?: boolean;
   useCard?: boolean;
   pickupEventUpdated?: (pickupEvent: IPickupEvent) => void;
   pickupEventSelected?: (pickupEvent: IPickupEvent) => void;
@@ -24,7 +23,6 @@ const BASE_URL = environments[process.env.NODE_ENV].API_BASE_URL;
 export const PickupEventDisplay = ({
   pickupEvent,
   showControls,
-  showAddress,
   useCard = true,
   pickupEventDeleted,
   pickupEventSelected,
@@ -64,7 +62,6 @@ export const PickupEventDisplay = ({
           {DateHelper.getTimeString(pickupEvent?.endTime)}
         </div>
         <p>{pickupEvent?.location.name}</p>
-        {showAddress && (
           <a
             className={styles.addressWrap}
             href={`https://maps.google.com/?q=${pickupEvent?.location.address.street}, ${pickupEvent?.location.address.city}, ${pickupEvent?.location.address.state}, ${pickupEvent?.location.address.zip}`}
@@ -77,7 +74,6 @@ export const PickupEventDisplay = ({
               {pickupEvent?.location.address.zip}
             </p>
           </a>
-        )}
         {showControls && (
           <>
             <label className={styles.soldOutToggleWrap}>

@@ -39,10 +39,12 @@ export const Api = {
   seed: () => axios.get(`${getBaseUrl()}/seed`),
 
   createOrder: (
-    lineItems: OrderLineItem[]
+    lineItems: OrderLineItem[],
+    pickupEvent: IPickupEvent
   ): Promise<AxiosResponse<CreateOrderResponse>> => {
     return axios.post(`${getBaseUrl()}/order/create`, {
       lineItems,
+      pickupEvent
     });
   },
 

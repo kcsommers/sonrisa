@@ -3,10 +3,12 @@ import {
   IPickupEvent,
   DateHelper,
   NotAcceptingOrdersReasons,
+  OrderFulfillmentTypes,
 } from '@sonrisa/core';
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
 import {
+  BatchRetrieveOrdersResponse,
   CreateOrderResponse,
   CreatePaymentRequest,
   CreatePaymentResponse,
@@ -28,29 +30,75 @@ import { sendEmail } from '../contact';
 
 const router: Router = Router();
 
+const getOrdersForEvent = async (
+  pickupEvent: IPickupEvent
+): Promise<BatchRetrieveOrdersResponse> => {
+  // const orders = await square.ordersApi.searchOrders({
+  //   locationIds: [environments[process.env.NODE_ENV].SQUARE_LOCATION_ID],
+  //   query: {
+  //     filter: {
+  //       fulfillmentFilter: {
+  //         fulfillmentTypes: [OrderFulfillmentTypes.PICKUP],
+  //       },
+  //     },
+  //     sort: {
+  //       sortField: 'CREATED_AT',
+  //       sortOrder: 'DESC',
+  //     },
+  //   },
+  // });
+  const orders = await square.ordersApi.batchRetrieveOrders({
+    locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
+    orderIds: pickupEvent?.orders || [],
+  });
+  const ordersParsed = JSON.parse(
+    orders.body as string
+  ) as BatchRetrieveOrdersResponse;
+  console.log('total orders retrieved::::: ', ordersParsed.orders?.length);
+  return ordersParsed;
+  // const forPickupEvent = ordersParsed.orders.filter((o) => {
+  //   return o.metadata && o.metadata.pickupEventId === pickupEventId;
+  // });
+  // console.log('total orders for event::::: ', forPickupEvent?.length);
+  // return forPickupEvent;
+};
+
+const getTotalItems = (orders: Order[]): number => {
+  let totalItems = 0;
+  (orders || []).forEach((order) => {
+    if ((order as any).line_items || order.lineItems) {
+      ((order as any).line_items || order.lineItems).forEach(
+        (item: OrderLineItem) => {
+          totalItems += +item.quantity;
+        }
+      );
+    }
+  });
+  console.log('total items ordered::::: ', totalItems);
+  return totalItems;
+};
+
 /**
  * @route  GET api/order/create
  * @access PUBLIC
  * @description returns a boolean indicating whether or not orders
- * are currently being taken. Returns false if number of orders exceeds ?
- * or if its Sunday or Monday
+ * are currently being taken
  */
 router.get(
   '/accepting',
   async (req: Request, res: Response<IOrderingStatus>) => {
-    // console.log('hit accepting orders route:::::');
+    console.log('hit accepting orders route:::::');
     // res.json({
     //   acceptingOrders: false,
     //   pickupEvent: null,
     //   message: NotAcceptingOrdersReasons.CHECK_BACK,
     //   errors: null,
     // });
-    const upcomingEvents: IPickupEvent[] = await PickupEventModel.find(
+    const upcomingEvents = await PickupEventModel.find(
       { startTime: { $gte: Date.now() } },
       null,
       { sort: { startTime: 1 } }
     ).populate('location');
-
     if (
       !upcomingEvents ||
       !upcomingEvents.length ||
@@ -65,49 +113,14 @@ router.get(
       return;
     }
     const pickupEvent = upcomingEvents && upcomingEvents[0];
-    // const allSoldOut: boolean = upcomingEvents.every(
-    //   (event: IPickupEvent) => event.soldOut
-    // );
-    // if (pickupEvent.soldOut) {
-    //   acceptingOrders = false;
-    //   message = NotAcceptingOrdersReasons.SOLD_OUT;
-    // }
-    const orders = await square.ordersApi.searchOrders({
-      locationIds: [environments[process.env.NODE_ENV].SQUARE_LOCATION_ID],
-      query: {
-        filter: {
-          dateTimeFilter: {
-            createdAt: {
-              startAt: new Date('31 March 2022 00:00 UTC').toISOString(),
-            },
-          },
-        },
-        sort: {
-          sortField: 'CREATED_AT',
-          sortOrder: 'DESC',
-        },
-      },
-    });
-    const ordersParsed = JSON.parse(
-      orders.body as string
-    ) as SearchOrdersResponse;
-    console.log('total retrieved orders::::: ', ordersParsed.orders?.length);
-    let totalItems = 0;
-    const hasFulFillments = ordersParsed.orders.filter((o) => !!o.fulfillments);
-    hasFulFillments.forEach((order) => {
-      if ((order as any).line_items || order.lineItems) {
-        ((order as any).line_items || order.lineItems).forEach(
-          (item: OrderLineItem) => {
-            totalItems += +item.quantity;
-          }
-        );
-      }
-    });
-    console.log(
-      'total orders with fulfillments::::: ',
-      hasFulFillments?.length
-    );
-    console.log('total boxes ordered::::: ', totalItems);
+    // return res.json({
+    //   acceptingOrders: true,
+    //   pickupEvent: pickupEvent,
+    //   errors: null,
+    // });
+
+    const ordersRes = await getOrdersForEvent(pickupEvent);
+    const totalItems = getTotalItems(ordersRes.orders);
     if (totalItems >= 50) {
       res.json({
         acceptingOrders: false,
@@ -115,20 +128,13 @@ router.get(
         message: NotAcceptingOrdersReasons.SOLD_OUT,
         errors: null,
       });
-      PickupEventModel.findOneAndUpdate(
-        {
-          _id: pickupEvent._id,
-        },
-        {
-          soldOut: true,
-        }
-      );
     } else {
       res.json({
         acceptingOrders: true,
         pickupEvent,
         message: '',
         errors: null,
+        remainingItems: 50 - totalItems,
       });
     }
   }
@@ -142,11 +148,11 @@ router.get(
 router.post(
   '/create',
   async (req: Request, res: Response<CreateOrderResponse>) => {
-    const _lineItems = req.body.lineItems;
+    const { lineItems, pickupEvent } = req.body;
 
-    const _orderData: Order = {
+    const orderData: Order = {
       locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
-      lineItems: _lineItems,
+      lineItems: lineItems,
       pricingOptions: {
         autoApplyDiscounts: true,
         autoApplyTaxes: true,
@@ -155,7 +161,7 @@ router.post(
 
     try {
       const _response = await square.ordersApi.createOrder({
-        order: _orderData,
+        order: orderData,
         idempotencyKey: uuidV4(),
       });
       console.log('[create order response]:::: ', _response.body);
@@ -178,6 +184,35 @@ router.post(
   }
 );
 
+const updateOrder = async (
+  orderId: string,
+  version: number,
+  newData: any
+): Promise<UpdateOrderResponse> => {
+  const request = <UpdateOrderRequest>{
+    idempotencyKey: uuidV4(),
+    order: {
+      locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
+      version,
+    },
+  };
+
+  // check for fields to clear
+  if (newData.fieldsToClear) {
+    request.fieldsToClear = newData.fieldsToClear;
+  } else {
+    request.order = {
+      ...request.order,
+      ...newData,
+    };
+  }
+
+  const _response = await square.ordersApi.updateOrder(orderId, request);
+  console.log('[update order response]:::: ', _response.body);
+  const resParsed = JSON.parse(_response.body as string) as UpdateOrderResponse;
+  return resParsed;
+};
+
 /**
  * @route POST api/order/update
  * @access PUBLIC
@@ -187,49 +222,29 @@ router.post(
   '/update',
   async (req: Request, res: Response<UpdateOrderResponse>) => {
     try {
-      const _data = req.body.data;
-      const _orderId = <string>req.body.orderId;
-      const _version = <number>req.body.version;
-      console.log('[update order data]:::: ', _data);
-
-      const _request = <UpdateOrderRequest>{
-        idempotencyKey: uuidV4(),
-        order: {
-          locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
-          version: _version,
-        },
-      };
-
-      // check for fields to clear
-      if (_data.fieldsToClear) {
-        _request.fieldsToClear = _data.fieldsToClear;
-      } else {
-        _request.order = {
-          ..._request.order,
-          ..._data,
-        };
-      }
-
-      const _response = await square.ordersApi.updateOrder(_orderId, _request);
-      console.log('[update order response]:::: ', _response.body);
-
-      const _resParsed = JSON.parse(
-        _response.body as string
-      ) as UpdateOrderResponse;
-
-      const _camelCaseOrder = camelcaseKeys(_resParsed.order) as Order;
-      if (!_camelCaseOrder) {
+      const { data, orderId, version } = req.body;
+      const updatedOrderRes = await updateOrder(orderId, version, data);
+      const camelCaseOrder = camelcaseKeys(updatedOrderRes.order) as Order;
+      if (!camelCaseOrder) {
         console.error('Error converting to camel case');
         return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
       }
-
-      res.json({ errors: _resParsed.errors, order: _camelCaseOrder });
+      res.json({ errors: updatedOrderRes.errors, order: camelCaseOrder });
     } catch (err) {
       console.error(err);
       res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
     }
   }
 );
+
+const getOrder = async (orderId: string): Promise<RetrieveOrderResponse> => {
+  const response = await square.ordersApi.retrieveOrder(orderId);
+  console.log('[get order response]:::: ', response.body);
+  const resParsed = JSON.parse(
+    response.body as string
+  ) as RetrieveOrderResponse;
+  return resParsed;
+};
 
 /**
  * @route GET api/order/:id
@@ -239,27 +254,18 @@ router.post(
 router.get(
   '/:id',
   async (req: Request, res: Response<RetrieveOrderResponse>) => {
-    const _orderId = req.params.id;
-
-    if (!_orderId) {
+    const orderId = req.params.id;
+    if (!orderId) {
       return res.sendStatus(HttpStatusCodes.BAD_REQUEST);
     }
-
     try {
-      const _response = await square.ordersApi.retrieveOrder(_orderId);
-      console.log('[get order response]:::: ', _response.body);
-
-      const _resParsed = JSON.parse(
-        _response.body as string
-      ) as RetrieveOrderResponse;
-
-      const _camelCaseOrder = camelcaseKeys(_resParsed.order) as Order;
-      if (!_camelCaseOrder) {
+      const orderRes = await getOrder(orderId);
+      const camelCaseOrder = camelcaseKeys(orderRes.order) as Order;
+      if (!camelCaseOrder) {
         console.error('Error converting to camel case');
         return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
       }
-
-      res.json({ errors: _resParsed.errors, order: _camelCaseOrder });
+      res.json({ errors: orderRes.errors, order: camelCaseOrder });
     } catch (err) {
       console.error(err);
       res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
@@ -272,6 +278,7 @@ router.get(
  * @access PUBLIC
  * @description Creates a square payment using the CreatePaymentRequest
  * and the Customer provided in the request body
+ * Adds the orderId to the associated pickup event in db
  *
  */
 router.post(
@@ -288,6 +295,10 @@ router.post(
     }
 
     try {
+      const orderRes = await getOrder(request.orderId);
+      await updateOrder(orderRes.order.id, orderRes.order.version, {
+        metadata: { pickupEventId: pickupEvent._id },
+      });
       // create the payment through square
       const _response = await square.paymentsApi.createPayment(request);
       console.log('[create payment response]:::: ', _response.body);
@@ -314,31 +325,13 @@ router.post(
         return;
       }
 
-      // const pickupEventUpdateData: Partial<IPickupEvent> = {
-      //   orders: [...(pickupEvent.orders || []), request.orderId],
-      // };
-      // // set === 49 so that sold out can be toggled off in admin page
-      // if (pickupEvent.orders && pickupEvent.orders.length === 49) {
-      //   pickupEventUpdateData.soldOut = true;
-      // }
-
-      // await PickupEventModel.findOneAndUpdate(
-      //   {
-      //     _id: pickupEvent._id,
-      //   },
-      //   pickupEventUpdateData
-      // );
-
       // no errors so far, send an email to customer
       sendEmail(
         customer.emailAddress,
         'Thank you for your order!',
         'Your order has been placed successfully',
         `
-            <div
-              style="
-                position: relative;
-              ">
+            <div style="position: relative;">
                 <div
                   style="
                     position: relative;
@@ -424,6 +417,22 @@ router.post(
             code: 'EMAIL',
           });
           res.json({ errors: resParsed.errors, payment: _camelCasePayment });
+        })
+        .finally(async () => {
+          const ordersRes = await getOrdersForEvent(pickupEvent);
+          const totalItems = getTotalItems([
+            ...(ordersRes?.orders || []),
+            orderRes.order,
+          ]);
+          PickupEventModel.findOneAndUpdate(
+            {
+              _id: pickupEvent._id,
+            },
+            {
+              $set: { soldOut: totalItems >= 50 },
+              $push: { orders: request.orderId },
+            }
+          );
         });
     } catch (err) {
       console.error('PAYMENT ERROR:::: ', err);

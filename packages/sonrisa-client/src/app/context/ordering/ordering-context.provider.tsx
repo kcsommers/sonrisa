@@ -1,12 +1,12 @@
-import { IOrderingStatus, IPickupEvent } from '@sonrisa/core';
-import { useStorage } from '../../hooks';
+import { IOrderingStatus } from '@sonrisa/core';
+import { cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import { CreatePaymentRequest, Customer, Money, Order, Payment } from 'square';
 import { Api } from '../../api';
+import { useStorage } from '../../hooks';
 import { logger } from '../../utils';
 import { ORDER_CONTEXT } from './ordering.context';
-import { cloneDeep } from 'lodash';
-import { useLocation } from 'react-router';
 
 export const OrderContextProvider = ({ children }) => {
   const [currentOrder, setCurrentOrder] = useState<Order>({} as Order);
@@ -114,8 +114,9 @@ export const OrderContextProvider = ({ children }) => {
       const response = currentOrder?.id
         ? await Api.updateOrder(currentOrder.id, currentOrder?.version || 0, {
             lineItems: _clonedItems,
+            pickupEvent: orderingStatus.pickupEvent
           })
-        : await Api.createOrder(_clonedItems);
+        : await Api.createOrder(_clonedItems, orderingStatus.pickupEvent);
 
       const _order = response.data.order as Order;
 

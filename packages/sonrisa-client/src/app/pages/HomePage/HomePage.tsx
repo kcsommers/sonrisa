@@ -160,7 +160,6 @@ export const HomePage = ({
               <div className={styles.pickupEventWrapInner}>
                 <PickupEventDisplay
                   pickupEvent={orderingStatus.pickupEvent}
-                  showAddress={true}
                   useCard={false}
                   showControls={false}
                 />

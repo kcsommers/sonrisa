@@ -50,7 +50,6 @@ export const OrderSuccessPage = () => {
               </p>
               <PickupEventDisplay
                 pickupEvent={state.pickupEvent}
-                showAddress={true}
                 useCard={false}
               ></PickupEventDisplay>
             </>
