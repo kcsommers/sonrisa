@@ -417,19 +417,21 @@ router.post(
           res.json({ errors: resParsed.errors, payment: _camelCasePayment });
         })
         .finally(async () => {
-          const ordersRes = await getOrdersForEvent(pickupEvent);
-          const totalItems = getTotalItems([
-            ...(ordersRes?.orders || []),
-            orderRes.order,
-          ]);
-          PickupEventModel.findOneAndUpdate(
+          const updatedEvent = await PickupEventModel.findOneAndUpdate(
             {
               _id: pickupEvent._id,
             },
             {
-              $set: { soldOut: totalItems >= 50 },
-              $push: { orders: request.orderId },
+              $push: { orders: [request.orderId] },
             }
+          );
+          const ordersRes = await getOrdersForEvent(updatedEvent);
+          const totalItems = getTotalItems([...(ordersRes?.orders || [])]);
+          PickupEventModel.findOneAndUpdate(
+            {
+              _id: pickupEvent._id,
+            },
+            { soldOut: totalItems >= 50 }
           );
         });
     } catch (err) {

@@ -34,7 +34,7 @@ export const OrderOverlay = ({
   prevQuantityRef,
   closeOverlay,
 }: OrderOverlayProps) => {
-  const { setItemQuantity, orderingStatus } = useOrdering();
+  const { setItemQuantity, orderingStatus, currentOrder } = useOrdering();
   const [updatingOrder, setUpdatingOrder] = useState(false);
 
   const updateOrder = () => {
@@ -56,6 +56,10 @@ export const OrderOverlay = ({
       });
   };
 
+  const hitMax =
+    (currentOrder?.lineItems?.length || 0) + quantity >=
+      orderingStatus.remainingItems || 0;
+
   return (
     <div className={`${styles.templateWrap}`}>
       <button
@@ -74,6 +78,11 @@ export const OrderOverlay = ({
           <h3>{getItemName(catalogObjects.item)}</h3>
           <p>{getItemDescription(catalogObjects.item)}</p>
         </div>
+        {hitMax ? (
+          <div className={styles.errorWrap}>
+            You've reached the maximum number of boxes for this event!
+          </div>
+        ) : null}
         <div className={styles.quantityWrap}>
           <button
             className={`${styles.quantityBtn}${
@@ -86,7 +95,7 @@ export const OrderOverlay = ({
           <span className={styles.quantity}>{quantity}</span>
           <button
             className={`${styles.quantityBtn}${
-              !orderingStatus?.acceptingOrders ? ' btn-disabled' : ''
+              !orderingStatus?.acceptingOrders || hitMax ? ' btn-disabled' : ''
             }`}
             onClick={() => setQuantity(quantity + 1)}
           >
