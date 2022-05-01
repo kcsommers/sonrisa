@@ -85,6 +85,36 @@ const getTotalItems = (orders: Order[]): number => {
 router.get(
   '/accepting',
   async (req: Request, res: Response<IOrderingStatus>) => {
+    if (process.env.NODE_ENV === 'development') {
+      const startTimeModel = new Date();
+      startTimeModel.setDate(startTimeModel.getDate() + 1);
+      const endTimeModel = new Date(startTimeModel);
+      endTimeModel.setHours(startTimeModel.getHours() + 4);
+      return res.json({
+        acceptingOrders: true,
+        pickupEvent: {
+          startTime: startTimeModel,
+          endTime: endTimeModel,
+          location: {
+            name: 'Test Location',
+            address: {
+              street: '18302 9th Ave NE',
+              city: 'Shoreline',
+              state: 'WA',
+              zip: '98155'
+            },
+            _id: uuidV4() 
+          },
+          orders: [],
+          soldOut: false,
+          _id: uuidV4()
+        },
+        message: '',
+        errors: null,
+        remainingItems: 50,
+      });
+    }
+
     console.log('hit accepting orders route:::::');
     // res.json({
     //   acceptingOrders: false,
@@ -92,47 +122,57 @@ router.get(
     //   message: NotAcceptingOrdersReasons.CHECK_BACK,
     //   errors: null,
     // });
-    const upcomingEvents = await PickupEventModel.find(
-      { startTime: { $gte: Date.now() } },
-      null,
-      { sort: { startTime: 1 } }
-    ).populate('location');
-    if (
-      !upcomingEvents ||
-      !upcomingEvents.length ||
-      upcomingEvents[0].soldOut
-    ) {
+    try {
+      const upcomingEvents = await PickupEventModel.find(
+        { startTime: { $gte: Date.now() } },
+        null,
+        { sort: { startTime: 1 } }
+      ).populate('location');
+      if (
+        !upcomingEvents ||
+        !upcomingEvents.length ||
+        upcomingEvents[0].soldOut
+      ) {
+        res.json({
+          acceptingOrders: false,
+          pickupEvent: null,
+          message: NotAcceptingOrdersReasons.SOLD_OUT,
+          errors: null,
+        });
+        return;
+      }
+      const pickupEvent = upcomingEvents && upcomingEvents[0];
+      // return res.json({
+      //   acceptingOrders: true,
+      //   pickupEvent: pickupEvent,
+      //   errors: null,
+      // });
+  
+      const ordersRes = await getOrdersForEvent(pickupEvent);
+      const totalItems = getTotalItems(ordersRes.orders);
+      if (totalItems >= 50) {
+        res.json({
+          acceptingOrders: false,
+          pickupEvent,
+          message: NotAcceptingOrdersReasons.SOLD_OUT,
+          errors: null,
+        });
+      } else {
+        res.json({
+          acceptingOrders: true,
+          pickupEvent,
+          message: '',
+          errors: null,
+          remainingItems: 50 - totalItems,
+        });
+      }
+    } catch (error: any) {
+      console.error('accepting orders route error:::: ', error);
       res.json({
         acceptingOrders: false,
         pickupEvent: null,
-        message: NotAcceptingOrdersReasons.SOLD_OUT,
+        message: NotAcceptingOrdersReasons.CHECK_BACK,
         errors: null,
-      });
-      return;
-    }
-    const pickupEvent = upcomingEvents && upcomingEvents[0];
-    // return res.json({
-    //   acceptingOrders: true,
-    //   pickupEvent: pickupEvent,
-    //   errors: null,
-    // });
-
-    const ordersRes = await getOrdersForEvent(pickupEvent);
-    const totalItems = getTotalItems(ordersRes.orders);
-    if (totalItems >= 50) {
-      res.json({
-        acceptingOrders: false,
-        pickupEvent,
-        message: NotAcceptingOrdersReasons.SOLD_OUT,
-        errors: null,
-      });
-    } else {
-      res.json({
-        acceptingOrders: true,
-        pickupEvent,
-        message: '',
-        errors: null,
-        remainingItems: 50 - totalItems,
       });
     }
   }

@@ -34,6 +34,8 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
   const [familyNameError, setFamilyNameError] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [emailAddressError, setEmailAddressError] = useState('');
+  const [confirmEmailAddress, setConfirmEmailAddress] = useState('');
+  const [confirmEmailAddressError, setConfirmEmailAddressError] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState('');
   const [paymentMethod, setPaymentMethod] = useState(null);
@@ -62,6 +64,13 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
       isValid = false;
     } else {
       setEmailAddressError('');
+    }
+
+    if (emailAddress && emailAddress !== confirmEmailAddress) {
+      setConfirmEmailAddressError('Email addresses do not match');
+      isValid = false;
+    } else {
+      setConfirmEmailAddressError('');
     }
 
     if (!phoneNumber) {
@@ -246,6 +255,22 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
         />
       </div>
       <div className={styles.inputWrap}>
+        {confirmEmailAddressError && (
+          <p className={`${styles.inputErrorText} error-color`}>
+            <FontAwesomeIcon
+              icon={faExclamationCircle as IconProp}
+            ></FontAwesomeIcon>
+            {confirmEmailAddressError}
+          </p>
+        )}
+        <input
+          type='email'
+          placeholder='Confirm Email Address'
+          value={confirmEmailAddress}
+          onChange={(e) => setConfirmEmailAddress(e.target.value)}
+        />
+      </div>
+      <div className={styles.inputWrap}>
         {phoneNumberError && (
           <p className={`${styles.inputErrorText} error-color`}>
             <FontAwesomeIcon
@@ -285,6 +310,7 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
               !givenName ||
               !familyName ||
               !emailAddress ||
+              !confirmEmailAddress ||
               !phoneNumber ||
               !orderingStatus.pickupEvent
             )

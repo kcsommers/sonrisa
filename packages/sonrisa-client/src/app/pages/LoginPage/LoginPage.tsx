@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button } from '../../components';
 import { useAuth } from '../../context';
@@ -24,8 +24,17 @@ export const LoginPage = () => {
     history.push('/admin');
   };
 
+  const keypressListener = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    setTimeout(() => {
+      if (e.code !== 'Enter' || !email || !password) {
+        return;
+      }
+      login();
+    })
+  };
+
   return (
-    <div className={styles.loginWrap}>
+    <div onKeyUp={keypressListener} className={styles.loginWrap}>
       <div className={styles.loginWrapInner}>
         <div className={styles.inputWrap}>
           <label htmlFor="email">Email Address</label>
