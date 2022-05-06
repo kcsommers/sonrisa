@@ -137,7 +137,7 @@ export const HomePage = ({
             <span>Sonrisa donuts</span>&nbsp; are always made fresh to order
             using the highest quality organic ingredients- including sunflower
             oil, hand rolled brioche dough and a variety of unique, delicious
-            filings.
+            fillings.
           </p>
         </div>
       </section>
