@@ -57,8 +57,10 @@ export const OrderOverlay = ({
   };
 
   const hitMax =
+    currentOrder?.lineItems?.length === 1 || // 8/5/2022 limiting to 1 box
     (currentOrder?.lineItems?.length || 0) + quantity >=
-      orderingStatus.remainingItems || 0;
+      orderingStatus.remainingItems ||
+    0;
 
   return (
     <div className={`${styles.templateWrap}`}>
@@ -83,6 +85,9 @@ export const OrderOverlay = ({
             You've reached the maximum number of boxes for this event!
           </div>
         ) : null}
+        <div className={styles.errorWrap}>
+          Note: We are currently limiting to one box per order!
+        </div>
         <div className={styles.quantityWrap}>
           <button
             className={`${styles.quantityBtn}${
@@ -95,7 +100,11 @@ export const OrderOverlay = ({
           <span className={styles.quantity}>{quantity}</span>
           <button
             className={`${styles.quantityBtn}${
-              !orderingStatus?.acceptingOrders || hitMax ? ' btn-disabled' : ''
+              quantity >= 1 || // limiting to 1 box (8/5/22)
+              !orderingStatus?.acceptingOrders ||
+              hitMax
+                ? ' btn-disabled'
+                : ''
             }`}
             onClick={() => setQuantity(quantity + 1)}
           >
