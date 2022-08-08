@@ -45,6 +45,10 @@ const getOrdersForEvent = async (
   //     },
   //   },
   // });
+  console.log('::::getting orders for event:::: ', pickupEvent?.orders?.length);
+  if (!pickupEvent || !pickupEvent.orders || !pickupEvent.orders.length) {
+    return { orders: [] };
+  }
   const orders = await square.ordersApi.batchRetrieveOrders({
     locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
     orderIds: pickupEvent?.orders || [],
@@ -101,13 +105,13 @@ router.get(
               street: '18302 9th Ave NE',
               city: 'Shoreline',
               state: 'WA',
-              zip: '98155'
+              zip: '98155',
             },
-            _id: uuidV4() 
+            _id: uuidV4(),
           },
           orders: [],
           soldOut: false,
-          _id: uuidV4()
+          _id: uuidV4(),
         },
         message: '',
         errors: null,
@@ -115,7 +119,7 @@ router.get(
       });
     }
 
-    console.log('hit accepting orders route:::::');
+    console.log(':::: sure did hit accepting orders route:::::');
     // res.json({
     //   acceptingOrders: false,
     //   pickupEvent: null,
@@ -147,7 +151,7 @@ router.get(
       //   pickupEvent: pickupEvent,
       //   errors: null,
       // });
-  
+
       const ordersRes = await getOrdersForEvent(pickupEvent);
       const totalItems = getTotalItems(ordersRes.orders);
       if (totalItems >= 50) {
