@@ -12,7 +12,7 @@
     "start:server": "lerna exec --scope @sonrisa/server -- yarn run server",
     "server:windows": "cd sonrisa-server && yarn run server:windows",
     "start:client": "lerna exec --scope @sonrisa/client -- yarn run start",
-    "heroku:push": "git subtree push --prefix sonrisa-server heroku master",
+    "heroku:push": "git subtree push --prefix packages/sonrisa-server heroku main",
     "build:core": "yarn workspace @sonrisa/core build",
     "build:client": "yarn run build:core && yarn workspace @sonrisa/client build",
     "build:server": "yarn run build:core && yarn workspace @sonrisa/server build",
