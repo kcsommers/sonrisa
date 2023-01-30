@@ -1,0 +1,27 @@
+@import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
+
+footer.footer {
+  background-color: $light-yellow;
+}
+
+div.footerInner {
+  height: 250px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+}
+
+div.footerInfoWrap {
+  text-align: center;
+}
+
+div.footerLogoWrap {
+  height: 80%;
+
+  > img {
+    height: 100%;
+    width: auto;
+  }
+}

@@ -1,0 +1,37 @@
+@import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
+
+div.cartItemWrap {
+  display: grid;
+  grid-template-columns: 1fr 75%;
+  position: relative;
+  margin-bottom: 1rem;
+  // align-items: center;
+
+  > button {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    color: $red;
+  }
+}
+
+p.itemName {
+  font-weight: bold;
+}
+
+div.itemDetailsWrap {
+  padding: 0rem 1rem 0.5rem 1rem;
+}
+
+div.itemDetailWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+div.cartItemImgInner {
+  background-color: #fff;
+  border-radius: $border-radius;
+  border: 1px solid $offwhite;
+}
