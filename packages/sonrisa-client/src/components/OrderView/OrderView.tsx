@@ -59,7 +59,7 @@ export const OrderView = ({ canRemoveItems }: IOrderViewProps) => {
             <div className={styles.checkoutItemWrap}>
               <p className={styles.checkoutItemLabel}>Total</p>
               <p className={styles.checkoutItemTotal}>
-                {getMoneyString(getOrderTotal(currentOrder))}
+                {getMoneyString(getOrderTotal(currentOrder, tipMoney))}
               </p>
             </div>
           </div>

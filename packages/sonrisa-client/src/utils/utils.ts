@@ -1,4 +1,4 @@
-import { CatalogObject, Order } from 'square';
+import { CatalogObject, Money, Order } from 'square';
 
 export const calculateCost = (itemPrice: string, quantity: number): number => {
   return quantity * +itemPrice;
@@ -55,9 +55,11 @@ export const getOrderSubtotal = (order: Order): number => {
   return _total - _tax;
 };
 
-export const getOrderTotal = (order: Order): number => {
+export const getOrderTotal = (order: Order, tip?: Money): number => {
   // @ts-ignore
-  return +(order.totalMoney?.amount as string);
+  const subTotal = +(order.totalMoney?.amount as string);
+  const tipTotal = +(tip?.amount as unknown as string) || 0;
+  return subTotal + tipTotal;
 };
 
 export const getOrderTip = (order: Order): number => {
