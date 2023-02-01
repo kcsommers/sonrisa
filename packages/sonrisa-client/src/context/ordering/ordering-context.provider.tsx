@@ -1,7 +1,7 @@
 import { IOrderingStatus } from '@sonrisa/core';
 import { cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useRouter } from 'next/router';
 import { CreatePaymentRequest, Customer, Money, Order, Payment } from 'square';
 import { useStorage } from '../../hooks/use-storage';
 import { Api } from '../../sonrisa-api/api';
@@ -16,7 +16,7 @@ export const OrderContextProvider = ({ children }) => {
   } as IOrderingStatus);
 
   const { setSessionItem, getSessionItem, storageKeys } = useStorage();
-  const location = useLocation();
+  const router = useRouter();
 
   const [tipMoney, setTipMoney] = useState<Money>({
     amount: 0,
@@ -36,7 +36,6 @@ export const OrderContextProvider = ({ children }) => {
     getOrderById(orderId)
       .then((order) => setCurrentOrder(order))
       .catch((err) => console.error(err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getItemQuantity = (itemId: string): number => {
@@ -170,7 +169,7 @@ export const OrderContextProvider = ({ children }) => {
       }
     };
     checkAcceptingOrders();
-  }, [location.pathname]);
+  }, [router.pathname]);
 
   return (
     <ORDER_CONTEXT.Provider

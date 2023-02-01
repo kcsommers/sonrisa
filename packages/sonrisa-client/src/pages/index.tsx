@@ -13,9 +13,9 @@ import { Button } from '../components/Button/Button';
 import { ContactForm } from '../components/ContactForm/ContactForm';
 import { InstagramFeed } from '../components/InstagramFeed/InstagramFeed';
 import { Menu } from '../components/Menu/Menu';
-import { PickupEventDisplay } from '../components/PickupEventDisplay';
+import { PickupEventDisplay } from '../components/PickupEventDisplay/PickupEventDisplay';
 import { SnackbarComponent } from '../components/Snackbar/SnackbarComponent';
-import styles from './HomePage.module.scss';
+import styles from './styles/HomePage.module.scss';
 import { ScrollRefNames } from './scroll-ref-names';
 
 type HomePageProps = {
@@ -30,8 +30,6 @@ export default ({ setScrollRef, setCartVisible }: HomePageProps) => {
   const orderSectionRef = useRef<HTMLElement | null>();
   const photosSectionRef = useRef<HTMLElement | null>();
   const { orderingStatus } = useOrdering();
-
-  console.log('ordering:::: ', orderingStatus);
 
   const contactFormSubmitted = (success: boolean) => {
     setSnackbarVisible(

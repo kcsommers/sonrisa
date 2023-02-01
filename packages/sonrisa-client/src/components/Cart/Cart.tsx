@@ -3,7 +3,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useRouter } from 'next/router';
 import { useOrdering } from '../../context';
 import { Button } from '../Button/Button';
 import { OrderView } from '../OrderView/OrderView';
@@ -44,11 +44,11 @@ const innerVariants = {
 export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
   const { currentOrder } = useOrdering();
 
-  const history = useHistory();
+  const router = useRouter();
 
   const goToCheckout = (): void => {
     setIsVisible(false);
-    history.push('/checkout');
+    router.push('/checkout');
   };
 
   useEffect(() => {

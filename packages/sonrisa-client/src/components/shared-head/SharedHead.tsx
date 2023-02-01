@@ -11,14 +11,6 @@ export const SharedHead = () => {
         name='description'
         content='Handmade Brioche Donuts. Fresh and Local Ingredients. Made in Seattle, WA.'
       />
-      <link rel='icon' href='%PUBLIC_URL%/sonrisa_yellow_circle.png' />
-      <link rel='preconnect' href='https://fonts.gstatic.com' />
-      <link
-        href='https://fonts.googleapis.com/css2?family=Playfair+Display&family=Source+Sans+Pro&family=Dancing+Script&display=swap'
-        rel='stylesheet'
-      />
-      <link rel='apple-touch-icon' href='%PUBLIC_URL%/sonrisa_logo.jpg' />
-      <link rel='manifest' href='%PUBLIC_URL%/manifest.json' />
       <script
         type='text/javascript'
         src='https://web.squarecdn.com/v1/square.js'
