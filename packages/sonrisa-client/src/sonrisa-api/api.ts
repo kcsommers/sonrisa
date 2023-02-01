@@ -12,6 +12,7 @@ import {
   CreatePaymentRequest,
   CreatePaymentResponse,
   Customer,
+  GetPaymentResponse,
   OrderLineItem,
   RetrieveOrderResponse,
   UpdateOrderResponse,
@@ -76,6 +77,12 @@ export const Api = {
       customer,
       pickupEvent,
     });
+  },
+
+  getPayment: async (
+    id: string
+  ): Promise<AxiosResponse<GetPaymentResponse>> => {
+    return axios.get(`${getBaseUrl()}/order/payments/${id}`);
   },
 
   getCatalog: (): Promise<AxiosResponse<ICatalog>> => {

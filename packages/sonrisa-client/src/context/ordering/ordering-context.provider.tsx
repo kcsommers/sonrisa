@@ -13,7 +13,8 @@ export const OrderContextProvider = ({ children }) => {
   const [orderingStatus, setOrderingStatus] = useState<IOrderingStatus>({
     acceptingOrders: true,
     message: '',
-  } as IOrderingStatus);
+    pickupEvent: null,
+  });
 
   const { setSessionItem, getSessionItem, storageKeys } = useStorage();
   const router = useRouter();

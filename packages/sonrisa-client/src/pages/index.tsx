@@ -5,9 +5,8 @@ import {
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useRef } from 'react';
-import { useOrdering } from '../context/ordering/use-ordering';
-import { useSnackbar } from '../hooks/use-snackbar';
+import { useRouter } from 'next/router';
+import { MutableRefObject, useEffect, useMemo, useRef } from 'react';
 import { Alert } from '../components/Alert/Alert';
 import { Button } from '../components/Button/Button';
 import { ContactForm } from '../components/ContactForm/ContactForm';
@@ -15,21 +14,34 @@ import { InstagramFeed } from '../components/InstagramFeed/InstagramFeed';
 import { Menu } from '../components/Menu/Menu';
 import { PickupEventDisplay } from '../components/PickupEventDisplay/PickupEventDisplay';
 import { SnackbarComponent } from '../components/Snackbar/SnackbarComponent';
+import { useOrdering } from '../context/ordering/use-ordering';
+import { useSnackbar } from '../hooks/use-snackbar';
 import styles from './styles/HomePage.module.scss';
-import { ScrollRefNames } from './scroll-ref-names';
 
 type HomePageProps = {
-  setScrollRef: (elName: string, el: HTMLElement) => void;
+  setScrollRefs: (scrollRefs: {
+    [refName: string]: MutableRefObject<HTMLElement>;
+  }) => void;
   setCartVisible: (isVisible: boolean) => void;
 };
 
-export default ({ setScrollRef, setCartVisible }: HomePageProps) => {
+export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
   const aboutRef = useRef<HTMLElement>();
+  const orderSectionRef = useRef<HTMLElement>();
   const contactRef = useRef<HTMLElement>();
-  const orderSectionRef = useRef<HTMLElement | null>();
-  const photosSectionRef = useRef<HTMLElement | null>();
+  const photosSectionRef = useRef<HTMLElement>();
   const { orderingStatus } = useOrdering();
+  const router = useRouter();
+  const scrollRefs = useMemo(
+    () => ({
+      ABOUT: aboutRef,
+      ORDER: orderSectionRef,
+      CONTACT: contactRef,
+      PHOTOS: photosSectionRef,
+    }),
+    []
+  );
 
   const contactFormSubmitted = (success: boolean) => {
     setSnackbarVisible(
@@ -68,37 +80,42 @@ export default ({ setScrollRef, setCartVisible }: HomePageProps) => {
     );
   };
 
-  // useEffect(() => {
-  //   if (location.state && (location.state as any).scrollTo) {
-  //     switch ((location.state as any).scrollTo) {
-  //       case ScrollRefNames.ABOUT: {
-  //         if (aboutRef.current) {
-  //           aboutRef.current.scrollIntoView();
-  //         }
-  //         return;
-  //       }
-  //       case ScrollRefNames.CONTACT: {
-  //         if (contactRef.current) {
-  //           contactRef.current.scrollIntoView();
-  //         }
-  //         return;
-  //       }
-  //       case ScrollRefNames.ORDER: {
-  //         if (orderSectionRef.current) {
-  //           orderSectionRef.current.scrollIntoView();
-  //         }
-  //         return;
-  //       }
-  //       case ScrollRefNames.PHOTOS: {
-  //         if (photosSectionRef.current) {
-  //           photosSectionRef.current.scrollIntoView();
-  //         }
-  //         return;
-  //       }
-  //     }
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    setScrollRefs(scrollRefs);
+  }, []);
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) {
+      return;
+    }
+    switch (hash) {
+      case 'about': {
+        if (aboutRef.current) {
+          aboutRef.current.scrollIntoView();
+        }
+        return;
+      }
+      case 'contact': {
+        if (contactRef.current) {
+          contactRef.current.scrollIntoView();
+        }
+        return;
+      }
+      case 'order': {
+        if (orderSectionRef.current) {
+          orderSectionRef.current.scrollIntoView();
+        }
+        return;
+      }
+      case 'photos': {
+        if (photosSectionRef.current) {
+          photosSectionRef.current.scrollIntoView();
+        }
+        return;
+      }
+    }
+  }, []);
 
   return (
     <div className={styles.homePageWrap}>
@@ -114,6 +131,7 @@ export default ({ setScrollRef, setCartVisible }: HomePageProps) => {
               text='Order Now'
               isFullWidth={false}
               onClick={() => {
+                router.push('#order');
                 orderSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
               }}
             />
@@ -133,10 +151,7 @@ export default ({ setScrollRef, setCartVisible }: HomePageProps) => {
       </section>
       <section
         className={`${styles.menuSection} responsive-container`}
-        ref={(el) => {
-          orderSectionRef.current = el as HTMLElement;
-          // setScrollRef('ORDER', el as HTMLElement);
-        }}
+        ref={orderSectionRef}
       >
         <h3>Online Ordering</h3>
 
@@ -165,10 +180,7 @@ export default ({ setScrollRef, setCartVisible }: HomePageProps) => {
       </section>
       <section
         className={`${styles.aboutSection} responsive-container`}
-        ref={(el) => {
-          aboutRef.current = el as HTMLElement;
-          // setScrollRef('ABOUT', el as HTMLElement);
-        }}
+        ref={aboutRef}
       >
         <span className={styles.aboutImgWrap}>
           <img src='/assets/images/jing.jpg' alt='Jing' />
@@ -238,23 +250,14 @@ export default ({ setScrollRef, setCartVisible }: HomePageProps) => {
 
       <section
         className={`${styles.contactSection} responsive-container`}
-        ref={(el) => {
-          contactRef.current = el as HTMLElement;
-          // setScrollRef('CONTACT', el as HTMLElement);
-        }}
+        ref={contactRef}
       >
         <div className='max-1280'>
           <ContactForm formSubmitted={contactFormSubmitted} />
         </div>
       </section>
 
-      <section
-        className={styles.instagramFeedSection}
-        ref={(el) => {
-          photosSectionRef.current = el as HTMLElement;
-          // setScrollRef('PHOTOS', el as HTMLElement);
-        }}
-      >
+      <section className={styles.instagramFeedSection} ref={photosSectionRef}>
         <div className={styles.instagramFeedSectionInner}>
           <InstagramFeed />
         </div>

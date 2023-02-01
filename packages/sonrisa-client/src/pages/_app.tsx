@@ -1,5 +1,5 @@
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { useState } from 'react';
+import { MutableRefObject, useState } from 'react';
 import { Cart } from '../components/Cart/Cart';
 import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
@@ -9,20 +9,18 @@ import '../styles/main.scss';
 
 export default ({ Component }) => {
   const [cartVisible, setCartVisible] = useState(false);
+  const [scrollRefs, setScrollRefs] = useState<{
+    [refName: string]: MutableRefObject<HTMLElement>;
+  }>(null);
 
   return (
     <StoreProvider>
       <SharedHead />
-      <Header
+      <Header setCartVisible={setCartVisible} scrollRefs={scrollRefs} />
+      <Component
+        setScrollRefs={setScrollRefs}
         setCartVisible={setCartVisible}
-        // scrollRefs={{
-        //   ABOUT: aboutScrollRef as MutableRefObject<HTMLElement>,
-        //   CONTACT: contactScrollRef as MutableRefObject<HTMLElement>,
-        //   ORDER: orderScrollRef as MutableRefObject<HTMLElement>,
-        //   PHOTOS: photosScrollRef as MutableRefObject<HTMLElement>,
-        // }}
       />
-      <Component />
       <Cart isVisible={cartVisible} setIsVisible={setCartVisible} />
       <Footer />
     </StoreProvider>

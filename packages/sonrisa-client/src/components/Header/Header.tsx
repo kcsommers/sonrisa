@@ -17,17 +17,9 @@ import Link from 'next/link';
 
 type HeaderProps = {
   showCart?: boolean;
-
   setCartVisible: Dispatch<SetStateAction<boolean>>;
-
   scrollRefs?: {
-    ABOUT: MutableRefObject<HTMLElement>;
-
-    CONTACT: MutableRefObject<HTMLElement>;
-
-    ORDER: MutableRefObject<HTMLElement>;
-
-    PHOTOS: MutableRefObject<HTMLElement>;
+    [refName: string]: MutableRefObject<HTMLElement>;
   };
 };
 
@@ -67,19 +59,13 @@ export const Header = ({
   const router = useRouter();
   const [mobileNavVisible, setMobileNavVisible] = useState(false);
 
-  const scrollToRef = (refName: 'ABOUT' | 'CONTACT' | 'ORDER' | 'PHOTOS') => {
+  const scrollToRef = (refName: string) => {
     setMobileNavVisible(false);
-
-    if (router.pathname !== '/') {
-      router.push('/');
-      // history.push('/', { scrollTo: refName });
+    let newPath = router.pathname !== '/' ? '/' : '';
+    router.push(`${newPath}#${refName.toLowerCase()}`);
+    if (scrollRefs && scrollRefs[refName] && scrollRefs[refName].current) {
+      scrollRefs[refName].current.scrollIntoView({ behavior: 'smooth' });
     }
-
-    if (!scrollRefs || !scrollRefs[refName] || !scrollRefs[refName].current) {
-      return;
-    }
-
-    scrollRefs[refName].current.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {

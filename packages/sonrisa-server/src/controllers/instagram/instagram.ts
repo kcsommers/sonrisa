@@ -39,7 +39,6 @@ router.get('/', (req: Request, res: Response<IInstagramResponse>): void => {
       _getMedia(response.data.access_token);
     })
     .catch((err) => {
-      console.log('insta res:::: ', err);
       res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json(err);
     });
 });

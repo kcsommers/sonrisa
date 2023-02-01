@@ -8,8 +8,8 @@ import {
 import { useEffect, useState } from 'react';
 import { CreatePaymentRequest, Customer, Payment } from 'square';
 import { v4 as uuidV4 } from 'uuid';
-import { environments } from '../../../environments';
 import { useOrdering } from '../../context';
+import { environments } from '../../environments';
 import {
   getOrderSubtotal,
   getOrderTotal,
@@ -20,11 +20,15 @@ import { TipBox } from '../TipBox/TipBox';
 import { Button } from './../Button/Button';
 import styles from './CheckoutForm.module.scss';
 
-interface ICheckoutFormProps {
+type CheckoutFormProps = {
+  cardSdkLoaded: boolean;
   onCheckout: (success: boolean, payment?: Payment) => void;
-}
+};
 
-export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
+export const CheckoutForm = ({
+  onCheckout,
+  cardSdkLoaded,
+}: CheckoutFormProps) => {
   const { currentOrder, updateOrder, createPayment, orderingStatus } =
     useOrdering();
   const { tipMoney } = useOrdering();
@@ -41,6 +45,7 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [message, setMessage] = useState('');
   const [submittingForm, setSubmittingForm] = useState<boolean>(false);
+  const [formError, setFormError] = useState('');
 
   const validateForm = (): boolean => {
     let isValid = true;
@@ -84,6 +89,7 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
   };
 
   const submit = async () => {
+    setFormError('');
     if (!validateForm() || !paymentMethod || !currentOrder) {
       return;
     }
@@ -178,31 +184,38 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
       }
     } catch (e: any) {
       setSubmittingForm(false);
+      setFormError('There was an unexpected error. Please try again.');
       console.error(e.message);
     }
   };
 
   useEffect(() => {
-    const _initPayments = async () => {
-      const _appId = environments[process.env.NODE_ENV].SQUARE_APP_ID;
-      const _locationId = environments[process.env.NODE_ENV].SQUARE_LOCATION_ID;
-      const _payments = (window as any).Square.payments(_appId, _locationId);
+    const sdkError = cardSdkLoaded && !(window as any).Square;
+    if (sdkError) {
+      setFormError(
+        'There was an unexpected error. Please refresh the page and try again.'
+      );
+      console.error(new Error('Square.js failed to load properly'));
+      return;
+    }
+    const sdkLoaded = (window as any).Square || cardSdkLoaded;
+    if (!sdkLoaded) {
+      return;
+    }
+    (async () => {
+      const appId = environments[process.env.NODE_ENV].SQUARE_APP_ID;
+      const locationId = environments[process.env.NODE_ENV].SQUARE_LOCATION_ID;
+      const payments = (window as any).Square.payments(appId, locationId);
       try {
-        const _card = await _payments.card();
-        await _card.attach('#card-container');
-        setPaymentMethod(_card);
+        const card = await payments.card();
+        await card.attach('#card-container');
+        setPaymentMethod(card);
       } catch (e) {
         logger.error('Initializing Card failed', e);
         return;
       }
-    };
-
-    if (!(window as any).Square) {
-      throw new Error('Square.js failed to load properly');
-    }
-
-    _initPayments();
-  }, []);
+    })();
+  }, [cardSdkLoaded]);
 
   return (
     <div className={styles.checkoutFormWrap}>
@@ -300,6 +313,14 @@ export const CheckoutForm = ({ onCheckout }: ICheckoutFormProps) => {
         <TipBox subTotal={getOrderSubtotal(currentOrder!)} />
       </div>
       <div id='card-container'></div>
+      {formError && (
+        <p className={`${styles.inputErrorText} error-color`}>
+          <FontAwesomeIcon
+            icon={faExclamationCircle as IconProp}
+          ></FontAwesomeIcon>
+          {formError}
+        </p>
+      )}
       <div className={styles.inputWrap}>
         <Button
           text='Submit Payment'
