@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
-import { Api } from '../../api';
-import { useCatalog, useOrdering } from '../../context';
-import { logger, toTitleCase } from '../../utils';
+import { useCatalog } from '../../context';
+import { toTitleCase } from '../../utils';
 import { CatalogItemBox } from '../CatalogItemBox/CatalogItemBox';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
 import styles from './Menu.module.scss';
