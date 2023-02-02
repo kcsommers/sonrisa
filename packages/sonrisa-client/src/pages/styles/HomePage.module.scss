@@ -18,10 +18,11 @@ div.landingInner {
   > img {
     position: absolute;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
     width: 1280px;
+    height: auto;
     transition: all 0.2s ease;
+    object-fit: contain;
+    object-position: bottom;
   }
 
   @include for-phone-only {
@@ -139,11 +140,17 @@ div.instagramFeedSectionInner {
 div.bioImagesWrap {
   display: grid;
   margin-top: 3rem;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 0.5rem;
 
-  @include for-phone-only {
-    grid-template-columns: repeat(2, 1fr);
+  > span {
+    position: relative;
+    height: 0;
+    padding-bottom: 100%;
+  }
+
+  @include for-tablet-landscape-up {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 

@@ -5,6 +5,7 @@ import {
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { MutableRefObject, useEffect, useMemo, useRef } from 'react';
 import { Alert } from '../components/Alert/Alert';
@@ -136,7 +137,13 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
               }}
             />
           </div>
-          <img src='/assets/images/doughnut-halves.png' alt='Doughnut Half' />
+          <Image
+            width={1354}
+            height={277}
+            priority={true}
+            src='/assets/images/doughnut-halves.png'
+            alt='Doughnut Half'
+          />
         </div>
       </section>
       <section className={`${styles.introSection} responsive-container`}>
@@ -183,7 +190,12 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
         ref={aboutRef}
       >
         <span className={styles.aboutImgWrap}>
-          <img src='/assets/images/jing.jpg' alt='Jing' />
+          <Image
+            fill={true}
+            src='/assets/images/jing.jpg'
+            alt='Jing'
+            sizes='25vw'
+          />
         </span>
         <div className={`${styles.bioWrap}`}>
           <div className='inner-border'></div>
@@ -220,27 +232,39 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
             </p>
             <div className={styles.bioImagesWrap}>
               <span>
-                <img
+                <Image
+                  fill={true}
                   src='https://res.cloudinary.com/kcsommers/image/upload/v1626325477/Sonrisa/thai-olympics-2.jpg'
                   alt='Thai Olympic Team 1'
+                  style={{ objectFit: 'cover' }}
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw'
                 />
               </span>
               <span>
-                <img
+                <Image
+                  fill={true}
                   src='https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-3.jpg'
-                  alt='Thai Olympic Team 1'
+                  alt='Thai Olympic Team 2'
+                  style={{ objectFit: 'cover' }}
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw'
                 />
               </span>
               <span>
-                <img
+                <Image
+                  fill={true}
                   src='https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-1.jpg'
-                  alt='Thai Olympic Team 4'
+                  alt='Thai Olympic Team 3'
+                  style={{ objectFit: 'cover' }}
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw'
                 />
               </span>
               <span>
-                <img
+                <Image
+                  fill={true}
                   src='https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-4.jpg'
-                  alt='Thai Olympic Team 3'
+                  alt='Thai Olympic Team 4'
+                  style={{ objectFit: 'cover' }}
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw'
                 />
               </span>
             </div>
