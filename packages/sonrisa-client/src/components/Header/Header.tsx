@@ -92,15 +92,19 @@ export const Header = ({
         <div className={styles.headerSidesWrap}>
           <div className={styles.headerLeft}>
             <span className={styles.headerContentLg}>
-              <a href='tel:2534595365'>
+              <a href='tel:2534595365' aria-label='Phone'>
                 <FontAwesomeIcon icon={faPhone as IconProp} />
               </a>
-              <a href='https://www.instagram.com/sonrisa.donuts/'>
+              <a
+                href='https://www.instagram.com/sonrisa.donuts/'
+                aria-label='Instagram'
+              >
                 <FontAwesomeIcon icon={faInstagram as IconProp} />
               </a>
             </span>
             <span className={styles.headerContentSm}>
               <button
+                aria-label='Cart Button'
                 onClick={() => {
                   setMobileNavVisible(true);
                 }}
@@ -138,6 +142,7 @@ export const Header = ({
             </span>
             {showCart && (
               <button
+                aria-label='Cart Button'
                 className={styles.cartBtn}
                 onClick={() => setCartVisible(true)}
               >
@@ -192,11 +197,14 @@ export const Header = ({
               <span onClick={() => scrollToRef('ABOUT')}>About</span>
               <span onClick={() => scrollToRef('CONTACT')}>Contact</span>
               <span onClick={() => scrollToRef('PHOTOS')}>Photos</span>
-              <a href='https://www.instagram.com/sonrisa.donuts/'>
+              <a
+                href='https://www.instagram.com/sonrisa.donuts/'
+                aria-label='Instagram'
+              >
                 <FontAwesomeIcon icon={faInstagram as IconProp} />
                 Instagram
               </a>
-              <a href='tel:2534595365'>
+              <a href='tel:2534595365' aria-label='Phone'>
                 <FontAwesomeIcon icon={faPhone as IconProp} />
                 (253) 459-5365
               </a>
