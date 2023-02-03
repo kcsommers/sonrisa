@@ -1,0 +1,115 @@
+@import '../../styles/variables.scss';
+
+div.catalogItemBox {
+  height: 100%;
+  cursor: pointer;
+}
+
+div.catalogItemBoxInner {
+  height: 100%;
+}
+div.catalogItemBoxCard {
+  box-shadow: $box-shadow;
+  background-color: #fff;
+  border-radius: $border-radius;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  max-height: 350px;
+  &:hover {
+    > div.imgHoverBg {
+      transform: translate(0%, 0%);
+    }
+    div.imgWrap {
+      > img {
+        transform: scale(1.2);
+      }
+    }
+  }
+}
+
+span.quantityWrap {
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $box-shadow;
+  z-index: 100;
+  background-color: #fff;
+
+  > span {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    font-weight: bold;
+  }
+}
+
+div.imgWrap {
+  box-shadow: none;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  background: linear-gradient(to top left, #fff, $offwhite);
+  min-height: 262px;
+  > img {
+    transition: all 1s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+div.imgHoverBg {
+  transition: all 1.25s ease;
+  position: absolute;
+  top: -50%;
+  bottom: -50%;
+  left: -50%;
+  right: -50%;
+  border-radius: 100%;
+  background: linear-gradient(to top left, #fff, darken($offwhite, 5%));
+  transform: translate(-100%, -100%);
+}
+
+div.nameWrap {
+  text-align: center;
+  position: relative;
+  margin-top: 0.5rem;
+  > span {
+    display: block;
+    margin: 0 1rem;
+  }
+  > span:first-child {
+    font-weight: bold;
+  }
+}
+
+div.descriptionWrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(to bottom, rgba($offwhite, 0.1), $offwhite);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.5s ease;
+}
