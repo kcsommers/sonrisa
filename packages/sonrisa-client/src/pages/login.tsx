@@ -1,5 +1,5 @@
+import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useHistory } from 'react-router';
 import { Button } from '../components/Button/Button';
 import { AuthContextProvider, useAuth } from '../context';
 import styles from './styles/LoginPage.module.scss';
@@ -10,7 +10,7 @@ const LoginPage = () => {
   const [loggingIn, setLoggingIn] = useState(false);
   const [loginError, setLoginError] = useState('');
   const { logUserIn } = useAuth();
-  const history = useHistory();
+  const router = useRouter();
 
   const login = async () => {
     setLoggingIn(true);
@@ -21,7 +21,7 @@ const LoginPage = () => {
       return;
     }
     setLoginError('');
-    history.push('/admin');
+    router.push('/admin');
   };
 
   const keypressListener = (e: React.KeyboardEvent<HTMLDivElement>) => {
