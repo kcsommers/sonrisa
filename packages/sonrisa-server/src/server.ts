@@ -20,6 +20,7 @@ const corsWhitelist = [
   'https://wizardly-jepsen-70e852.netlify.app',
   'https://sonrisadonuts.com',
   'https://www.sonrisadonuts.com',
+  'https://sonrisa-kcsommers.vercel.app/',
 ];
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
