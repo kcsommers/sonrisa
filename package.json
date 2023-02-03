@@ -16,7 +16,8 @@
     "build:core": "yarn workspace @sonrisa/core build",
     "build:client": "yarn run build:core && yarn workspace @sonrisa/client build",
     "build:server": "yarn run build:core && yarn workspace @sonrisa/server build",
-    "build": "yarn workspace @sonrisa/core build && yarn workspace @sonrisa/server build && yarn workspace @sonrisa/client build"
+    "build": "yarn workspace @sonrisa/core build && yarn workspace @sonrisa/server build && yarn workspace @sonrisa/client build",
+    "build-vercel": "yarn workspace @sonrisa/core build && yarn workspace @sonrisa/client build"
   },
   "repository": {
     "type": "git",
