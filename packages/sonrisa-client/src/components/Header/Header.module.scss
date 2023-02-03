@@ -1,0 +1,166 @@
+@import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
+
+header.header {
+  text-align: center;
+  position: relative;
+  z-index: 100;
+}
+
+div.headerInner {
+  height: 100px;
+  position: relative;
+}
+
+div.headerLogoWrap {
+  height: 200%;
+  display: inline-block;
+  border-radius: 100%;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  @include for-phone-only {
+    height: 175%;
+  }
+}
+
+a.headerLogoLink {
+  display: inline-block;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+img.logo {
+  height: 100%;
+  width: initial;
+}
+
+div.headerLinksWrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+div.headerSidesWrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+button.cartBtn {
+  position: relative;
+  font-size: 22px;
+
+  @include for-phone-only {
+    font-size: 18px;
+  }
+
+  > span {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    background-color: $offwhite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    box-shadow: $box-shadow;
+    transform: translate(50%, -50%);
+  }
+}
+
+.headerContentLg {
+  display: none;
+  @include for-tablet-landscape-up {
+    display: contents;
+  }
+}
+
+.headerContentSm {
+  display: contents;
+  @include for-tablet-landscape-up {
+    display: none;
+  }
+}
+
+div.headerLeft a,
+div.headerLeft button {
+  margin-right: 1rem;
+  font-size: 22px;
+
+  @include for-phone-only {
+    font-size: 18px;
+  }
+}
+
+div.headerRight {
+  z-index: 1000;
+  button {
+    margin-left: 1rem;
+  }
+}
+
+div.mobileNavOverlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 0;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+}
+
+div.mobileNavWrap {
+  background-color: $yellow;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 400px;
+  max-width: 100%;
+  z-index: 2;
+  display: flex;
+  padding: 4rem 0;
+  flex-direction: column;
+  align-items: flex-end;
+  overflow: auto;
+  > span:not(.closeMobileNavBtn),
+  > a {
+    font-size: 25px;
+    padding: 1rem 4rem;
+    margin: 0.5rem 0;
+    align-self: stretch;
+    text-align: left;
+    cursor: pointer;
+
+    > svg {
+      margin-right: 0.5rem;
+    }
+
+    &:hover {
+      background-color: rgba($offwhite, 0.3);
+    }
+  }
+}
+
+button.closeMobileNavBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 18px;
+}

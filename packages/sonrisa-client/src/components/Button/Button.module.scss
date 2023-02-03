@@ -1,0 +1,55 @@
+@import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
+
+.btn {
+  background: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: $border-radius;
+  border: none;
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
+  transition: all 0.2s ease;
+  box-shadow: $box-shadow;
+  color: $dark;
+  max-width: 100%;
+
+  &.btn-primary {
+    background-color: #fff;
+    &:hover,
+    &:focus {
+      background-color: $dark;
+      color: #fff;
+    }
+  }
+
+  &.btn-accent {
+    background-color: $light-yellow;
+    &:hover,
+    &:focus {
+      background-color: $dark;
+      color: #fff;
+    }
+  }
+}
+
+.btn-md {
+  padding: 0rem 3rem;
+  height: 50px;
+
+  @include for-phone-only {
+    padding: 0rem 1rem;
+  }
+}
+
+.btn-sm {
+  padding: 0.5rem;
+  font-size: 16px;
+  @include for-phone-only {
+    padding: 0.15rem;
+  }
+}
+
+.btnFullWidth {
+  width: 100%;
+}

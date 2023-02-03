@@ -12,6 +12,7 @@ import {
   CreatePaymentRequest,
   CreatePaymentResponse,
   Customer,
+  GetPaymentResponse,
   Order,
   OrderLineItem,
   Payment,
@@ -315,6 +316,40 @@ router.get(
   }
 );
 
+const getPayment = async (paymentId: string): Promise<GetPaymentResponse> => {
+  const response = await square.paymentsApi.getPayment(paymentId);
+  console.log('[get payment response]:::: ', response.body);
+  const resParsed = JSON.parse(response.body as string) as GetPaymentResponse;
+  return resParsed;
+};
+
+/**
+ * @route GET api/order/payments/:id
+ * @access PUBLIC
+ * @description Retrieves a payment by id
+ */
+router.get(
+  '/payments/:id',
+  async (req: Request, res: Response<GetPaymentResponse>) => {
+    const paymentId = req.params.id;
+    if (!paymentId) {
+      return res.sendStatus(HttpStatusCodes.BAD_REQUEST);
+    }
+    try {
+      const paymentRes = await getPayment(paymentId);
+      const camelCasePayment = camelcaseKeys(paymentRes.payment) as Order;
+      if (!camelCasePayment) {
+        console.error('Error converting to camel case');
+        return res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      }
+      res.json({ errors: paymentRes.errors, payment: camelCasePayment });
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    }
+  }
+);
+
 /**
  * @route POST api/order/payments
  * @access PUBLIC
@@ -426,7 +461,7 @@ router.post(
                     </a>
                     </div>
                     <div>
-                    If you have any additional questions or would like to make a change to your order, please feel free to contact us here:
+                    If you have any questions or would like to make a change to your order, please contact us here:
                     <a
                       href="tel:2534595365"
                      style="
@@ -461,6 +496,9 @@ router.post(
           res.json({ errors: resParsed.errors, payment: _camelCasePayment });
         })
         .finally(async () => {
+          if (process.env.NODE_ENV !== 'production') {
+            return;
+          }
           const updatedEvent = await PickupEventModel.findOneAndUpdate(
             {
               _id: pickupEvent._id,

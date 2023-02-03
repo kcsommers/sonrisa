@@ -1,0 +1,102 @@
+@import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
+
+div.templateWrap {
+  flex: 1;
+  background-color: #fff;
+  box-shadow: $box-shadow;
+  max-width: 600px;
+  margin: 0 auto;
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: $border-radius;
+  position: relative;
+  @include for-phone-only {
+    max-height: none;
+    height: 100%;
+  }
+}
+
+button.closeOverlayBtn {
+  display: none;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 22px;
+  color: $dark;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: $offwhite;
+  cursor: pointer;
+  @include for-phone-only {
+    display: inline-flex;
+  }
+
+  > svg {
+    pointer-events: none;
+  }
+}
+
+div.overlayBody {
+  flex: 1;
+  overflow: auto;
+}
+
+div.overlayFooter {
+  flex: 1;
+  max-height: 114px;
+  padding: 1rem;
+  background-color: $offwhite;
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+}
+
+div.descriptionWrap {
+  padding: 1rem 2rem;
+  > p {
+    margin-top: 0.5rem;
+  }
+}
+
+div.quantityWrap {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 2rem;
+}
+
+span.quantity {
+  display: inline-block;
+  margin: 0 1rem;
+  font-size: 30px;
+}
+
+button.quantityBtn {
+  box-shadow: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  color: $dark;
+  transition: all 0.2s ease;
+  background-color: none;
+  box-shadow: $box-shadow;
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+div.imgSliderWrap {
+  padding: 1rem;
+}
+
+div.errorWrap {
+  color: $error;
+  font-size: 14px;
+  margin-bottom: 0.5rem;
+  padding: 0 2rem;
+}

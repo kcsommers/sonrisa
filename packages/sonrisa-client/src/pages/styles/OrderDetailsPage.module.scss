@@ -1,0 +1,29 @@
+@import '../../styles/variables.scss';
+@import '../../styles/media-queries.scss';
+
+div.pageInner {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+div.messageWrap {
+  background-color: $offwhite;
+  padding: 2rem;
+  border-radius: $border-radius;
+
+  > h3 {
+    margin: 0.5rem 0 1rem 0;
+  }
+
+  > a {
+    text-decoration: underline;
+  }
+
+  > p {
+    margin-top: 1rem;
+  }
+
+  @include for-tablet-landscape-up {
+    padding: 4rem;
+  }
+}
