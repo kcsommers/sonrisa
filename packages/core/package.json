@@ -22,6 +22,7 @@
     "@rollup/plugin-url": "^6.1.0",
     "@types/sass": "^1.43.1",
     "autoprefixer": "^10.4.13",
+    "eslint": "^8.33.0",
     "rollup": "^2.63.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "^0.31.1",
