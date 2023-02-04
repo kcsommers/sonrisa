@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { IAdmin, ILoginCredentials } from 'packages/core/dist/bundles';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { environments } from '../../environments';
 import { useStorage } from '../../hooks/use-storage';
 import { AUTH_CONTEXT } from './auth.context';
@@ -8,6 +8,7 @@ import { AUTH_CONTEXT } from './auth.context';
 const BASE_URL = environments[process.env.NODE_ENV].API_BASE_URL;
 
 export const AuthContextProvider = ({ children }) => {
+  const [authInitialized, setAuthInitialized] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [admin, setAdmin] = useState<IAdmin>();
   const { getStorageItem, setStorageItem, storageKeys } = useStorage();
@@ -15,6 +16,7 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const cachedAdmin: string = getStorageItem(storageKeys.ADMIN);
     if (!cachedAdmin) {
+      setAuthInitialized(true);
       return;
     }
     const admin: IAdmin = JSON.parse(cachedAdmin);
@@ -31,10 +33,10 @@ export const AuthContextProvider = ({ children }) => {
       );
       setAdmin(loginResponse.data);
       setStorageItem(storageKeys.ADMIN, JSON.stringify(loginResponse.data));
+      setIsLoggedIn(true);
       return true;
     } catch (error: any) {
-      setAdmin(undefined);
-      setStorageItem(storageKeys.ADMIN, '');
+      logUserOut();
       return false;
     }
   };
@@ -47,31 +49,41 @@ export const AuthContextProvider = ({ children }) => {
       );
       if (verifyResponse.data) {
         setAdmin(user);
+        setIsLoggedIn(true);
       } else {
-        setAdmin(undefined);
-        setStorageItem(storageKeys.ADMIN, '');
+        logUserOut();
       }
+      setAuthInitialized(true);
       return true;
     } catch (error: any) {
-      setAdmin(undefined);
-      setStorageItem(storageKeys.ADMIN, '');
+      logUserOut();
+      setAuthInitialized(true);
       return false;
     }
   };
 
-  useEffect(() => {
-    setIsLoggedIn(!!admin);
-  }, [admin]);
-
   const logUserOut = (): Promise<boolean> => {
+    setAdmin(null);
+    setStorageItem(storageKeys.ADMIN, '');
+    setIsLoggedIn(false);
     return Promise.resolve(true);
   };
 
   return (
     <AUTH_CONTEXT.Provider
-      value={{ admin, logUserIn, logUserOut, verifyUserToken, isLoggedIn }}
+      value={{
+        admin,
+        logUserIn,
+        logUserOut,
+        isLoggedIn,
+        authInitialized,
+      }}
     >
       {children}
     </AUTH_CONTEXT.Provider>
   );
+};
+
+export const useAuth = () => {
+  return useContext(AUTH_CONTEXT);
 };

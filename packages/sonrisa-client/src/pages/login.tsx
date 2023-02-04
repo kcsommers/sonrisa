@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Button } from '../components/Button/Button';
-import { AuthContextProvider, useAuth } from '../context';
+import { useAuth } from '../context/auth';
 import styles from './styles/LoginPage.module.scss';
 
-const LoginPage = () => {
+export default () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loggingIn, setLoggingIn] = useState(false);
@@ -65,9 +65,3 @@ const LoginPage = () => {
     </div>
   );
 };
-
-export default () => (
-  <AuthContextProvider>
-    <LoginPage />
-  </AuthContextProvider>
-);

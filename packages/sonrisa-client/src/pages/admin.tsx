@@ -15,6 +15,7 @@ import { Overlay } from '../components/Overlay/Overlay';
 import { PickupEventDisplay } from '../components/PickupEventDisplay/PickupEventDisplay';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { SnackbarComponent } from '../components/Snackbar/SnackbarComponent';
+import { useAuth } from '../context';
 import { environments } from '../environments';
 import { useSnackbar } from '../hooks/use-snackbar';
 import { logger } from '../utils';
@@ -42,6 +43,7 @@ export default () => {
   const [upcomingEvents, setUpcomingEvents] = useState<IPickupEvent[]>();
   const [overlayTemplate, setOverlayTemplate] = useState<ReactNode>();
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
+  const { logUserOut } = useAuth();
 
   const updateAddress = (key: string, value: string): void => {
     setPendingEvent((prevVal: IPickupEvent) => {
@@ -199,7 +201,16 @@ export default () => {
       <div className={styles.adminPageWrap}>
         <div className={styles.adminPageWrapInner}>
           <div className={styles.newEventWrap}>
-            <h6>Add New Event</h6>
+            <div className={styles.adminHeader}>
+              <h6>Add New Event</h6>
+              <Button
+                text='Logout'
+                onClick={logUserOut}
+                isFullWidth={false}
+                size='sm'
+                type='accent'
+              />
+            </div>
             <div className={styles.inputWrap}>
               <label htmlFor='location name'>Location Name</label>
               <input

@@ -14,8 +14,14 @@ div.adminPageWrapInner {
 
 div.newEventWrap {
   margin-bottom: 2rem;
+}
+
+div.adminHeader {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
   > h6 {
-    margin-bottom: 1rem;
+    flex: 1;
   }
 }
 

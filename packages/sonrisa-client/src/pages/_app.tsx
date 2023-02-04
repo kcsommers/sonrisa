@@ -4,7 +4,7 @@ import { Cart } from '../components/Cart/Cart';
 import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
 import { SharedHead } from '../components/shared-head/SharedHead';
-import { StoreProvider } from '../context';
+import { AuthContextProvider, StoreProvider } from '../context';
 import '../styles/main.scss';
 
 export default ({ Component }) => {
@@ -14,15 +14,17 @@ export default ({ Component }) => {
   }>(null);
 
   return (
-    <StoreProvider>
-      <SharedHead />
-      <Header setCartVisible={setCartVisible} scrollRefs={scrollRefs} />
-      <Component
-        setScrollRefs={setScrollRefs}
-        setCartVisible={setCartVisible}
-      />
-      <Cart isVisible={cartVisible} setIsVisible={setCartVisible} />
-      <Footer />
-    </StoreProvider>
+    <AuthContextProvider>
+      <StoreProvider>
+        <SharedHead />
+        <Header setCartVisible={setCartVisible} scrollRefs={scrollRefs} />
+        <Component
+          setScrollRefs={setScrollRefs}
+          setCartVisible={setCartVisible}
+        />
+        <Cart isVisible={cartVisible} setIsVisible={setCartVisible} />
+        <Footer />
+      </StoreProvider>
+    </AuthContextProvider>
   );
 };
