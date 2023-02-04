@@ -12,12 +12,11 @@
     "start:server": "lerna exec --scope @sonrisa/server -- yarn run server",
     "server:windows": "cd sonrisa-server && yarn run server:windows",
     "start:client": "lerna exec --scope @sonrisa/client -- yarn run dev",
-    "heroku:push": "git subtree push --prefix packages/sonrisa-server heroku main",
+    "build": "yarn workspace @sonrisa/core build && yarn workspace @sonrisa/server build && yarn workspace @sonrisa/client build",
     "build:core": "yarn workspace @sonrisa/core build",
     "build:client": "yarn run build:core && yarn workspace @sonrisa/client build",
     "build:server": "yarn run build:core && yarn workspace @sonrisa/server build",
-    "build": "yarn workspace @sonrisa/core build && yarn workspace @sonrisa/server build && yarn workspace @sonrisa/client build",
-    "build-vercel": "yarn workspace @sonrisa/core build && yarn workspace @sonrisa/client build"
+    "heroku-postbuild": "yarn run build:server"
   },
   "repository": {
     "type": "git",

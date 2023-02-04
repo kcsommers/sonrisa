@@ -15,7 +15,6 @@
     "server": "concurrently \"yarn run watch\" \"yarn run watch-deploy\"",
     "server:windows": "concurrently \"yarn run watch:windows\" \"yarn run watch-deploy:windows\"",
     "start": "yarn run deploy",
-    "heroku-postbuild": "yarn run build",
     "email": "node dist/src/email.js"
   },
   "dependencies": {
