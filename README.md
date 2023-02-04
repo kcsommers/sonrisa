@@ -2,9 +2,21 @@
 
 ## Getting started
 
-This is a monorepo that contains the server and client code, as well as a core package which containing types and interfaces common to all. The repo is managed by Lerna and yarn workspaces. To get started, simply run `yarn install`. Dependencies for each package will be installed, with all common dependencies living in the root level `node_modules` folder.
+This is a monorepo that contains the server and client code, as well as a core package containing types and interfaces common to all. The repo is managed by Lerna and yarn workspaces. To get started,run `yarn install` from the project root. Dependencies for each package will be installed, with all common dependencies living in the root level `node_modules` folder.
 
 Before a dev environment can be spun up, `@sonrisa/server` needs to be built. This is because it uses typescript to transpile files into the dist folder, where nodemon will be watching for changes to `dist/server.js`. Run `yarn build` from the repo root to build all packages (There are also scripts to build each package individually). Then to spin up a dev environment, run `yarn start` from the repo root.
+
+## Deployment
+
+### Client
+
+Currently the client app is hosted on Vercel. To deploy, just merge changes to the `main` branch. This will automatically trigger a deploy of the production branch (`main`) by Vercel. Vercel will run `package.json` scripts from the project root, starting with `yarn install`, followed by `build:client`.
+
+NOTE: Pushing changes to any other branch creates a preview deploy with its own unique url.
+
+### Sever
+
+The server is hosted by Heroku. To deploy changes, run `git push heroku main`. This will trigger a build by Heroku, which will run the `heroku-postbuild` script in the root `package.json`.
 
 ## Gmail Api
 
