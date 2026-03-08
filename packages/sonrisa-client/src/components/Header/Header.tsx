@@ -1,3 +1,4 @@
+// @ts-nocheck framer-motion v4 types
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import {
   faBars,
@@ -7,19 +8,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MutableRefObject, useEffect, useState } from 'react';
-import { Dispatch, SetStateAction } from 'react';
-import { useRouter } from 'next/router';
-import { useOrdering } from '../../context';
-import styles from './Header.module.scss';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useOrdering } from '../../context';
+import { useShell } from '../../context/shell/shell-context';
+import styles from './Header.module.scss';
 
 type HeaderProps = {
   showCart?: boolean;
-  setCartVisible: Dispatch<SetStateAction<boolean>>;
-  scrollRefs?: {
-    [refName: string]: MutableRefObject<HTMLElement>;
-  };
 };
 
 const mobileNavOverlayVariants = {
@@ -49,21 +46,20 @@ const mobileNavVariants = {
   },
 };
 
-export const Header = ({
-  showCart = true,
-  setCartVisible,
-  scrollRefs,
-}: HeaderProps) => {
+export const Header = (props: HeaderProps) => {
   const { currentOrder } = useOrdering();
   const router = useRouter();
+  const pathname = usePathname();
+  const { setCartVisible, scrollRefs } = useShell();
+  const showCart = props.showCart ?? !['/admin', '/login'].includes(pathname);
   const [mobileNavVisible, setMobileNavVisible] = useState(false);
 
   const scrollToRef = (refName: string) => {
     setMobileNavVisible(false);
-    let newPath = router.pathname !== '/' ? '/' : '';
+    const newPath = pathname !== '/' ? '/' : '';
     router.push(`${newPath}#${refName.toLowerCase()}`);
-    if (scrollRefs && scrollRefs[refName] && scrollRefs[refName].current) {
-      scrollRefs[refName].current.scrollIntoView({ behavior: 'smooth' });
+    if (scrollRefs?.[refName]?.current) {
+      scrollRefs[refName].current!.scrollIntoView({ behavior: 'smooth' });
     }
   };
 

@@ -11,7 +11,7 @@ export const InstagramFeed = () => {
 
   const [nextUrl, setNextUrl] = useState<string>();
 
-  const containerEl = useRef<HTMLDivElement>();
+  const containerEl = useRef<HTMLDivElement>(null);
 
   const getFeed = (_currentFeed: IInstagramMedia[], _nextUrl?: string) => {
     Api.getInstagramFeed(_nextUrl)
@@ -48,7 +48,7 @@ export const InstagramFeed = () => {
       ) : (
         <div
           className={`${styles.instagramFeedInner} responsive-container`}
-          ref={(el) => (containerEl.current = el as HTMLDivElement)}
+          ref={(el) => { containerEl.current = el; }}
         >
           {feed.map((img, i) => (
             <a

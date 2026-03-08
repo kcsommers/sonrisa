@@ -1,3 +1,4 @@
+// @ts-nocheck framer-motion v4 types
 import { FontAwesomeIcon } from '../FontAwesomeIcon';
 import { AnimatePresence, motion } from 'framer-motion';
 import { getColor } from '../../utils';
@@ -28,6 +29,7 @@ const variants = {
 };
 
 export const SnackbarComponent = ({ config, isVisible }: SnackbarProps) => {
+  if (!config) return null;
   return (
     <AnimatePresence>
       {isVisible && (

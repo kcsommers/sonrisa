@@ -29,6 +29,7 @@
     "@types/jest": "^26.0.22",
     "@types/lodash": "^4.14.170",
     "@types/node": "^12.20.7",
+    "@types/react": "19.2.14",
     "@types/sass": "^1.43.1",
     "@types/uuid": "^8.3.0",
     "eslint": "^8.33.0",

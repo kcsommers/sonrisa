@@ -13,7 +13,7 @@ export const useInterval = (
   delay: number,
   immediate: boolean
 ): IUseIntervalHook => {
-  const savedCallback = useRef<() => void>();
+  const savedCallback = useRef<(() => void) | null>(null);
 
   const intervalId = useRef(0);
 

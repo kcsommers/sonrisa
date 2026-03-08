@@ -1,3 +1,4 @@
+// @ts-nocheck framer-motion v4 types
 import { ICatalogObjects } from '@sonrisa/core';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';

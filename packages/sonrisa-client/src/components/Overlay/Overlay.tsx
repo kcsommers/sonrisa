@@ -1,3 +1,4 @@
+// @ts-nocheck framer-motion v4 types
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   cloneElement,

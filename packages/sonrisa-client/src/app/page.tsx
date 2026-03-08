@@ -1,3 +1,5 @@
+'use client';
+
 import {
   faCheckCircle,
   faExclamationCircle,
@@ -5,8 +7,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon, IconProp } from '../components/FontAwesomeIcon';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { MutableRefObject, useEffect, useMemo, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef } from 'react';
 import { Alert } from '../components/Alert/Alert';
 import { Button } from '../components/Button/Button';
 import { ContactForm } from '../components/ContactForm/ContactForm';
@@ -15,24 +17,19 @@ import { Menu } from '../components/Menu/Menu';
 import { PickupEventDisplay } from '../components/PickupEventDisplay/PickupEventDisplay';
 import { SnackbarComponent } from '../components/Snackbar/SnackbarComponent';
 import { useOrdering } from '../context/ordering/use-ordering';
+import { useShell } from '../context/shell/shell-context';
 import { useSnackbar } from '../hooks/use-snackbar';
 import styles from './styles/HomePage.module.scss';
 
-type HomePageProps = {
-  setScrollRefs: (scrollRefs: {
-    [refName: string]: MutableRefObject<HTMLElement>;
-  }) => void;
-  setCartVisible: (isVisible: boolean) => void;
-};
-
-export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
+export default function HomePage() {
   const { snackbarConfig, snackbarVisible, setSnackbarVisible } = useSnackbar();
-  const aboutRef = useRef<HTMLElement>();
-  const orderSectionRef = useRef<HTMLElement>();
-  const contactRef = useRef<HTMLElement>();
-  const photosSectionRef = useRef<HTMLElement>();
+  const aboutRef = useRef<HTMLElement>(null);
+  const orderSectionRef = useRef<HTMLElement>(null);
+  const contactRef = useRef<HTMLElement>(null);
+  const photosSectionRef = useRef<HTMLElement>(null);
   const { orderingStatus } = useOrdering();
   const router = useRouter();
+  const { setScrollRefs, setCartVisible } = useShell();
   const scrollRefs = useMemo(
     () => ({
       ABOUT: aboutRef,
@@ -69,7 +66,7 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
             icon: faCheckCircle,
             iconColor: 'success',
             duration: 4000,
-            onClick: setCartVisible.bind(this, true),
+            onClick: () => setCartVisible(true),
           } as any)
         : ({
             message: 'Error Updating Cart',
@@ -82,56 +79,31 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
 
   useEffect(() => {
     setScrollRefs(scrollRefs);
-  }, []);
+  }, [scrollRefs, setScrollRefs]);
 
   useEffect(() => {
-    const hash = window.location.hash;
-    if (!hash) {
-      return;
-    }
-    switch (hash) {
-      case 'about': {
-        if (aboutRef.current) {
-          aboutRef.current.scrollIntoView();
-        }
-        return;
-      }
-      case 'contact': {
-        if (contactRef.current) {
-          contactRef.current.scrollIntoView();
-        }
-        return;
-      }
-      case 'order': {
-        if (orderSectionRef.current) {
-          orderSectionRef.current.scrollIntoView();
-        }
-        return;
-      }
-      case 'photos': {
-        if (photosSectionRef.current) {
-          photosSectionRef.current.scrollIntoView();
-        }
-        return;
-      }
-    }
+    const hash = window.location.hash?.slice(1);
+    if (!hash) return;
+    const refMap = { about: aboutRef, contact: contactRef, order: orderSectionRef, photos: photosSectionRef };
+    const ref = refMap[hash as keyof typeof refMap];
+    if (ref?.current) ref.current.scrollIntoView();
   }, []);
 
   return (
     <div className={styles.homePageWrap}>
       <section className={`${styles.landingSection} responsive-container`}>
         <div className={`${styles.landingInner}`}>
-          <div className='inner-border'></div>
+          <div className="inner-border"></div>
           <div className={`${styles.landingCta} responsive-container-inner`}>
             <h3>
               Handmade Brioche Donuts. Fresh and Local Ingredients. Made in
               Seattle, WA.
             </h3>
             <Button
-              text='Order Now'
+              text="Order Now"
               isFullWidth={false}
               onClick={() => {
-                router.push('#order');
+                router.push('/#order');
                 orderSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
               }}
             />
@@ -140,8 +112,8 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
             width={1354}
             height={277}
             priority={true}
-            src='/assets/images/doughnut-halves.png'
-            alt='Doughnut Half'
+            src="/assets/images/doughnut-halves.png"
+            alt="Doughnut Half"
           />
         </div>
       </section>
@@ -179,7 +151,7 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
           )
         ) : (
           <div className={styles.alertWrap}>
-            <Alert type='danger' message={orderingStatus?.message!} />
+            <Alert type="danger" message={orderingStatus?.message!} />
           </div>
         )}
         <Menu onOrderUpdate={onOrderUpdate} />
@@ -191,13 +163,13 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
         <span className={styles.aboutImgWrap}>
           <Image
             fill={true}
-            src='/assets/images/jing.jpg'
-            alt='Jing'
-            sizes='25vw'
+            src="/assets/images/jing.jpg"
+            alt="Jing"
+            sizes="25vw"
           />
         </span>
         <div className={`${styles.bioWrap}`}>
-          <div className='inner-border'></div>
+          <div className="inner-border"></div>
           <div className={`${styles.bioInner} max-1280`}>
             <div className={`${styles.taglineWrap}`}>
               <h3>Sonrisa</h3>
@@ -205,7 +177,7 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
             </div>
             <p>
               Hello! Welcome to Sonrisa Donuts! My name is Jing, I am a chef
-              from Thailand. I moved to Seattle in 2018 to join the city's
+              from Thailand. I moved to Seattle in 2018 to join the city&apos;s
               culinary scene, and started Sonrisa during the height of the 2020
               pandemic. I have always loved eating donuts, and during that time
               it brought me joy to create and perfect my own recipes using
@@ -218,11 +190,11 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
               Growing up in Thailand I learned to cook with my grandmother and
               my mom, and have been curious about anything involving food ever
               since. I was a student of Kitchen and Restaurant Management for 4
-              years, receiving a Bachelor's degree while competing in culinary
+              years, receiving a Bachelor&apos;s degree while competing in culinary
               competitions. In 2012 I even had the opportunity to compete as a
               member of the Thailand Team in the IKA Culinary Olympics in
-              Erfurt, Germany, which was a life changing experience! When I’m
-              not cooking, I’m usually watching cooking shows or taking more
+              Erfurt, Germany, which was a life changing experience! When I&apos;m
+              not cooking, I&apos;m usually watching cooking shows or taking more
               cooking classes.
               <br />
               <br />
@@ -233,37 +205,37 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
               <span>
                 <Image
                   fill={true}
-                  src='https://res.cloudinary.com/kcsommers/image/upload/v1626325477/Sonrisa/thai-olympics-2.jpg'
-                  alt='Thai Olympic Team 1'
+                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325477/Sonrisa/thai-olympics-2.jpg"
+                  alt="Thai Olympic Team 1"
                   style={{ objectFit: 'cover' }}
-                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw'
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 />
               </span>
               <span>
                 <Image
                   fill={true}
-                  src='https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-3.jpg'
-                  alt='Thai Olympic Team 2'
+                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-3.jpg"
+                  alt="Thai Olympic Team 2"
                   style={{ objectFit: 'cover' }}
-                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw'
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 />
               </span>
               <span>
                 <Image
                   fill={true}
-                  src='https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-1.jpg'
-                  alt='Thai Olympic Team 3'
+                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-1.jpg"
+                  alt="Thai Olympic Team 3"
                   style={{ objectFit: 'cover' }}
-                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw'
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 />
               </span>
               <span>
                 <Image
                   fill={true}
-                  src='https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-4.jpg'
-                  alt='Thai Olympic Team 4'
+                  src="https://res.cloudinary.com/kcsommers/image/upload/v1626325476/Sonrisa/thai-olympics-4.jpg"
+                  alt="Thai Olympic Team 4"
                   style={{ objectFit: 'cover' }}
-                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw'
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 />
               </span>
             </div>
@@ -275,7 +247,7 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
         className={`${styles.contactSection} responsive-container`}
         ref={contactRef}
       >
-        <div className='max-1280'>
+        <div className="max-1280">
           <ContactForm formSubmitted={contactFormSubmitted} />
         </div>
       </section>
@@ -288,4 +260,4 @@ export default ({ setScrollRefs, setCartVisible }: HomePageProps) => {
       <SnackbarComponent isVisible={snackbarVisible} config={snackbarConfig} />
     </div>
   );
-};
+}
