@@ -1,6 +1,5 @@
 'use client';
 
-import type { IconProp } from '../../components/FontAwesomeIcon';
 import {
   faCheckCircle,
   faExclamationCircle,
@@ -12,18 +11,16 @@ import { ReactNode, useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from '../../components/Button/Button';
+import type { IconProp } from '../../components/FontAwesomeIcon';
 import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner';
 import { Overlay } from '../../components/Overlay/Overlay';
 import { PickupEventDisplay } from '../../components/PickupEventDisplay/PickupEventDisplay';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
 import { SnackbarComponent } from '../../components/Snackbar/SnackbarComponent';
 import { useAuth } from '../../context';
-import { environments } from '../../environments';
 import { useSnackbar } from '../../hooks/use-snackbar';
 import { logger } from '../../utils';
 import styles from '../styles/AdminPage.module.scss';
-
-const BASE_URL = environments[process.env.NODE_ENV as keyof typeof environments].API_BASE_URL;
 
 export default function AdminPage() {
   const [pendingEvent, setPendingEvent] = useState<IPickupEvent>({
@@ -77,7 +74,7 @@ export default function AdminPage() {
   const fetchUpcomingEvents = () => {
     const fetchEvents = async () => {
       return await axios.get<IPickupEvent[]>(
-        `${BASE_URL}/events?upcomingOnly=true`
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/events?upcomingOnly=true`
       );
     };
     fetchEvents()
@@ -123,7 +120,7 @@ export default function AdminPage() {
       setAddingEvent(true);
       const path = pendingEvent._id ? `update/${pendingEvent._id}` : 'create';
       await axios.post<IPickupEvent>(
-        `${BASE_URL}/events/${path}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/${path}`,
         pendingEvent
       );
       setAddingEvent(false);
@@ -175,7 +172,9 @@ export default function AdminPage() {
 
   const deleteEvent = async (id: string) => {
     try {
-      await axios.delete(`${BASE_URL}/events/${id}`);
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/${id}`
+      );
       setOverlayTemplate(undefined);
       setSnackbarVisible({
         message: 'Event Deleted Successfully',
@@ -204,77 +203,77 @@ export default function AdminPage() {
             <div className={styles.adminHeader}>
               <h6>Add New Event</h6>
               <Button
-                text="Logout"
+                text='Logout'
                 onClick={logUserOut}
                 isFullWidth={false}
-                size="sm"
-                type="accent"
+                size='sm'
+                type='accent'
               />
             </div>
             <div className={styles.inputWrap}>
-              <label htmlFor="location name">Location Name</label>
+              <label htmlFor='location name'>Location Name</label>
               <input
                 className={styles.adminInput}
-                type="text"
-                name="location name"
+                type='text'
+                name='location name'
                 value={pendingEvent?.location?.name}
                 onChange={(e) => updateLocationName(e.target.value)}
               />
             </div>
             <div className={styles.inputWrap}>
-              <label htmlFor="start time">Start Time</label>
+              <label htmlFor='start time'>Start Time</label>
               <DatePicker
                 selected={pendingEvent.startTime}
                 onChange={updateStartTime}
                 showTimeSelect={true}
-                dateFormat="Pp"
+                dateFormat='Pp'
               />
             </div>
             <div className={styles.inputWrap}>
-              <label htmlFor="end time">End Time</label>
+              <label htmlFor='end time'>End Time</label>
               <DatePicker
                 selected={pendingEvent.endTime}
                 onChange={updateEndTime}
                 showTimeSelect={true}
-                dateFormat="Pp"
+                dateFormat='Pp'
               />
             </div>
             <div className={styles.inputWrap}>
-              <label htmlFor="street address">Street</label>
+              <label htmlFor='street address'>Street</label>
               <input
                 className={styles.adminInput}
-                type="text"
-                name="street address"
+                type='text'
+                name='street address'
                 value={pendingEvent?.location?.address.street}
                 onChange={(e) => updateAddress('street', e.target.value)}
               />
             </div>
             <div className={styles.inputWrap}>
-              <label htmlFor="city">City</label>
+              <label htmlFor='city'>City</label>
               <input
                 className={styles.adminInput}
-                type="text"
-                name="city"
+                type='text'
+                name='city'
                 value={pendingEvent?.location?.address.city}
                 onChange={(e) => updateAddress('city', e.target.value)}
               />
             </div>
             <div className={styles.inputWrap}>
-              <label htmlFor="state">State</label>
+              <label htmlFor='state'>State</label>
               <input
                 className={styles.adminInput}
-                type="text"
-                name="state"
+                type='text'
+                name='state'
                 value={pendingEvent?.location?.address.state}
                 onChange={(e) => updateAddress('state', e.target.value)}
               />
             </div>
             <div className={styles.inputWrap}>
-              <label htmlFor="zip">Zip</label>
+              <label htmlFor='zip'>Zip</label>
               <input
                 className={styles.adminInput}
-                type="number"
-                name="zip"
+                type='number'
+                name='zip'
                 value={pendingEvent?.location?.address.zip}
                 onChange={(e) => updateAddress('zip', e.target.value)}
               />
@@ -319,11 +318,11 @@ export default function AdminPage() {
                           <h4>Delete This Event?</h4>
                           <div className={styles.confirmDeleteBtnsWrap}>
                             <Button
-                              text="OK"
+                              text='OK'
                               onClick={() => deleteEvent(pickupEvent._id)}
                             />
                             <Button
-                              text="Cancel"
+                              text='Cancel'
                               onClick={() => setOverlayOpen(false)}
                             />
                           </div>

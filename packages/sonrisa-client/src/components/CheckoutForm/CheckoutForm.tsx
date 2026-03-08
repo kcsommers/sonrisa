@@ -1,4 +1,3 @@
-import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import {
   OrderFulfillmentScheduleTypes,
@@ -8,13 +7,13 @@ import { useEffect, useState } from 'react';
 import { CreatePaymentRequest, Customer, Payment } from 'square';
 import { v4 as uuidV4 } from 'uuid';
 import { useOrdering } from '../../context';
-import { environments } from '../../environments';
 import {
   getOrderSubtotal,
   getOrderTotal,
   getPickupTime,
   logger,
 } from '../../utils';
+import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { TipBox } from '../TipBox/TipBox';
 import { Button } from './../Button/Button';
 import styles from './CheckoutForm.module.scss';
@@ -202,8 +201,8 @@ export const CheckoutForm = ({
       return;
     }
     (async () => {
-      const appId = environments[process.env.NODE_ENV].SQUARE_APP_ID;
-      const locationId = environments[process.env.NODE_ENV].SQUARE_LOCATION_ID;
+      const appId = process.env.NEXT_PUBLIC_SQUARE_APP_ID;
+      const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
       const payments = (window as any).Square.payments(appId, locationId);
       try {
         const card = await payments.card();

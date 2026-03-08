@@ -1,10 +1,9 @@
-import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { DateHelper, IPickupEvent } from '@sonrisa/core';
 import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
-import { environments } from '../../environments';
 import { logger } from '../../utils';
+import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { Overlay } from '../Overlay/Overlay';
 import styles from './PickupEventDisplay.module.scss';
 
@@ -17,7 +16,7 @@ interface IPickupEventDisplayProps {
   pickupEventDeleted?: (pickupEvent: IPickupEvent) => void;
 }
 
-const BASE_URL = environments[process.env.NODE_ENV].API_BASE_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const PickupEventDisplay = ({
   pickupEvent,
@@ -125,7 +124,7 @@ export const PickupEventDisplay = ({
           {pickupEvent?.orders.map((orderId: string) => (
             <a
               href={`${
-                environments[process.env.NODE_ENV].SQUARE_ORDERS_BASE_URL
+                process.env.NEXT_PUBLIC_SQUARE_ORDERS_BASE_URL
               }/${orderId}`}
               target='_blank'
               key={orderId}

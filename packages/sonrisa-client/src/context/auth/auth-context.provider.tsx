@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { IAdmin, ILoginCredentials } from 'packages/core/dist/bundles';
 import { useContext, useEffect, useState } from 'react';
-import { environments } from '../../environments';
 import { useStorage } from '../../hooks/use-storage';
 import { AUTH_CONTEXT } from './auth.context';
 
-const BASE_URL = environments[process.env.NODE_ENV].API_BASE_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const AuthContextProvider = ({ children }) => {
   const [authInitialized, setAuthInitialized] = useState(false);
