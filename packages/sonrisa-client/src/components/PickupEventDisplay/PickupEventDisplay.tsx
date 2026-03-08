@@ -1,6 +1,5 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DateHelper, IPickupEvent } from '@sonrisa/core';
 import axios from 'axios';
 import { ChangeEvent, useState } from 'react';

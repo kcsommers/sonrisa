@@ -1,6 +1,5 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   OrderFulfillmentScheduleTypes,
   OrderFulfillmentTypes,

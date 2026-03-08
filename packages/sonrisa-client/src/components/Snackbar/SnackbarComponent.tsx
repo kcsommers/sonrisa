@@ -1,4 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '../FontAwesomeIcon';
 import { AnimatePresence, motion } from 'framer-motion';
 import { getColor } from '../../utils';
 import { ISnackbarConfig } from './snackbar-config.interface';

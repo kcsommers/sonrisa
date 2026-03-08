@@ -1,6 +1,5 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon, IconProp } from '../components/FontAwesomeIcon';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isEmpty } from 'lodash';
 import { useRouter } from 'next/router';
 import Script from 'next/script';

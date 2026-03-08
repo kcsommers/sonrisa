@@ -1,4 +1,3 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import {
   faBars,
@@ -6,7 +5,7 @@ import {
   faShoppingCart,
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { Dispatch, SetStateAction } from 'react';

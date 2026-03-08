@@ -1,6 +1,5 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { faMinus, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ICatalogObjects } from '@sonrisa/core';
 import { useState } from 'react';
 import { useOrdering } from '../../context';
