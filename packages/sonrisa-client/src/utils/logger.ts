@@ -1,6 +1,8 @@
+import env from '../../environment';
+
 export const logger = {
   log: (...args: any[]) => {
-    if (process.env.NODE_ENV !== 'development') {
+    if (env.NODE_ENV !== 'development') {
       return;
     }
 

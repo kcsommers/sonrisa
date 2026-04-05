@@ -6,6 +6,7 @@ import { logger } from '../../utils';
 import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { Overlay } from '../Overlay/Overlay';
 import styles from './PickupEventDisplay.module.scss';
+import env from '../../../environment';
 
 interface IPickupEventDisplayProps {
   pickupEvent: IPickupEvent;
@@ -15,8 +16,6 @@ interface IPickupEventDisplayProps {
   pickupEventSelected?: (pickupEvent: IPickupEvent) => void;
   pickupEventDeleted?: (pickupEvent: IPickupEvent) => void;
 }
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const PickupEventDisplay = ({
   pickupEvent,
@@ -33,7 +32,7 @@ export const PickupEventDisplay = ({
     try {
       pickupEvent.soldOut = soldOut;
       const updatedEvent = await axios.post(
-        `${BASE_URL}/events/update/${pickupEvent?._id}`,
+        `${env.NEXT_PUBLIC_API_BASE_URL}/events/update/${pickupEvent?._id}`,
         {
           soldOut,
         }
@@ -123,9 +122,7 @@ export const PickupEventDisplay = ({
           <h6>Order Links</h6>
           {pickupEvent?.orders.map((orderId: string) => (
             <a
-              href={`${
-                process.env.NEXT_PUBLIC_SQUARE_ORDERS_BASE_URL
-              }/${orderId}`}
+              href={`${env.NEXT_PUBLIC_SQUARE_ORDERS_BASE_URL}/${orderId}`}
               target='_blank'
               key={orderId}
               className={styles.orderIdWrap}

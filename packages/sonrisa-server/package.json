@@ -23,7 +23,7 @@
     "bcryptjs": "^2.4.3",
     "config": "^3.1.0",
     "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
+    "dotenv-flow": "^4.1.0",
     "express": "^4.16.4",
     "express-validator": "^5.3.1",
     "googleapis": "^39.2.0",

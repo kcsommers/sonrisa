@@ -2,6 +2,7 @@ import { IInstagramMedia, IInstagramResponse } from '@sonrisa/core';
 import axios from 'axios';
 import { Request, Response, Router } from 'express';
 import HttpStatusCodes from 'http-status-codes';
+import env from '../../environment';
 
 interface IRefreshTokenResponse {
   access_token: string;
@@ -14,7 +15,7 @@ const router = Router();
 const apiBaseUrl = 'https://graph.instagram.com';
 
 router.get('/', (req: Request, res: Response<IInstagramResponse>): void => {
-  const instagramToken = process.env.INSTAGRAM_TOKEN;
+  const instagramToken = env.INSTAGRAM_TOKEN;
   const _getMedia = (_token: string) => {
     axios
       .get(

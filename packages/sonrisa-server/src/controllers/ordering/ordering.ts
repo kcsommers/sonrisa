@@ -22,7 +22,7 @@ import {
 } from 'square';
 import { v4 as uuidV4 } from 'uuid';
 import { PickupEventModel } from '../../database/models';
-import { environments } from '../../environments';
+import env from '../../environment';
 import { square } from '../../square';
 import { camelcaseKeys } from '../../utils';
 import { sendEmail } from '../contact';
@@ -33,7 +33,7 @@ const getOrdersForEvent = async (
   pickupEvent: IPickupEvent
 ): Promise<BatchRetrieveOrdersResponse> => {
   // const orders = await square.ordersApi.searchOrders({
-  //   locationIds: [environments[process.env.NODE_ENV].SQUARE_LOCATION_ID],
+  //   locationIds: [env.SQUARE_LOCATION_ID],
   //   query: {
   //     filter: {
   //       fulfillmentFilter: {
@@ -51,7 +51,7 @@ const getOrdersForEvent = async (
     return { orders: [] };
   }
   const orders = await square.ordersApi.batchRetrieveOrders({
-    locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
+    locationId: env.SQUARE_LOCATION_ID,
     orderIds: pickupEvent?.orders || [],
   });
   const ordersParsed = JSON.parse(
@@ -90,7 +90,7 @@ const getTotalItems = (orders: Order[]): number => {
 router.get(
   '/accepting',
   async (req: Request, res: Response<IOrderingStatus>) => {
-    if (process.env.NODE_ENV === 'development') {
+    if (env.NODE_ENV === 'development') {
       const startTimeModel = new Date();
       startTimeModel.setDate(startTimeModel.getDate() + 1);
       const endTimeModel = new Date(startTimeModel);
@@ -194,7 +194,7 @@ router.post(
     const { lineItems, pickupEvent } = req.body;
 
     const orderData: Order = {
-      locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
+      locationId: env.SQUARE_LOCATION_ID,
       lineItems: lineItems,
       pricingOptions: {
         autoApplyDiscounts: true,
@@ -235,7 +235,7 @@ const updateOrder = async (
   const request = <UpdateOrderRequest>{
     idempotencyKey: uuidV4(),
     order: {
-      locationId: environments[process.env.NODE_ENV].SQUARE_LOCATION_ID,
+      locationId: env.SQUARE_LOCATION_ID,
       version,
     },
   };
@@ -496,7 +496,7 @@ router.post(
           res.json({ errors: resParsed.errors, payment: _camelCasePayment });
         })
         .finally(async () => {
-          if (process.env.NODE_ENV !== 'production') {
+          if (env.NODE_ENV !== 'production') {
             return;
           }
           const updatedEvent = await PickupEventModel.findOneAndUpdate(

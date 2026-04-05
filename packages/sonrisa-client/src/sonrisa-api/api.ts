@@ -17,6 +17,7 @@ import {
   RetrieveOrderResponse,
   UpdateOrderResponse,
 } from 'square';
+import env from '../../environment';
 
 let myInterceptor;
 if (!myInterceptor) {
@@ -32,7 +33,7 @@ if (!myInterceptor) {
 }
 
 const getBaseUrl = () => {
-  return process.env.NEXT_PUBLIC_API_BASE_URL;
+  return env.NEXT_PUBLIC_API_BASE_URL;
 };
 
 export const Api = {

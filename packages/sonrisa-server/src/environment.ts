@@ -1,0 +1,44 @@
+import dotenvFlow from 'dotenv-flow';
+dotenvFlow.config();
+
+type Environment = {
+  SQUARE_APP_ID: string;
+  SQUARE_LOCATION_ID: string;
+  SQUARE_ACCESS_TOKEN: string;
+  GMAIL_CLIENT_ID: string;
+  GMAIL_CLIENT_SECRET: string;
+  GMAIL_OAUTH_REDIRECT_URI: string;
+  GMAIL_OAUTH_REFRESH_TOKEN: string;
+  INSTAGRAM_TOKEN: string;
+  JWT_SECRET: string;
+  MONGODB_URI: string;
+  NEXT_PUBLIC_API_BASE_URL: string;
+  NEXT_PUBLIC_SQUARE_APP_ID: string;
+  NEXT_PUBLIC_SQUARE_LOCATION_ID: string;
+  NEXT_PUBLIC_SQUARE_ORDERS_BASE_URL: string;
+  SONRISA_EMAIL: string;
+  NODE_ENV: string;
+  SERVER_PORT: number;
+};
+
+const environment: Environment = {
+  SQUARE_APP_ID: process.env.SQUARE_APP_ID,
+  SQUARE_LOCATION_ID: process.env.SQUARE_LOCATION_ID,
+  SQUARE_ACCESS_TOKEN: process.env.SQUARE_ACCESS_TOKEN,
+  GMAIL_CLIENT_ID: process.env.GMAIL_CLIENT_ID,
+  GMAIL_CLIENT_SECRET: process.env.GMAIL_CLIENT_SECRET,
+  GMAIL_OAUTH_REDIRECT_URI: process.env.GMAIL_OAUTH_REDIRECT_URI,
+  GMAIL_OAUTH_REFRESH_TOKEN: process.env.GMAIL_OAUTH_REFRESH_TOKEN,
+  INSTAGRAM_TOKEN: process.env.INSTAGRAM_TOKEN,
+  JWT_SECRET: process.env.JWT_SECRET,
+  MONGODB_URI: process.env.MONGODB_URI,
+  NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  NEXT_PUBLIC_SQUARE_APP_ID: process.env.NEXT_PUBLIC_SQUARE_APP_ID,
+  NEXT_PUBLIC_SQUARE_LOCATION_ID: process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID,
+  NEXT_PUBLIC_SQUARE_ORDERS_BASE_URL: process.env.NEXT_PUBLIC_SQUARE_ORDERS_BASE_URL,
+  SONRISA_EMAIL: process.env.SONRISA_EMAIL,
+  NODE_ENV: process.env.NODE_ENV,
+  SERVER_PORT: parseInt(process.env.SERVER_PORT || '5001'),
+};
+
+export default environment;

@@ -17,6 +17,7 @@ import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { TipBox } from '../TipBox/TipBox';
 import { Button } from './../Button/Button';
 import styles from './CheckoutForm.module.scss';
+import env from '../../../environment';
 
 type CheckoutFormProps = {
   cardSdkLoaded: boolean;
@@ -201,8 +202,8 @@ export const CheckoutForm = ({
       return;
     }
     (async () => {
-      const appId = process.env.NEXT_PUBLIC_SQUARE_APP_ID;
-      const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
+      const appId = env.NEXT_PUBLIC_SQUARE_APP_ID;
+      const locationId = env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
       const payments = (window as any).Square.payments(appId, locationId);
       try {
         const card = await payments.card();

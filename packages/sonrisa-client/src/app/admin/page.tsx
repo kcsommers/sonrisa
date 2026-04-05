@@ -21,6 +21,7 @@ import { useAuth } from '../../context';
 import { useSnackbar } from '../../hooks/use-snackbar';
 import { logger } from '../../utils';
 import styles from '../styles/AdminPage.module.scss';
+import env from '../../../environment';
 
 export default function AdminPage() {
   const [pendingEvent, setPendingEvent] = useState<IPickupEvent>({
@@ -74,7 +75,7 @@ export default function AdminPage() {
   const fetchUpcomingEvents = () => {
     const fetchEvents = async () => {
       return await axios.get<IPickupEvent[]>(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/events?upcomingOnly=true`
+        `${env.NEXT_PUBLIC_API_BASE_URL}/events?upcomingOnly=true`
       );
     };
     fetchEvents()
@@ -120,7 +121,7 @@ export default function AdminPage() {
       setAddingEvent(true);
       const path = pendingEvent._id ? `update/${pendingEvent._id}` : 'create';
       await axios.post<IPickupEvent>(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/${path}`,
+        `${env.NEXT_PUBLIC_API_BASE_URL}/events/${path}`,
         pendingEvent
       );
       setAddingEvent(false);
@@ -172,9 +173,7 @@ export default function AdminPage() {
 
   const deleteEvent = async (id: string) => {
     try {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/${id}`
-      );
+      await axios.delete(`${env.NEXT_PUBLIC_API_BASE_URL}/events/${id}`);
       setOverlayTemplate(undefined);
       setSnackbarVisible({
         message: 'Event Deleted Successfully',

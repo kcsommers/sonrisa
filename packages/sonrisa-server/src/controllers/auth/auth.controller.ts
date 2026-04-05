@@ -5,9 +5,45 @@ import HttpStatusCodes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import { omit } from 'lodash';
 import { AdminModel } from '../../database';
+import env from '../../environment';
 import { verifyToken } from './middleware';
 
 const router = Router();
+
+router.post(
+  '/register',
+  async (
+    _req: Request<any, any, ILoginCredentials & { fullName: string }>,
+    _res: Response
+  ) => {
+    try {
+      const { email, password, fullName } = _req.body;
+      if (!(email && password && fullName)) {
+        return _res
+          .status(HttpStatusCodes.BAD_REQUEST)
+          .send('Email, password, and fullName required');
+      }
+      const existing = await AdminModel.findOne({ email });
+      if (existing) {
+        return _res
+          .status(HttpStatusCodes.BAD_REQUEST)
+          .send('User with that email already exists');
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const _user = await AdminModel.create({
+        email,
+        password: hashedPassword,
+        fullName,
+      });
+      _res
+        .status(HttpStatusCodes.CREATED)
+        .json(omit(_user.toObject(), 'password'));
+    } catch (_error: any) {
+      console.error('Register Error::::', _error);
+      _res.sendStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+    }
+  }
+);
 
 router.post(
   '/login',
@@ -42,7 +78,7 @@ router.post(
           userId: _user._id,
           email: _user.email,
         },
-        process.env.JWT_SECRET,
+        env.JWT_SECRET,
         {
           expiresIn: '2h',
         }
