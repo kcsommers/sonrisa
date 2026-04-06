@@ -16,11 +16,11 @@ enum SlideDirections {
 }
 
 const getImgStyle = (
-  url: string,
+  url: string | undefined,
   duration: number,
   x: number
 ): React.CSSProperties => ({
-  backgroundImage: `url(${url})`,
+  backgroundImage: url ? `url(${url})` : 'none',
   transition: `${duration}s`,
   transform: `translateX(${x}%)`,
 });
@@ -35,8 +35,14 @@ export const ImageSlider = ({
     getImgStyle(images[currentImageIndex], 0, 0)
   );
 
-  const [nextSlideStyle, setNextSlideStyle] = useState(
-    getImgStyle(images[currentImageIndex + 1], 0, 100)
+  const [nextSlideStyle, setNextSlideStyle] = useState(() =>
+    getImgStyle(
+      images.length
+        ? images[(currentImageIndex + 1) % images.length]
+        : undefined,
+      0,
+      100
+    )
   );
 
   const { toggleInterval } = useInterval(

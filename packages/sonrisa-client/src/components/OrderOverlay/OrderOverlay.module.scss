@@ -19,7 +19,7 @@ div.templateWrap {
 }
 
 button.closeOverlayBtn {
-  display: none;
+  display: inline-flex;
   z-index: 1;
   align-items: center;
   justify-content: center;
@@ -33,9 +33,6 @@ button.closeOverlayBtn {
   border-radius: 100%;
   background-color: $offwhite;
   cursor: pointer;
-  @include for-phone-only {
-    display: inline-flex;
-  }
 
   > svg {
     pointer-events: none;

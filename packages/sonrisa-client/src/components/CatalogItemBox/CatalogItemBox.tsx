@@ -68,10 +68,7 @@ export const CatalogItemBox = ({
         className={styles.catalogItemBoxInner}
         onClick={() => setOverlayOpen(true)}
       >
-        <div
-          className={styles.catalogItemBoxCard}
-          onClick={() => setOverlayOpen(true)}
-        >
+        <div className={styles.catalogItemBoxCard}>
           <div className={styles.imgHoverBg}></div>
           <AnimatePresence>
             {prevQuantityRef.current && (
@@ -120,6 +117,7 @@ export const CatalogItemBox = ({
           setQuantity={setQuantity}
           orderUpdated={orderUpdated}
           prevQuantityRef={prevQuantityRef}
+          closeOverlay={() => setOverlayOpen(false)}
         />
       </Overlay>
     </div>
