@@ -1,11 +1,9 @@
 import axios from 'axios';
 import { IAdmin, ILoginCredentials } from 'packages/core/dist/bundles';
 import { useContext, useEffect, useState } from 'react';
-import { environments } from '../../environments';
+import env from '../../../environment';
 import { useStorage } from '../../hooks/use-storage';
 import { AUTH_CONTEXT } from './auth.context';
-
-const BASE_URL = environments[process.env.NODE_ENV].API_BASE_URL;
 
 export const AuthContextProvider = ({ children }) => {
   const [authInitialized, setAuthInitialized] = useState(false);
@@ -28,7 +26,7 @@ export const AuthContextProvider = ({ children }) => {
   ): Promise<boolean> => {
     try {
       const loginResponse = await axios.post<IAdmin>(
-        `${BASE_URL}/auth/login`,
+        `${env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
         credentials
       );
       setAdmin(loginResponse.data);
@@ -44,7 +42,7 @@ export const AuthContextProvider = ({ children }) => {
   const verifyUserToken = async (user: IAdmin): Promise<boolean> => {
     try {
       const verifyResponse = await axios.post<boolean>(
-        `${BASE_URL}/auth/verify`,
+        `${env.NEXT_PUBLIC_API_BASE_URL}/auth/verify`,
         { token: user.token }
       );
       if (verifyResponse.data) {

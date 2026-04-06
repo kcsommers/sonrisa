@@ -1,0 +1,17 @@
+type Environment = {
+  NODE_ENV: string;
+  NEXT_PUBLIC_API_BASE_URL: string;
+  NEXT_PUBLIC_SQUARE_APP_ID: string;
+  NEXT_PUBLIC_SQUARE_LOCATION_ID: string;
+  NEXT_PUBLIC_SQUARE_ORDERS_BASE_URL: string;
+};
+
+const environment: Environment = {
+  NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  NEXT_PUBLIC_SQUARE_APP_ID: process.env.NEXT_PUBLIC_SQUARE_APP_ID,
+  NEXT_PUBLIC_SQUARE_LOCATION_ID: process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID,
+  NEXT_PUBLIC_SQUARE_ORDERS_BASE_URL: process.env.NEXT_PUBLIC_SQUARE_ORDERS_BASE_URL,
+  NODE_ENV: process.env.NODE_ENV,
+};
+
+export default environment;

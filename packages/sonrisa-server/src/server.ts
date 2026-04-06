@@ -10,6 +10,7 @@ import {
   eventsController,
 } from './controllers';
 import { connectToMongoDb } from './database';
+import env from './environment';
 
 const app = express();
 
@@ -36,7 +37,7 @@ const corsOptions: cors.CorsOptions = {
 app.use(cors(corsOptions));
 
 // Express configuration
-app.set('port', process.env.PORT || 5001);
+app.set('port', env.SERVER_PORT || 5001);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

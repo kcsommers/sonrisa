@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+import env from '../environment';
 
 export const connectToMongoDb = () => {
-  const dbUri = process.env.MONGODB_URI;
+  const dbUri = env.MONGODB_URI;
   mongoose.connect(dbUri);
   const connection = mongoose.connection;
   connection.once('open', () => {

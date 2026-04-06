@@ -1,39 +1,38 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+'use client';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 import { Payment } from 'square';
-import { Button } from '../components/Button/Button';
-import { LoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
-import { PickupEventDisplay } from '../components/PickupEventDisplay/PickupEventDisplay';
-import { useOrdering } from '../context';
-import { Api } from '../sonrisa-api/api';
-import styles from './styles/OrderDetailsPage.module.scss';
+import { Button } from '../../components/Button/Button';
+import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner';
+import { PickupEventDisplay } from '../../components/PickupEventDisplay/PickupEventDisplay';
+import { useOrdering } from '../../context';
+import { Api } from '../../sonrisa-api/api';
+import styles from '../styles/OrderDetailsPage.module.scss';
 
-export default () => {
+function OrderDetailsContent() {
   const { clearOrder, orderingStatus } = useOrdering();
-  const [payment, setPayment] = useState<Payment>(null);
-
+  const [payment, setPayment] = useState<Payment | null>(null);
   const router = useRouter();
-  const { paymentId, success } = router.query;
+  const searchParams = useSearchParams();
+  const paymentId = searchParams.get('paymentId');
+  const success = searchParams.get('success');
 
   useEffect(() => {
-    const { success } = router.query;
     if (success === 'true') {
       clearOrder();
     }
   }, [success]);
 
   useEffect(() => {
-    const { paymentId } = router.query;
-    if (!paymentId) {
-      return;
-    }
+    if (!paymentId) return;
     (async () => {
       try {
-        const payment = await Api.getPayment(paymentId as string);
-        if (payment.data.errors?.length) {
-          throw payment.data.errors;
+        const res = await Api.getPayment(paymentId);
+        if (res.data.errors?.length) {
+          throw res.data.errors;
         }
-        setPayment(payment.data.payment);
+        setPayment(res.data.payment);
       } catch (error) {
         console.error(error);
       }
@@ -44,14 +43,14 @@ export default () => {
     <div>
       <div className={`${styles.pageInner} responsive-container`}>
         <div className={`${styles.messageWrap}`}>
-          {router?.query?.success === 'true' ? (
+          {success === 'true' ? (
             payment && orderingStatus?.pickupEvent ? (
               <>
                 <h4>Thank you!</h4>
                 <h3>Your order has been placed</h3>
                 <a href={payment.receiptUrl}>Click here to view your receipt</a>
                 <p style={{ marginBottom: '1rem' }}>
-                  Thank you for your order! You've made me smile! I hope my
+                  Thank you for your order! You&apos;ve made me smile! I hope my
                   sonrisa brings you sonrisa &#9786;. The pickup details for
                   your order are listed below, and will be emailed to you
                   shortly.
@@ -59,7 +58,7 @@ export default () => {
                 <PickupEventDisplay
                   pickupEvent={orderingStatus.pickupEvent}
                   useCard={false}
-                ></PickupEventDisplay>
+                />
               </>
             ) : (
               <div
@@ -80,7 +79,7 @@ export default () => {
               <Button
                 onClick={() => router.push('/checkout')}
                 isFullWidth={false}
-                text='Back to Checkout'
+                text="Back to Checkout"
               />
             </>
           )}
@@ -88,4 +87,18 @@ export default () => {
       </div>
     </div>
   );
-};
+}
+
+export default function OrderDetailsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="responsive-container" style={{ padding: '4rem 0', textAlign: 'center' }}>
+          Loading...
+        </div>
+      }
+    >
+      <OrderDetailsContent />
+    </Suspense>
+  );
+}

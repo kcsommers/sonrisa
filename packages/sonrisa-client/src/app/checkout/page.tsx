@@ -1,41 +1,36 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isEmpty } from 'lodash';
-import { useRouter } from 'next/router';
-import Script from 'next/script';
-import { useEffect, useState } from 'react';
-import { Payment } from 'square';
-import { Alert } from '../components/Alert/Alert';
-import { CheckoutForm } from '../components/CheckoutForm/CheckoutForm';
-import { OrderView } from '../components/OrderView/OrderView';
-import { PickupEventDisplay } from '../components/PickupEventDisplay/PickupEventDisplay';
-import { useOrdering } from '../context';
-import { logger } from '../utils';
-import styles from './styles/CheckoutPage.module.scss';
+'use client';
 
-export default () => {
+import { FontAwesomeIcon, IconProp } from '../../components/FontAwesomeIcon';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import Script from 'next/script';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Payment } from 'square';
+import { Alert } from '../../components/Alert/Alert';
+import { CheckoutForm } from '../../components/CheckoutForm/CheckoutForm';
+import { OrderView } from '../../components/OrderView/OrderView';
+import { PickupEventDisplay } from '../../components/PickupEventDisplay/PickupEventDisplay';
+import { useOrdering } from '../../context';
+import { logger } from '../../utils';
+import styles from '../styles/CheckoutPage.module.scss';
+
+export default function CheckoutPage() {
   const { orderingStatus } = useOrdering();
   const router = useRouter();
   const [cardSdkLoaded, setCardSdkLoaded] = useState(false);
-  const { currentOrder } = useOrdering();
 
   const onCheckout = (success: boolean, payment?: Payment): void => {
-    // route to success page on success
     logger.log('[onCheckout]:::: ', success, payment);
-    router.push({
-      pathname: '/order-details',
-      query: {
-        success,
-        paymentId: payment?.id,
-      },
-    });
+    const params = new URLSearchParams();
+    params.set('success', String(success));
+    if (payment?.id) params.set('paymentId', payment.id);
+    router.push(`/order-details?${params.toString()}`);
   };
 
   if (!orderingStatus.acceptingOrders) {
     return (
       <div className={styles.alertWrap}>
-        <Alert type='danger' message={orderingStatus.message!} />
+        <Alert type="danger" message={orderingStatus.message!} />
       </div>
     );
   }
@@ -70,7 +65,7 @@ export default () => {
             </div>
           </div>
           <div className={`${styles.paymentSection} ${styles.checkoutSection}`}>
-            <div className='inner-border'></div>
+            <div className="inner-border"></div>
             <div className={styles.checkoutSectionInner}>
               <h4>Payment</h4>
               <div className={styles.checkoutFormWrap}>
@@ -82,7 +77,7 @@ export default () => {
             </div>
           </div>
           <div className={`${styles.orderSection} ${styles.checkoutSection}`}>
-            <div className='inner-border'></div>
+            <div className="inner-border"></div>
             <div className={styles.checkoutSectionInner}>
               <h4>Order</h4>
               <OrderView canRemoveItems={false} />
@@ -92,4 +87,4 @@ export default () => {
       </div>
     </>
   );
-};
+}

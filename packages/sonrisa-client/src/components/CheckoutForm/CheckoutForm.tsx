@@ -1,6 +1,4 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   OrderFulfillmentScheduleTypes,
   OrderFulfillmentTypes,
@@ -9,16 +7,17 @@ import { useEffect, useState } from 'react';
 import { CreatePaymentRequest, Customer, Payment } from 'square';
 import { v4 as uuidV4 } from 'uuid';
 import { useOrdering } from '../../context';
-import { environments } from '../../environments';
 import {
   getOrderSubtotal,
   getOrderTotal,
   getPickupTime,
   logger,
 } from '../../utils';
+import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { TipBox } from '../TipBox/TipBox';
 import { Button } from './../Button/Button';
 import styles from './CheckoutForm.module.scss';
+import env from '../../../environment';
 
 type CheckoutFormProps = {
   cardSdkLoaded: boolean;
@@ -203,8 +202,8 @@ export const CheckoutForm = ({
       return;
     }
     (async () => {
-      const appId = environments[process.env.NODE_ENV].SQUARE_APP_ID;
-      const locationId = environments[process.env.NODE_ENV].SQUARE_LOCATION_ID;
+      const appId = env.NEXT_PUBLIC_SQUARE_APP_ID;
+      const locationId = env.NEXT_PUBLIC_SQUARE_LOCATION_ID;
       const payments = (window as any).Square.payments(appId, locationId);
       try {
         const card = await payments.card();

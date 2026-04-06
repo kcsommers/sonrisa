@@ -1,4 +1,5 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+'use client';
+
 import {
   faCheckCircle,
   faExclamationCircle,
@@ -9,21 +10,20 @@ import { cloneDeep } from 'lodash';
 import { ReactNode, useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Button } from '../components/Button/Button';
-import { LoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
-import { Overlay } from '../components/Overlay/Overlay';
-import { PickupEventDisplay } from '../components/PickupEventDisplay/PickupEventDisplay';
-import { ProtectedRoute } from '../components/ProtectedRoute';
-import { SnackbarComponent } from '../components/Snackbar/SnackbarComponent';
-import { useAuth } from '../context';
-import { environments } from '../environments';
-import { useSnackbar } from '../hooks/use-snackbar';
-import { logger } from '../utils';
-import styles from './styles/AdminPage.module.scss';
+import { Button } from '../../components/Button/Button';
+import type { IconProp } from '../../components/FontAwesomeIcon';
+import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner';
+import { Overlay } from '../../components/Overlay/Overlay';
+import { PickupEventDisplay } from '../../components/PickupEventDisplay/PickupEventDisplay';
+import { ProtectedRoute } from '../../components/ProtectedRoute';
+import { SnackbarComponent } from '../../components/Snackbar/SnackbarComponent';
+import { useAuth } from '../../context';
+import { useSnackbar } from '../../hooks/use-snackbar';
+import { logger } from '../../utils';
+import styles from '../styles/AdminPage.module.scss';
+import env from '../../../environment';
 
-const BASE_URL = environments[process.env.NODE_ENV].API_BASE_URL;
-
-export default () => {
+export default function AdminPage() {
   const [pendingEvent, setPendingEvent] = useState<IPickupEvent>({
     startTime: new Date(),
     endTime: new Date(),
@@ -46,18 +46,16 @@ export default () => {
   const { logUserOut } = useAuth();
 
   const updateAddress = (key: string, value: string): void => {
-    setPendingEvent((prevVal: IPickupEvent) => {
-      return {
-        ...prevVal,
-        location: {
-          ...prevVal.location,
-          address: {
-            ...prevVal.location.address,
-            [key]: value,
-          },
+    setPendingEvent((prevVal: IPickupEvent) => ({
+      ...prevVal,
+      location: {
+        ...prevVal.location,
+        address: {
+          ...prevVal.location.address,
+          [key]: value,
         },
-      };
-    });
+      },
+    }));
   };
 
   const updateLocationName = (name: string): void => {
@@ -77,7 +75,7 @@ export default () => {
   const fetchUpcomingEvents = () => {
     const fetchEvents = async () => {
       return await axios.get<IPickupEvent[]>(
-        `${BASE_URL}/events?upcomingOnly=true`
+        `${env.NEXT_PUBLIC_API_BASE_URL}/events?upcomingOnly=true`
       );
     };
     fetchEvents()
@@ -123,7 +121,7 @@ export default () => {
       setAddingEvent(true);
       const path = pendingEvent._id ? `update/${pendingEvent._id}` : 'create';
       await axios.post<IPickupEvent>(
-        `${BASE_URL}/events/${path}`,
+        `${env.NEXT_PUBLIC_API_BASE_URL}/events/${path}`,
         pendingEvent
       );
       setAddingEvent(false);
@@ -175,7 +173,7 @@ export default () => {
 
   const deleteEvent = async (id: string) => {
     try {
-      await axios.delete(`${BASE_URL}/events/${id}`);
+      await axios.delete(`${env.NEXT_PUBLIC_API_BASE_URL}/events/${id}`);
       setOverlayTemplate(undefined);
       setSnackbarVisible({
         message: 'Event Deleted Successfully',
@@ -350,4 +348,4 @@ export default () => {
       </div>
     </ProtectedRoute>
   );
-};
+}

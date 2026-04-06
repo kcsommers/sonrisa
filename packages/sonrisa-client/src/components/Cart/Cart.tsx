@@ -1,18 +1,14 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+// @ts-nocheck framer-motion v4 types
+import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useOrdering } from '../../context';
+import { useShell } from '../../context/shell/shell-context';
 import { Button } from '../Button/Button';
 import { OrderView } from '../OrderView/OrderView';
 import styles from './Cart.module.scss';
-
-interface ICartProps {
-  isVisible: boolean;
-  setIsVisible: (isVisible: boolean) => void;
-}
 
 const containerVariants = {
   enter: {
@@ -41,10 +37,10 @@ const innerVariants = {
   },
 };
 
-export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
+export const Cart = () => {
   const { currentOrder } = useOrdering();
-
   const router = useRouter();
+  const { cartVisible: isVisible, setCartVisible: setIsVisible } = useShell();
 
   const goToCheckout = (): void => {
     setIsVisible(false);
@@ -60,9 +56,14 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
     body.style.overflow = isVisible ? 'hidden' : 'auto';
   }, [isVisible]);
 
+  const AP = AnimatePresence as React.ComponentType<{
+    children?: React.ReactNode;
+    mode?: string;
+  }>;
   return (
-    <AnimatePresence>
+    <AP mode="sync">
       {isVisible && (
+        // @ts-expect-error framer-motion v4 types omit children for motion components
         <motion.div
           className={styles.cartWrap}
           initial='enter'
@@ -102,6 +103,6 @@ export const Cart = ({ isVisible, setIsVisible }: ICartProps) => {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AP>
   );
 };

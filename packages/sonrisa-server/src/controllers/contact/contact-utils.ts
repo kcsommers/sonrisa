@@ -1,16 +1,16 @@
 import { google } from 'googleapis';
 import nodemailer from 'nodemailer';
 import { MailOptions } from 'nodemailer/lib/json-transport';
-import { environments } from '../../environments';
+import env from '../../environment';
 
 const oAuth2Client = new google.auth.OAuth2(
-  environments[process.env.NODE_ENV].GMAIL_CLIENT_ID,
-  environments[process.env.NODE_ENV].GMAIL_CLIENT_SECRET,
-  environments[process.env.NODE_ENV].GMAIL_OAUTH_REDIRECT_URI
+  env.GMAIL_CLIENT_ID,
+  env.GMAIL_CLIENT_SECRET,
+  env.GMAIL_OAUTH_REDIRECT_URI
 );
 
 oAuth2Client.setCredentials({
-  refresh_token: environments[process.env.NODE_ENV].GMAIL_OAUTH_REFRESH_TOKEN,
+  refresh_token: env.GMAIL_OAUTH_REFRESH_TOKEN,
 });
 
 export const sendEmail = async (
@@ -27,18 +27,17 @@ export const sendEmail = async (
       service: 'gmail',
       auth: {
         type: 'OAuth2',
-        user: environments[process.env.NODE_ENV].SONRISA_EMAIL,
-        clientId: environments[process.env.NODE_ENV].GMAIL_CLIENT_ID,
-        clientSecret: environments[process.env.NODE_ENV].GMAIL_CLIENT_SECRET,
-        refreshToken:
-          environments[process.env.NODE_ENV].GMAIL_OAUTH_REFRESH_TOKEN,
+        user: env.SONRISA_EMAIL,
+        clientId: env.GMAIL_CLIENT_ID,
+        clientSecret: env.GMAIL_CLIENT_SECRET,
+        refreshToken: env.GMAIL_OAUTH_REFRESH_TOKEN,
         accessToken: _accessToken,
       },
     });
 
     const _mailOptions: MailOptions = {
       from: `Sonrisa Donuts <${
-        environments[process.env.NODE_ENV].SONRISA_EMAIL
+        env.SONRISA_EMAIL
       }>`,
       to,
       subject,

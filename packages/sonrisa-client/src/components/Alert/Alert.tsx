@@ -1,6 +1,5 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon, IconProp } from '../FontAwesomeIcon';
 import { faExclamationCircle, faInfo } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Alert.module.scss';
 
 interface IAlertProps {

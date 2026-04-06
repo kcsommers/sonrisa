@@ -21,7 +21,7 @@ export const Button = ({
   type = 'primary',
   isDisabled = false,
 }: ButtonProps) => {
-  const buttonEl = useRef<HTMLButtonElement>();
+  const buttonEl = useRef<HTMLButtonElement>(null);
   const clicked = (event: React.MouseEvent) => {
     if (!onClick || !buttonEl.current || showSpinner) {
       return;
@@ -49,7 +49,7 @@ export const Button = ({
         isDisabled ? ' btn-disabled' : ''
       }`}
       onClick={clicked}
-      ref={(el: HTMLButtonElement) => (buttonEl.current = el)}
+      ref={(el) => { buttonEl.current = el; }}
     >
       {showSpinner ? <LoadingSpinner size='xs' /> : text}
     </button>

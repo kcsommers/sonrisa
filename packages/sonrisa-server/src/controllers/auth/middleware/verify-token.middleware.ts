@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import HttpStatusCodes from 'http-status-codes';
+import jwt from 'jsonwebtoken';
+import env from '../../../environment';
 
 export const verifyToken = (
   _req: Request,
@@ -16,7 +17,7 @@ export const verifyToken = (
       .send('A token is required for authentication');
   }
   try {
-    jwt.verify(_token, process.env.JWT_SECRET);
+    jwt.verify(_token, env.JWT_SECRET);
   } catch (err) {
     return _res.status(HttpStatusCodes.UNAUTHORIZED).send('Invalid Token');
   }

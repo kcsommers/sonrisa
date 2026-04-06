@@ -2,6 +2,7 @@ node_modules
 dist
 node_modules
 .env
+.env.*
 google-keys.json
 google-keys.ts
 .DS_Store

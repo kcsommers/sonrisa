@@ -1,7 +1,7 @@
 import { IContactRequest, IContactResponse } from '@sonrisa/core';
 import { Request, Response, Router } from 'express';
 import { sendEmail } from './contact-utils';
-import { environments } from '../../environments';
+import env from '../../environment';
 
 const router: Router = Router();
 
@@ -9,7 +9,7 @@ router.post('/', (req: Request, res: Response<IContactResponse>) => {
   const _request = req.body as IContactRequest;
 
   sendEmail(
-    environments[process.env.NODE_ENV].SONRISA_EMAIL,
+    env.SONRISA_EMAIL,
     `You got a message from ${_request.customer.givenName} ${_request.customer.familyName}`,
     _request.message,
     `<h1>${_request.message}</h1>`,

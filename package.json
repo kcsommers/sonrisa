@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"yarn run start:core\" \"yarn run start:server\" \"yarn run start:client\"",
+    "start": "concurrently --kill-others -n core,server,client -c blue,yellow,green \"yarn run start:core\" \"yarn run start:server\" \"yarn run start:client\"",
     "start:windows": "concurrently \"yarn run server:windows\" \"yarn run client\"",
     "start:core": "lerna exec --scope @sonrisa/core -- yarn run watch",
     "start:server": "lerna exec --scope @sonrisa/server -- yarn run server",

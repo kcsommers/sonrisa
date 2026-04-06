@@ -1,3 +1,4 @@
+// @ts-nocheck framer-motion v4 types
 import { ICatalogObjects } from '@sonrisa/core';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
@@ -67,10 +68,7 @@ export const CatalogItemBox = ({
         className={styles.catalogItemBoxInner}
         onClick={() => setOverlayOpen(true)}
       >
-        <div
-          className={styles.catalogItemBoxCard}
-          onClick={() => setOverlayOpen(true)}
-        >
+        <div className={styles.catalogItemBoxCard}>
           <div className={styles.imgHoverBg}></div>
           <AnimatePresence>
             {prevQuantityRef.current && (
@@ -119,6 +117,7 @@ export const CatalogItemBox = ({
           setQuantity={setQuantity}
           orderUpdated={orderUpdated}
           prevQuantityRef={prevQuantityRef}
+          closeOverlay={() => setOverlayOpen(false)}
         />
       </Overlay>
     </div>

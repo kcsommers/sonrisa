@@ -1,10 +1,7 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import {
-  cloneElement,
-  PropsWithChildren,
-  ReactElement,
-  useEffect,
-} from 'react';
+'use client';
+
+import { PropsWithChildren, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './Overlay.module.scss';
 
 type OverlayProps = PropsWithChildren<{
@@ -13,46 +10,16 @@ type OverlayProps = PropsWithChildren<{
   setIsOpen: (isOpen: boolean) => void;
 }>;
 
-const templateVariants = {
-  enter: {
-    y: '100%',
-  },
-  center: {
-    y: '0%',
-  },
-  exit: {
-    y: '100%',
-  },
-};
-
-const containerVariants = {
-  enter: {
-    opacity: 0,
-  },
-  center: {
-    opacity: 1,
-  },
-  exit: {
-    opacity: 0,
-  },
-};
-
 export const Overlay = ({
   children,
   setIsOpen,
   isOpen = false,
 }: OverlayProps) => {
-  const close = (event: React.MouseEvent) => {
-    const _classList = (event.target as Element).classList;
-    if (
-      !_classList.contains(styles.overlayInner) &&
-      !_classList.contains('close-overlay')
-    ) {
-      return;
-    }
+  const [mounted, setMounted] = useState(false);
 
-    setIsOpen(false);
-  };
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const body = document.querySelector('body');
@@ -63,28 +30,34 @@ export const Overlay = ({
     body.style.overflow = isOpen ? 'hidden' : 'auto';
   }, [isOpen]);
 
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className={styles.overlayContainer}
-          initial='enter'
-          animate='center'
-          exit='exit'
-          variants={containerVariants}
-          onClick={close}
-        >
-          <motion.div
-            className={styles.overlayInner}
-            initial='enter'
-            animate='center'
-            exit='exit'
-            variants={templateVariants}
-          >
-            {children}
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+  const onContainerClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      setIsOpen(false);
+      return;
+    }
+    if ((event.target as HTMLElement).closest?.('.close-overlay')) {
+      setIsOpen(false);
+    }
+  };
+
+  if (!mounted) {
+    return null;
+  }
+
+  if (!isOpen) {
+    return null;
+  }
+
+  return createPortal(
+    <div
+      className={styles.overlayContainer}
+      onClick={onContainerClick}
+      role='presentation'
+    >
+      <div className={styles.overlayInner}>
+        <div className={styles.overlaySheet}>{children}</div>
+      </div>
+    </div>,
+    document.body
   );
 };

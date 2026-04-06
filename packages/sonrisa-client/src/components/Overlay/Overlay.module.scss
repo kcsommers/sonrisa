@@ -1,27 +1,55 @@
 @import '../../styles/media-queries.scss';
 
+@keyframes overlayBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlayPanelIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 div.overlayContainer {
   position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: rgba(#000, 0.5);
-  z-index: 1000;
+  inset: 0;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: rgba(#000, 0.5);
+  animation: overlayBackdropIn 0.2s ease forwards;
 }
 
+// pointer-events: none so clicks on the dimmed area pass through to .overlayContainer
+// (otherwise a full-width inner blocks backdrop dismiss).
 div.overlayInner {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   width: 100%;
+  min-height: 100%;
   padding: 4rem;
+  animation: overlayPanelIn 0.25s ease forwards;
 
   @include for-phone-only {
     padding: 0;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
+}
+
+div.overlaySheet {
+  pointer-events: auto;
+  width: fit-content;
+  max-width: 100%;
 }
